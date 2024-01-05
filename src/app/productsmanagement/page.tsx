@@ -14,18 +14,30 @@ import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File } from "react-feather";
 
-const importBill = [
+const goodsReceipts = [
   {
-    importBillId: "PN001",
+    goodsReceiptsId: "PN001",
     staffId: "NV002",
-    importDate: "2023-10-23",
+    entryDate: "2023-10-23",
+    totalPrice: 100000000,
+  },
+  {
+    goodsReceiptsId: "PN002",
+    staffId: "NV002",
+    entryDate: "2023-10-23",
+    totalPrice: 100000000,
+  },
+  {
+    goodsReceiptsId: "PN003",
+    staffId: "NV002",
+    entryDate: "2023-10-23",
     totalPrice: 100000000,
   },
 ];
 
 export default function ProductManagement() {
   return (
-    <main className="flex max-h-screen flex-col fill-white">
+    <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       {/* <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm "> */}
       <div className="flex-col fixed top-0 w-screen">
         <div className="flex-col">
@@ -135,9 +147,12 @@ export default function ProductManagement() {
                         <span className="sr-only">Edit</span>
                       </Table.HeadCell>
                     </Table.Head>
-                    {importBill.map((importBill, index) => {
+                    {goodsReceipts.map((goodsReceipt, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200">
+                        <Table.Body
+                          className="divide-y bg-teal-200"
+                          key={index}
+                        >
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
                             onClick={() => alert(index)}
@@ -145,16 +160,19 @@ export default function ProductManagement() {
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
                               {index + 1}
                             </Table.Cell>
-                            <Table.Cell>{importBill.importBillId}</Table.Cell>
-                            <Table.Cell>{importBill.staffId}</Table.Cell>
-                            <Table.Cell>{importBill.importDate}</Table.Cell>
-                            <Table.Cell>{importBill.totalPrice}</Table.Cell>
-                            <Table.Cell className="w-28">
+                            <Table.Cell>
+                              {goodsReceipt.goodsReceiptsId}
+                            </Table.Cell>
+                            <Table.Cell>{goodsReceipt.staffId}</Table.Cell>
+                            <Table.Cell>{goodsReceipt.entryDate}</Table.Cell>
+                            <Table.Cell>{goodsReceipt.totalPrice}</Table.Cell>
+                            <Table.Cell className="w-16">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() => alert(bill.saleBilId)}
+                                  onClick={() =>
+                                    alert(goodsReceipt.goodsReceiptsId)
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                                  style={{ width: 40 }}
                                 >
                                   <Eye color="green" />
                                 </button>
