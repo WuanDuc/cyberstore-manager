@@ -36,7 +36,7 @@ export default function ProductManagement() {
             <Tabs
               aria-label="Tabs with underline"
               style="underline"
-              theme={customTabTheme}
+              theme={THEME.tabTheme}
             >
               <Tabs.Item active title="Quản lý kho">
                 <div style={{ height: 50 }}>
