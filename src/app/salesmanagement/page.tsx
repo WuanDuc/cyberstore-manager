@@ -12,6 +12,7 @@ import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { Circle, Edit, Eye, FileText, Monitor, Trash2, X } from "react-feather";
 import { HiSearch } from "react-icons/hi";
+import { THEME } from "@/constant/theme";
 
 const sampleBills = [
   {
@@ -87,14 +88,6 @@ const sampleCustomer = [
   },
 ];
 
-const sampleProduct = {
-  name: "Sample Product",
-  src: "/sample.jpg",
-  price: 19.99,
-  brand: "Sample Brand",
-  sale: 10,
-};
-
 export default function SalesManagement() {
   return (
     <main className="flex max-h-screen flex-col fill-white">
@@ -109,7 +102,7 @@ export default function SalesManagement() {
             <Tabs
               aria-label="Tabs with underline"
               style="underline"
-              theme={customTabTheme}
+              theme={THEME.tabTheme}
             >
               <Tabs.Item active title="Quản lý đơn hàng" className="bg-red-300">
                 <div style={{ height: 50 }}>
@@ -153,7 +146,7 @@ export default function SalesManagement() {
                     marginRight: 12,
                   }}
                 >
-                  <Table hoverable theme={customTableTheme}>
+                  <Table hoverable theme={THEME.tableTheme}>
                     <Table.Head>
                       <Table.HeadCell>STT</Table.HeadCell>
                       <Table.HeadCell>Mã đơn hàng</Table.HeadCell>
@@ -171,7 +164,7 @@ export default function SalesManagement() {
                         <Table.Body className="divide-y bg-teal-200">
                           <Table.Row className="bg-white dark:border-gray-700 dark:bg-teal-200">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-2.5 text-center">
-                              {index}
+                              {index + 1}
                             </Table.Cell>
                             <Table.Cell className="w-1/10">
                               {bill.saleBilId}
@@ -256,7 +249,7 @@ export default function SalesManagement() {
                     marginRight: 12,
                   }}
                 >
-                  <Table hoverable theme={customTableTheme}>
+                  <Table hoverable theme={THEME.tableTheme}>
                     <Table.Head>
                       <Table.HeadCell>STT</Table.HeadCell>
                       <Table.HeadCell>Mã khách hàng</Table.HeadCell>
@@ -274,10 +267,10 @@ export default function SalesManagement() {
                         <Table.Body className="divide-y bg-teal-200">
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
-                            onClick={() => alert(index)}
+                            onClick={() => alert(index + 1)}
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1/16 text-center">
-                              {index}
+                              {index + 1}
                             </Table.Cell>
                             <Table.Cell className="w-1/16">
                               {customer.customerId}
@@ -326,89 +319,3 @@ export default function SalesManagement() {
     </main>
   );
 }
-const customTabTheme: CustomFlowbiteTheme["tabs"] = {
-  base: "flex flex-col gap-2",
-  tablist: {
-    base: "flex text-center",
-    styles: {
-      default: "flex-wrap border-b border-gray-200 dark:border-gray-700",
-      underline:
-        "flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700",
-      pills:
-        "flex-wrap font-medium text-sm text-gray-500 dark:text-gray-400 space-x-2",
-      fullWidth:
-        "w-full text-sm font-medium divide-x divide-gray-200 shadow grid grid-flow-col dark:divide-gray-700 dark:text-gray-400 rounded-none",
-    },
-    tabitem: {
-      base: "flex items-center justify-center p-4 rounded-t-lg text-sm font-medium first:ml-0 disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500 focus:ring-4 focus:ring-cyan-300 focus:outline-none",
-      styles: {
-        default: {
-          base: "rounded-t-lg",
-          active: {
-            on: "bg-gray-100 text-cyan-600 dark:bg-gray-800 dark:text-cyan-500",
-            off: "text-gray-500 hover:bg-gray-50 hover:text-gray-600 dark:text-gray-400 dark:hover:bg-gray-800  dark:hover:text-gray-300",
-          },
-        },
-        underline: {
-          base: "rounded-t-lg",
-          active: {
-            on: "text-cyan-600 rounded-t-lg border-b-2 border-cyan-600 active dark:text-cyan-500 dark:border-cyan-500",
-            off: "border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300",
-          },
-        },
-        pills: {
-          base: "",
-          active: {
-            on: "rounded-lg bg-cyan-600 text-white",
-            off: "rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white",
-          },
-        },
-        fullWidth: {
-          base: "ml-0 first:ml-0 w-full rounded-none flex",
-          active: {
-            on: "p-4 text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white rounded-none",
-            off: "bg-white hover:text-gray-700 hover:bg-gray-50 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 rounded-none",
-          },
-        },
-      },
-      icon: "mr-2 h-5 w-5",
-    },
-  },
-  tabitemcontainer: {
-    base: "",
-    styles: {
-      default: "",
-      underline: "",
-      pills: "",
-      fullWidth: "",
-    },
-  },
-  tabpanel: "py-3",
-};
-
-const customTableTheme: CustomFlowbiteTheme["table"] = {
-  root: {
-    base: "w-full text-left text-sm text-gray-500 dark:text-gray-400 seft-center",
-    shadow:
-      "absolute bg-white dark:bg-black w-full h-full top-0 left-0 rounded-lg drop-shadow-md -z-10",
-    wrapper: "relative",
-  },
-  body: {
-    base: "group/body",
-    cell: {
-      base: "group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4",
-    },
-  },
-  head: {
-    base: "group/head text-xs uppercase text-white dark:text-white",
-    cell: {
-      base: "group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg bg-cyan-950 dark:bg-cyan-950 px-6 py-3",
-    },
-  },
-  row: {
-    base: "group/row text-black dark:text-black",
-    hovered: "hover:bg-green-400 dark:hover:bg-green-400",
-    striped:
-      "odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700",
-  },
-};
