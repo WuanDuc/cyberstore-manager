@@ -26,7 +26,7 @@ export default function SideBar() {
             Quản lý sản phẩm
           </Sidebar.Item>
           <Sidebar.Item href="/repairmanagement" icon={FaWrench}>
-            Quản lý sửa chữa
+            Quản lý bảo hành
           </Sidebar.Item>
           <Sidebar.Item href="/hrmanagement" icon={HiUser}>
             Quản lý nhân sự
