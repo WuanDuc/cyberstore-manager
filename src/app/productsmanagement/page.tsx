@@ -13,6 +13,7 @@ import SearchInput from "@/components/searchinput";
 import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File } from "react-feather";
+import { useRouter } from "next/navigation";
 
 const importBill = [
   {
@@ -208,6 +209,7 @@ const ContainerRight = () => (
 
 
 export default function ProductManagement() {
+    const router = useRouter();
   return (
     <main className="flex max-h-screen flex-col fill-white">
       {/* <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm "> */}
@@ -257,12 +259,7 @@ export default function ProductManagement() {
                   </div>
               </Tabs.Item>
 
-              <Tabs.Item active title="CẬP NHẬT SẢN PHẨM">
-              <div className="flex">
-                    <ContainerLeft />
-                    <ContainerRight />
-                  </div>
-              </Tabs.Item>
+              
 
               <Tabs.Item title="Sản phẩm bán">
                 <div className="flex flex-col h-screen overflow-y-auto">
@@ -280,10 +277,20 @@ export default function ProductManagement() {
                   </div>
                 </div>
               </Tabs.Item>
- 
-      
-        
+
               <Tabs.Item title="Quản lý phiếu nhập">
+              <Button
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: "#0156FF",
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                      onClick={()=>router.push('/productsmanagement/updateProduct')}
+                    >
+                      <File style={{ marginRight: 3 }} />
+                      Cập nhật sản phẩm
+                    </Button>
                 <div style={{ height: 50 }}>
                   <div
                     className=" flex fixed right-40 pl-96 "
@@ -315,6 +322,8 @@ export default function ProductManagement() {
                       <File style={{ marginRight: 3 }} />
                       Thêm phiếu nhập
                     </Button>
+
+                    
                   </div>
                 </div>
                 <div

@@ -5,6 +5,7 @@ import { Console } from "console";
 import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
+import { useRouter } from "next/navigation";
 
 const sampleProduct = {
   name: "Sample Product",
@@ -56,7 +57,7 @@ const RepairContainerRight = () => (
 
 const DiscountContainerLeft = () => (
   <div className="h-300 w-2/4  p-4 ml-6 mr-6  ">
-    <h1 className="text-xl text-black font-bold mb-2">Thông tin phiếu bảo hành</h1>
+    <h1 className="text-xl text-black font-bold mb-2">Thông tin chương trình</h1>
       <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
       <h2 className="text-lg text-black font-semibold mb-1 mt-4">Mã chương trình</h2>
       <input type="text" className="w-full h-10 border border-gray-300 rounded px-3" />
@@ -86,6 +87,7 @@ const DiscountContainerRight = () => (
 );
 
 export default function RepairManagement() {
+  const router = useRouter();
   return (
     <main className="flex max-h-screen flex-col fill-white">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -97,31 +99,21 @@ export default function RepairManagement() {
                 <SearchInput></SearchInput>   
             </div>
             <div className=' flex-row fixed right-1 pt-1'>
-                <Button>Get started</Button>
+                <Button onClick={()=>router.push('/repairmanagement/warrantyDetail')}>Get started</Button>
               </div>
             </div>
-            <Tabs aria-label="Tabs with underline" style="underline" theme={customTabTheme}>
+            <Tabs aria-label="Tabs with underline" style="underline" theme={THEME.tabTheme}>
 
       <Tabs.Item active title="Phiếu sửa chữa máy">
-        <Button onClick={()=>console.log("hihi")}>Help me 123</Button>
+                <Button
+                  onClick={()=>router.push('/repairmanagement/warrantyDetail')}
+                >Thêm phiếu sửa chữa</Button>
               </Tabs.Item>
-              
+            
       <Tabs.Item title="Phiếu bảo hành" >
         <ProductCard product={sampleProduct}></ProductCard>
               </Tabs.Item>
               
-      <Tabs.Item title="Phiếu bảo hành chi tiết" >
-      <div className="flex">
-                    <RepairContainerLeft />
-                    <RepairContainerRight />
-                  </div>
-      </Tabs.Item>
-      <Tabs.Item title="Thêm khuyến mãi" >
-      <div className="flex">
-                    <DiscountContainerLeft />
-                    <DiscountContainerRight />
-                  </div>
-      </Tabs.Item>
     </Tabs>
           </div>
         </div>
