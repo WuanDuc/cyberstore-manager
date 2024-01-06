@@ -228,6 +228,8 @@ export default function RepairManagement() {
     },
   ]);
 
+  const router = useRouter();
+
   useEffect(() => {
     const temp = warrantyCertificates.map((warrantyCertificate, index) => {
       const flag = SHARE_FUNCTIONS.compareWithToday(
@@ -250,7 +252,6 @@ export default function RepairManagement() {
     setWarranty(temp);
   }, []);
 
-  const router = useRouter();
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -445,7 +446,9 @@ export default function RepairManagement() {
                         >
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
-                            onClick={() => alert(index)}
+                            onClick={() =>
+                              router.push("/repairmanagement/warrantyDetail")
+                            }
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
                               {index + 1}
