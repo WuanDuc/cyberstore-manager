@@ -100,7 +100,6 @@ const sampleCustomer = [
 ];
 
 export default function SalesManagement() {
-  const router = useRouter();
   const [discounts, setDiscounts] = useState([
     {
       discountId: "NEWYEAR",
@@ -415,7 +414,9 @@ export default function SalesManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => alert("hihi")}
+                      onClick={() =>
+                        router.push("/salesmanagement/discountEventDetail")
+                      }
                     >
                       <Gift style={{ marginRight: 3 }} />
                       Thêm khuyến mãi

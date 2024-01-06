@@ -14,7 +14,6 @@ import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File } from "react-feather";
 import { useRouter } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 const goodsReceipts = [
   {
@@ -284,7 +283,7 @@ export default function ProductManagement() {
                     />
                   </div>
                 </div>
-                <div className="flex overflow-y-auto">
+                <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <ProductGridTab5Col></ProductGridTab5Col>
                 </div>
@@ -315,20 +314,6 @@ export default function ProductManagement() {
               </Tabs.Item>
 
               <Tabs.Item title="Quản lý phiếu nhập">
-                <Button
-                  style={{
-                    borderRadius: 20,
-                    backgroundColor: "#0156FF",
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                  }}
-                  onClick={() =>
-                    router.push("/productsmanagement/updateProduct")
-                  }
-                >
-                  <File style={{ marginRight: 3 }} />
-                  Cập nhật sản phẩm
-                </Button>
                 <div style={{ height: 50 }}>
                   <div
                     className=" flex fixed right-40 pl-96 "
@@ -356,7 +341,7 @@ export default function ProductManagement() {
                         paddingRight: 5,
                       }}
                       onClick={() =>
-                        router.push("/productmanagement/goodsReceipt")
+                        router.push("/productsmanagement/goodsReceipt")
                       }
                     >
                       <File style={{ marginRight: 3 }} />
