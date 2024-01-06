@@ -13,6 +13,7 @@ import SearchInput from "@/components/searchinput";
 import { Circle, Edit, Eye, FileText, Monitor, Trash2, X } from "react-feather";
 import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
+import { useRouter } from "next/navigation";
 
 const sampleBills = [
   {
@@ -89,6 +90,8 @@ const sampleCustomer = [
 ];
 
 export default function SalesManagement() {
+  const router = useRouter();
+
   return (
     <main className="flex max-h-screen flex-col fill-white">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -131,7 +134,7 @@ export default function SalesManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => alert("hihi")}
+                      onClick={()=>router.push('/salesmanagement/discountEventDetail')}
                     >
                       <FileText style={{ marginRight: 3 }} />
                       Tạo hóa đơn
@@ -161,7 +164,7 @@ export default function SalesManagement() {
                     </Table.Head>
                     {sampleBills.map((bill, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200">
+                        <Table.Body className="divide-y bg-teal-200" key={index}>
                           <Table.Row className="bg-white dark:border-gray-700 dark:bg-teal-200">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-2.5 text-center">
                               {index + 1}
@@ -264,7 +267,7 @@ export default function SalesManagement() {
                     </Table.Head>
                     {sampleCustomer.map((customer, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200">
+                        <Table.Body className="divide-y bg-teal-200" key={index}>
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
                             onClick={() => alert(index + 1)}
