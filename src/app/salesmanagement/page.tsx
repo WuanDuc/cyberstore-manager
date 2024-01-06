@@ -100,6 +100,7 @@ const sampleCustomer = [
 ];
 
 export default function SalesManagement() {
+  const router = useRouter();
   const [discounts, setDiscounts] = useState([
     {
       discountId: "NEWYEAR",
@@ -136,8 +137,6 @@ export default function SalesManagement() {
     },
   ]);
 
-  const router = useRouter();
-
   useEffect(() => {
     let temp = discounts.map((discount, index) => {
       let temp2 = { ...discount, conditionStr: " " };
@@ -155,6 +154,8 @@ export default function SalesManagement() {
     });
     setDiscounts(temp);
   }, []);
+
+  const router = useRouter();
 
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
