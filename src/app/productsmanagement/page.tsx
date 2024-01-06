@@ -338,7 +338,7 @@ export default function ProductManagement() {
                     </Table.Head>
                     {importBill.map((importBill, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200">
+                        <Table.Body className="divide-y bg-teal-200" key={index}>
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
                             onClick={() => alert(index)}
