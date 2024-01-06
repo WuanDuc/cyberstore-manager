@@ -10,9 +10,19 @@ import {
 import { Console } from "console";
 import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
-import { Circle, Edit, Eye, FileText, Monitor, Trash2, X } from "react-feather";
+import {
+  Circle,
+  Edit,
+  Eye,
+  FileText,
+  Gift,
+  Monitor,
+  Trash2,
+  X,
+} from "react-feather";
 import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const sampleBills = [
@@ -91,9 +101,64 @@ const sampleCustomer = [
 
 export default function SalesManagement() {
   const router = useRouter();
+  const [discounts, setDiscounts] = useState([
+    {
+      discountId: "NEWYEAR",
+      name: "Mừng năm mới",
+      discountPercent: 10,
+      description:
+        "Nhân dịp năm mới, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 50 triệu đồng",
+      startDate: "2023-01-01",
+      endDate: "2023-01-31",
+      minimumBillValue: 50000,
+      conditionStr: " ",
+    },
+    {
+      discountId: "NEWYEAR2024",
+      name: "Mừng năm mới 2024",
+      discountPercent: 5,
+      description:
+        "Nhân dịp năm mới, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 500 nghìn đồng",
+      startDate: "2023-01-01",
+      endDate: "2023-01-31",
+      minimumBillValue: 500,
+      conditionStr: " ",
+    },
+    {
+      discountId: "NEWSTORE",
+      name: "Mừng năm mới",
+      discountPercent: 15,
+      description:
+        "Nhân dịp khai trương, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 100 triệu đồng",
+      startDate: "2023-01-01",
+      endDate: "2023-01-31",
+      minimumBillValue: 100000,
+      conditionStr: " ",
+    },
+  ]);
+
+  useEffect(() => {
+    let temp = discounts.map((discount, index) => {
+      let temp2 = { ...discount, conditionStr: " " };
+      if (
+        discount.minimumBillValue !== null &&
+        discount.minimumBillValue / 1000 > 1
+      ) {
+        temp2.conditionStr =
+          "Hóa đơn trên " + discount.minimumBillValue / 1000 + " triệu";
+      } else {
+        temp2.conditionStr =
+          "Hóa đơn trên " + discount.minimumBillValue / 100 + " trăm nghìn";
+      }
+      return temp2;
+    });
+    setDiscounts(temp);
+  }, []);
+
+  const router = useRouter();
 
   return (
-    <main className="flex max-h-screen flex-col fill-white">
+    <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
         <div className="flex-col fixed top-0 w-screen">
           <div className="flex-col">
@@ -134,7 +199,7 @@ export default function SalesManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={()=>router.push('/salesmanagement/discountEventDetail')}
+                      onClick={() => router.push("/salesmanagement/billCreate")}
                     >
                       <FileText style={{ marginRight: 3 }} />
                       Tạo hóa đơn
@@ -164,7 +229,10 @@ export default function SalesManagement() {
                     </Table.Head>
                     {sampleBills.map((bill, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200" key={index}>
+                        <Table.Body
+                          className="divide-y bg-teal-200"
+                          key={index}
+                        >
                           <Table.Row className="bg-white dark:border-gray-700 dark:bg-teal-200">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-2.5 text-center">
                               {index + 1}
@@ -178,7 +246,9 @@ export default function SalesManagement() {
                             <Table.Cell className="w-1/6">
                               {bill.staffName}
                             </Table.Cell>
-                            <Table.Cell>{bill.paymentDate}</Table.Cell>
+                            <Table.Cell className="text-right">
+                              {bill.paymentDate}
+                            </Table.Cell>
                             <Table.Cell className="text-right">
                               {bill.billPrice}
                             </Table.Cell>
@@ -198,7 +268,7 @@ export default function SalesManagement() {
                                   onClick={() => alert(bill.saleBilId)}
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
-                                  <Trash2 color="red" />
+                                  <Trash2 color="green" />
                                 </button>
                               </div>
                             </Table.Cell>
@@ -267,7 +337,10 @@ export default function SalesManagement() {
                     </Table.Head>
                     {sampleCustomer.map((customer, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200" key={index}>
+                        <Table.Body
+                          className="divide-y bg-teal-200"
+                          key={index}
+                        >
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
                             onClick={() => alert(index + 1)}
@@ -294,17 +367,129 @@ export default function SalesManagement() {
                             <Table.Cell className="w-28">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() => alert(bill.saleBilId)}
+                                  onClick={() => alert(customer.customerId)}
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
                                 >
                                   <Eye color="green" />
                                 </button>
                                 <button
-                                  onClick={() => alert(bill.saleBilId)}
+                                  onClick={() => alert(customer.customerId)}
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
-                                  <Trash2 color="red" />
+                                  <Trash2 color="green" />
+                                </button>
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      );
+                    })}
+                  </Table>
+                </div>
+              </Tabs.Item>
+              <Tabs.Item title="Quản lý chương trình khuyến mãi">
+                <div style={{ height: 50 }}>
+                  <div
+                    className=" flex fixed right-44 pl-96 "
+                    style={{ marginBottom: 30 }}
+                  >
+                    <TextInput
+                      style={{
+                        backgroundColor: "white",
+                        borderRadius: 20,
+                        color: "black",
+                      }}
+                      id="email4"
+                      type="Search"
+                      rightIcon={HiSearch}
+                      placeholder="Search"
+                      required
+                    />
+                  </div>
+                  <div className=" flex fixed right-1 pr-1">
+                    <Button
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: "#0156FF",
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                      onClick={() => alert("hihi")}
+                    >
+                      <Gift style={{ marginRight: 3 }} />
+                      Thêm khuyến mãi
+                    </Button>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: 1200,
+                    alignSelf: "center",
+                    marginLeft: 12,
+                    marginRight: 12,
+                  }}
+                >
+                  <Table hoverable theme={THEME.tableTheme}>
+                    <Table.Head>
+                      <Table.HeadCell>STT</Table.HeadCell>
+                      <Table.HeadCell>Mã giảm giá</Table.HeadCell>
+                      <Table.HeadCell>Tên chương trình</Table.HeadCell>
+                      <Table.HeadCell>Chiết khấu</Table.HeadCell>
+                      <Table.HeadCell>Ngày bắt đầu</Table.HeadCell>
+                      <Table.HeadCell>Ngày kết thúc</Table.HeadCell>
+                      <Table.HeadCell>Điều kiện</Table.HeadCell>
+                      <Table.HeadCell>
+                        <span className="sr-only">Edit</span>
+                      </Table.HeadCell>
+                    </Table.Head>
+                    {discounts.map((discount, index) => {
+                      return (
+                        <Table.Body
+                          className="divide-y bg-teal-200"
+                          key={index}
+                        >
+                          <Table.Row
+                            className="bg-white dark:border-gray-700 dark:bg-teal-200"
+                            onClick={() => alert(index + 1)}
+                          >
+                            <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
+                              {index + 1}
+                            </Table.Cell>
+                            <Table.Cell className="w-1/16 px-3 py-2">
+                              {discount.discountId}
+                            </Table.Cell>
+                            <Table.Cell className="w-1/6 px-3 py-2">
+                              {discount.name}
+                            </Table.Cell>
+                            <Table.Cell className="w-1/8 px-3 py-2 text-right">
+                              {discount.discountPercent + "%"}
+                            </Table.Cell>
+                            <Table.Cell className="px-3 py-2 text-right">
+                              {discount.startDate}
+                            </Table.Cell>
+                            <Table.Cell className="w-1/10 px-3 py-2 text-right">
+                              {discount.endDate}
+                            </Table.Cell>
+                            <Table.Cell className="px-3 py-2">
+                              {discount.conditionStr !== null
+                                ? discount.conditionStr
+                                : " "}
+                            </Table.Cell>
+                            <Table.Cell className="w-28">
+                              <div style={{ flexDirection: "column" }}>
+                                <button
+                                  onClick={() => alert(discount.discountId)}
+                                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                  style={{ width: 40 }}
+                                >
+                                  <Eye color="green" />
+                                </button>
+                                <button
+                                  onClick={() => alert(discount.discountId)}
+                                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                >
+                                  <Trash2 color="green" />
                                 </button>
                               </div>
                             </Table.Cell>

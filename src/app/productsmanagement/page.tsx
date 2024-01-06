@@ -14,12 +14,25 @@ import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File } from "react-feather";
 import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-const importBill = [
+const goodsReceipts = [
   {
-    importBillId: "PN001",
+    goodsReceiptsId: "PN001",
     staffId: "NV002",
-    importDate: "2023-10-23",
+    entryDate: "2023-10-23",
+    totalPrice: 100000000,
+  },
+  {
+    goodsReceiptsId: "PN002",
+    staffId: "NV002",
+    entryDate: "2023-10-23",
+    totalPrice: 100000000,
+  },
+  {
+    goodsReceiptsId: "PN003",
+    staffId: "NV002",
+    entryDate: "2023-10-23",
     totalPrice: 100000000,
   },
 ];
@@ -119,47 +132,72 @@ const RightContainer = () => (
     <div className="h-1/4 w-100 bg-gray-300 p-4 ml-4 mr-4 ">
       <h1 className="text-xl text-black font-bold mb-6 text-center">Hãng</h1>
 
-          <div className="mb-1">
-            <h2 className="text-black">MSI</h2>
-          </div>
-          <div className="mb-1">
-            <h2 className="text-black">Asus</h2>
-          </div>
-          <div className="mb-1">
-            <h2 className="text-black">Lenovo</h2>
-          </div>
-          <div className="mb-1">
-            <h2 className="text-black">Macbook</h2>
-          </div>
-          
-          <div className="mb-1">
-            <h2 className="text-black">HP</h2>
+      <div className="mb-1">
+        <h2 className="text-black">MSI</h2>
       </div>
-      
-      <button className="text-white bg-blue-500 rounded-full pt-2 pb-2 pl-6 pr-6 mt-4 mr-8 ml-8">Thêm hãng</button>
+      <div className="mb-1">
+        <h2 className="text-black">Asus</h2>
+      </div>
+      <div className="mb-1">
+        <h2 className="text-black">Lenovo</h2>
+      </div>
+      <div className="mb-1">
+        <h2 className="text-black">Macbook</h2>
+      </div>
+
+      <div className="mb-1">
+        <h2 className="text-black">HP</h2>
+      </div>
+
+      <button className="text-white bg-blue-500 rounded-full pt-2 pb-2 pl-6 pr-6 mt-4 mr-8 ml-8">
+        Thêm hãng
+      </button>
     </div>
 
-    <button className="text-white bg-blue-500 rounded-full pt-2 pb-2 pl-6 pr-6 mt-8 mr-8 ml-8 mx-auto">Thêm loại sản phẩm</button>
+    <button className="text-white bg-blue-500 rounded-full pt-2 pb-2 pl-6 pr-6 mt-8 mr-8 ml-8 mx-auto">
+      Thêm loại sản phẩm
+    </button>
   </div>
-
-  
 );
 
 const ContainerLeft = () => (
   <div className=" w-2/4  p-4 ml-6 mr-6  overflow-y-auto">
     <h1 className="text-xl text-black font-bold mb-2">Thông tin về sản phẩm</h1>
-      <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
-      <h2 className="text-lg text-black font-semibold mb-1 mt-4">Tên loại sản phẩm</h2>
-      <input type="text" className="w-full h-10 border border-gray-300 rounded px-3" />
-      <h2 className="text-lg text-black font-semibold mb-1 mt-4">Hãng</h2>
-      <input type="text" className="w-full h-10 border border-gray-300 rounded px-3" />
-      <h2 className="text-lg text-black font-semibold mb-1 mt-4">Mã loại sản phẩm</h2>
-      <input type="text" className="w-full h-10 border border-gray-300 rounded px-3" />
-      <h2 className="text-lg text-black font-semibold mb-1 mt-4">Thời gian bảo hành</h2>
-      <input type="text" className="w-full h-10 border border-gray-300 rounded px-3" />
-      <h2 className="text-lg text-black font-semibold mb-1 mt-4">Số lượng</h2>
-      <input type="text" className="w-full h-10 border border-gray-300 rounded px-3" />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Loại sản phẩm</h2>
+    <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
+    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
+      Tên loại sản phẩm
+    </h2>
+    <input
+      type="text"
+      className="w-full h-10 border border-gray-300 rounded px-3"
+    />
+    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Hãng</h2>
+    <input
+      type="text"
+      className="w-full h-10 border border-gray-300 rounded px-3"
+    />
+    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
+      Mã loại sản phẩm
+    </h2>
+    <input
+      type="text"
+      className="w-full h-10 border border-gray-300 rounded px-3"
+    />
+    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
+      Thời gian bảo hành
+    </h2>
+    <input
+      type="text"
+      className="w-full h-10 border border-gray-300 rounded px-3"
+    />
+    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Số lượng</h2>
+    <input
+      type="text"
+      className="w-full h-10 border border-gray-300 rounded px-3"
+    />
+    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
+      Loại sản phẩm
+    </h2>
     <div className="flex">
       <h2 className="text-lg text-black mb-1 mt-4">Máy tính</h2>
       <input type="radio" className="form-radio text-blue-500" />
@@ -191,28 +229,29 @@ const ContainerLeft = () => (
       <input type="radio" className="form-radio text-blue-500" />
       <h2 className="text-lg text-black mb-1 mt-4">Ghế gaming</h2>
     </div>
-   
   </div>
 );
 
 const ContainerRight = () => (
   <div className="h-1/4 w-1/4 bg-gray-300 p-4 mr-6 ">
-    
-
-      {/* Container chứa thông tin bên phải */}
-      <div className="flex flex-col mt-5  items-center justify-center">
-          <h2 className="text-xl text-black font-bold mb-2 text-center">Hình ảnh</h2>
-      <img src="https://asset.msi.com/resize/image/global/product/product_0_20181005103112_5bb6ccf062df0.png62405b38c58fe0f07fcef2367d8a9ba1/1024.png" alt="Product Image" className="w-40 h-40 rounded mr-4" />
+    {/* Container chứa thông tin bên phải */}
+    <div className="flex flex-col mt-5  items-center justify-center">
+      <h2 className="text-xl text-black font-bold mb-2 text-center">
+        Hình ảnh
+      </h2>
+      <img
+        src="https://asset.msi.com/resize/image/global/product/product_0_20181005103112_5bb6ccf062df0.png62405b38c58fe0f07fcef2367d8a9ba1/1024.png"
+        alt="Product Image"
+        className="w-40 h-40 rounded mr-4"
+      />
     </div>
   </div>
 );
 
-
 export default function ProductManagement() {
-    const router = useRouter();
+  const router = useRouter();
   return (
-    <main className="flex max-h-screen flex-col fill-white">
-      {/* <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm "> */}
+    <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="flex-col fixed top-0 w-screen">
         <div className="flex-col">
           <div className=" flex-row pt-8">
@@ -224,9 +263,8 @@ export default function ProductManagement() {
               style="underline"
               theme={THEME.tabTheme}
             >
-            
               <Tabs.Item active title="Quản lý kho">
-              <div style={{ height: 50 }}>
+                <div style={{ height: 50 }}>
                   <div
                     className="flex fixed right-5 pl-96"
                     style={{ marginBottom: 30 }}
@@ -246,20 +284,18 @@ export default function ProductManagement() {
                     />
                   </div>
                 </div>
-              <div className="flex overflow-y-auto">
-                    <FilterContainer />
-                    <ProductGridTab5Col></ProductGridTab5Col>
-                  </div>
-                  <div className="flex justify-around">
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                  </div>
+                <div className="flex overflow-y-auto">
+                  <FilterContainer />
+                  <ProductGridTab5Col></ProductGridTab5Col>
+                </div>
+                <div className="flex justify-around">
+                  <div className="bg-red-500 rounded p-2 mr-2"></div>
+                  <div className="bg-red-500 rounded p-2 mr-2"></div>
+                  <div className="bg-red-500 rounded p-2 mr-2"></div>
+                  <div className="bg-red-500 rounded p-2 mr-2"></div>
+                  <div className="bg-red-500 rounded p-2 mr-2"></div>
+                </div>
               </Tabs.Item>
-
-              
 
               <Tabs.Item title="Sản phẩm bán">
                 <div className="flex flex-col h-screen overflow-y-auto">
@@ -279,18 +315,20 @@ export default function ProductManagement() {
               </Tabs.Item>
 
               <Tabs.Item title="Quản lý phiếu nhập">
-              <Button
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "#0156FF",
-                        paddingLeft: 5,
-                        paddingRight: 5,
-                      }}
-                      onClick={()=>router.push('/productsmanagement/updateProduct')}
-                    >
-                      <File style={{ marginRight: 3 }} />
-                      Cập nhật sản phẩm
-                    </Button>
+                <Button
+                  style={{
+                    borderRadius: 20,
+                    backgroundColor: "#0156FF",
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                  }}
+                  onClick={() =>
+                    router.push("/productsmanagement/updateProduct")
+                  }
+                >
+                  <File style={{ marginRight: 3 }} />
+                  Cập nhật sản phẩm
+                </Button>
                 <div style={{ height: 50 }}>
                   <div
                     className=" flex fixed right-40 pl-96 "
@@ -317,13 +355,13 @@ export default function ProductManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => alert("hihi")}
+                      onClick={() =>
+                        router.push("/productmanagement/goodsReceipt")
+                      }
                     >
                       <File style={{ marginRight: 3 }} />
                       Thêm phiếu nhập
                     </Button>
-
-                    
                   </div>
                 </div>
                 <div
@@ -345,9 +383,12 @@ export default function ProductManagement() {
                         <span className="sr-only">Edit</span>
                       </Table.HeadCell>
                     </Table.Head>
-                    {importBill.map((importBill, index) => {
+                    {goodsReceipts.map((goodsReceipt, index) => {
                       return (
-                        <Table.Body className="divide-y bg-teal-200" key={index}>
+                        <Table.Body
+                          className="divide-y bg-teal-200"
+                          key={index}
+                        >
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-teal-200"
                             onClick={() => alert(index)}
@@ -355,16 +396,19 @@ export default function ProductManagement() {
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
                               {index + 1}
                             </Table.Cell>
-                            <Table.Cell>{importBill.importBillId}</Table.Cell>
-                            <Table.Cell>{importBill.staffId}</Table.Cell>
-                            <Table.Cell>{importBill.importDate}</Table.Cell>
-                            <Table.Cell>{importBill.totalPrice}</Table.Cell>
-                            <Table.Cell className="w-28">
+                            <Table.Cell>
+                              {goodsReceipt.goodsReceiptsId}
+                            </Table.Cell>
+                            <Table.Cell>{goodsReceipt.staffId}</Table.Cell>
+                            <Table.Cell>{goodsReceipt.entryDate}</Table.Cell>
+                            <Table.Cell>{goodsReceipt.totalPrice}</Table.Cell>
+                            <Table.Cell className="w-16">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() => alert(bill.saleBilId)}
+                                  onClick={() =>
+                                    alert(goodsReceipt.goodsReceiptsId)
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                                  style={{ width: 40 }}
                                 >
                                   <Eye color="green" />
                                 </button>
