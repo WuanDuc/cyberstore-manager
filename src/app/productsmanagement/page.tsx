@@ -1,9 +1,28 @@
 "use client";
 import Image from "next/image";
-import { Button, Card, CustomFlowbiteTheme, Tabs } from "flowbite-react";
+import {
+  Button,
+  CustomFlowbiteTheme,
+  Table,
+  Tabs,
+  TextInput,
+} from "flowbite-react";
 import { Console } from "console";
 import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
+import { HiSearch } from "react-icons/hi";
+import { THEME } from "@/constant/theme";
+import { Eye, File } from "react-feather";
+
+const importBill = [
+  {
+    importBillId: "PN001",
+    staffId: "NV002",
+    importDate: "2023-10-23",
+    totalPrice: 100000000,
+  },
+];
+
 import ProductGridTab from "@/components/listProductCard";
 import ProductGridTab5Col from "@/components/listProductCard";
 import ProductGridTab4Col from "@/components/listProductCard4Col";
@@ -191,26 +210,40 @@ const ContainerRight = () => (
 export default function ProductManagement() {
   return (
     <main className="flex max-h-screen flex-col fill-white">
-      <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
-        <div className="flex-col fixed top-0 w-screen">
-          <div className="flex-col">
-            <div className=" flex-row">
-              <label className=" font-semibold text-2xl text-black p-7 pt-11 ">
-                QUẢN LÝ SẢN PHẨM
-              </label>
-              <div className=" flex-row fixed right-36 pl-96 pt-1">
-                <SearchInput></SearchInput>
-              </div>
-              <div className=" flex-row fixed right-4 pt-1">
-                <Button>Thêm sản phẩm</Button>
-              </div>
-            </div>
+      {/* <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm "> */}
+      <div className="flex-col fixed top-0 w-screen">
+        <div className="flex-col">
+          <div className=" flex-row pt-8">
+            <label className=" font-semibold text-2xl text-black p-7 pt-24">
+              Quản lý sản phẩm
+            </label>
             <Tabs
               aria-label="Tabs with underline"
               style="underline"
-              theme={customTabTheme}
+              theme={THEME.tabTheme}
             >
+            
               <Tabs.Item active title="Quản lý kho">
+              <div style={{ height: 50 }}>
+                  <div
+                    className="flex fixed right-5 pl-96"
+                    style={{ marginBottom: 30 }}
+                  >
+                    <TextInput
+                      style={{
+                        backgroundColor: "white",
+                        borderRadius: 20,
+                        color: "black",
+                        width: 300,
+                      }}
+                      id="storageProductSearch"
+                      type="Search"
+                      rightIcon={HiSearch}
+                      placeholder="Search"
+                      required
+                    />
+                  </div>
+                </div>
               <div className="flex overflow-y-auto">
                     <FilterContainer />
                     <ProductGridTab5Col></ProductGridTab5Col>
@@ -247,16 +280,92 @@ export default function ProductManagement() {
                   </div>
                 </div>
               </Tabs.Item>
-
+ 
+      
+        
               <Tabs.Item title="Quản lý phiếu nhập">
-                <div className=" overflow-auto relative">
-                  <ProductCard product={sampleProduct} />
-                  <ProductCard product={sampleProduct} />
-                  <ProductCard product={sampleProduct} />
-                  <ProductCard product={sampleProduct} />
-                  <ProductCard product={sampleProduct} />
-                  <ProductCard product={sampleProduct} />
-                  <ProductCard product={sampleProduct} />
+                <div style={{ height: 50 }}>
+                  <div
+                    className=" flex fixed right-40 pl-96 "
+                    style={{ marginBottom: 30 }}
+                  >
+                    <TextInput
+                      style={{
+                        backgroundColor: "white",
+                        borderRadius: 20,
+                        color: "black",
+                      }}
+                      id="email4"
+                      type="Search"
+                      rightIcon={HiSearch}
+                      placeholder="Search"
+                      required
+                    />
+                  </div>
+                  <div className=" flex fixed right-1 pr-1">
+                    <Button
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: "#0156FF",
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                      onClick={() => alert("hihi")}
+                    >
+                      <File style={{ marginRight: 3 }} />
+                      Thêm phiếu nhập
+                    </Button>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: 1200,
+                    alignSelf: "center",
+                    marginLeft: 12,
+                    marginRight: 12,
+                  }}
+                >
+                  <Table hoverable theme={THEME.tableTheme}>
+                    <Table.Head>
+                      <Table.HeadCell>STT</Table.HeadCell>
+                      <Table.HeadCell>Mã phiếu nhập</Table.HeadCell>
+                      <Table.HeadCell>Mã nhân viên</Table.HeadCell>
+                      <Table.HeadCell>Ngày nhập</Table.HeadCell>
+                      <Table.HeadCell>Thành tiền</Table.HeadCell>
+                      <Table.HeadCell>
+                        <span className="sr-only">Edit</span>
+                      </Table.HeadCell>
+                    </Table.Head>
+                    {importBill.map((importBill, index) => {
+                      return (
+                        <Table.Body className="divide-y bg-teal-200">
+                          <Table.Row
+                            className="bg-white dark:border-gray-700 dark:bg-teal-200"
+                            onClick={() => alert(index)}
+                          >
+                            <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
+                              {index + 1}
+                            </Table.Cell>
+                            <Table.Cell>{importBill.importBillId}</Table.Cell>
+                            <Table.Cell>{importBill.staffId}</Table.Cell>
+                            <Table.Cell>{importBill.importDate}</Table.Cell>
+                            <Table.Cell>{importBill.totalPrice}</Table.Cell>
+                            <Table.Cell className="w-28">
+                              <div style={{ flexDirection: "column" }}>
+                                <button
+                                  onClick={() => alert(bill.saleBilId)}
+                                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                  style={{ width: 40 }}
+                                >
+                                  <Eye color="green" />
+                                </button>
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      );
+                    })}
+                  </Table>
                 </div>
               </Tabs.Item>
             </Tabs>
@@ -266,62 +375,3 @@ export default function ProductManagement() {
     </main>
   );
 }
-const customTabTheme: CustomFlowbiteTheme["tabs"] = {
-  base: "flex flex-col gap-2",
-  tablist: {
-    base: "flex text-center",
-    styles: {
-      default: "flex-wrap border-b border-gray-200 dark:border-gray-700",
-      underline:
-        "flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700",
-      pills:
-        "flex-wrap font-medium text-sm text-gray-500 dark:text-gray-400 space-x-2",
-      fullWidth:
-        "w-full text-sm font-medium divide-x divide-gray-200 shadow grid grid-flow-col dark:divide-gray-700 dark:text-gray-400 rounded-none",
-    },
-    tabitem: {
-      base: "flex items-center justify-center p-4 rounded-t-lg text-sm font-medium first:ml-0 disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500 focus:ring-4 focus:ring-cyan-300 focus:outline-none",
-      styles: {
-        default: {
-          base: "rounded-t-lg",
-          active: {
-            on: "bg-gray-100 text-cyan-600 dark:bg-gray-800 dark:text-cyan-500",
-            off: "text-gray-500 hover:bg-gray-50 hover:text-gray-600 dark:text-gray-400 dark:hover:bg-gray-800  dark:hover:text-gray-300",
-          },
-        },
-        underline: {
-          base: "rounded-t-lg",
-          active: {
-            on: "text-cyan-600 rounded-t-lg border-b-2 border-cyan-600 active dark:text-cyan-500 dark:border-cyan-500",
-            off: "border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300",
-          },
-        },
-        pills: {
-          base: "",
-          active: {
-            on: "rounded-lg bg-cyan-600 text-white",
-            off: "rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white",
-          },
-        },
-        fullWidth: {
-          base: "ml-0 first:ml-0 w-full rounded-none flex",
-          active: {
-            on: "p-4 text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white rounded-none",
-            off: "bg-white hover:text-gray-700 hover:bg-gray-50 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 rounded-none",
-          },
-        },
-      },
-      icon: "mr-2 h-5 w-5",
-    },
-  },
-  tabitemcontainer: {
-    base: "",
-    styles: {
-      default: "",
-      underline: "",
-      pills: "",
-      fullWidth: "",
-    },
-  },
-  tabpanel: "py-3",
-};
