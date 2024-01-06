@@ -13,6 +13,7 @@ import SearchInput from "@/components/searchinput";
 import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File } from "react-feather";
+import { useRouter } from "next/navigation";
 
 const goodsReceipts = [
   {
@@ -36,9 +37,9 @@ const goodsReceipts = [
 ];
 
 export default function ProductManagement() {
+  const router = useRouter();
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
-      {/* <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm "> */}
       <div className="flex-col fixed top-0 w-screen">
         <div className="flex-col">
           <div className=" flex-row pt-8">
@@ -121,7 +122,9 @@ export default function ProductManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => alert("hihi")}
+                      onClick={() =>
+                        router.push("/productmanagement/goodsReceipt")
+                      }
                     >
                       <File style={{ marginRight: 3 }} />
                       Thêm phiếu nhập

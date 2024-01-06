@@ -12,7 +12,7 @@ export const ProductCard = ({ product, title, onClick, index }) => {
       imgAlt={
         product !== undefined && product.name !== null ? product.name : " "
       }
-      imgSrc={product !== undefined ? product.src : ""}
+      imgSrc={product !== undefined ? product.name : ""}
     >
       <a href="#">
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -37,7 +37,10 @@ export const ProductCard = ({ product, title, onClick, index }) => {
       </div>
       <div className="flex items-center justify-between">
         <button
-          onClick={onClick}
+          onClick={() => {
+            console.log(product);
+            onClick(product);
+          }}
           className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
         >
           {title}
