@@ -2,7 +2,7 @@ import { CustomFlowbiteTheme } from "flowbite-react";
 
 const customTableTheme: CustomFlowbiteTheme["table"] = {
   root: {
-    base: "w-full text-left text-sm text-gray-500 dark:text-gray-400 seft-center",
+    base: "w-full text-left text-sm text-gray-500 dark:text-gray-400 self-center border-separate border border-slate-500",
     shadow:
       "absolute bg-white dark:bg-black w-full h-full top-0 left-0 rounded-lg drop-shadow-md -z-10",
     wrapper: "relative",
@@ -14,14 +14,15 @@ const customTableTheme: CustomFlowbiteTheme["table"] = {
     },
   },
   head: {
-    base: "group/head text-xs uppercase text-white dark:text-white",
+    base: "group/head text-s uppercase text-white dark:text-white",
     cell: {
-      base: "group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg bg-cyan-950 dark:bg-cyan-950 px-6 py-3",
+      base: "group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg bg-cyan-950 dark:bg-cyan-950 px-3 py-2 text-center",
     },
   },
   row: {
     base: "group/row text-black dark:text-black",
-    hovered: "hover:bg-green-400 dark:hover:bg-green-400",
+    hovered:
+      "bg-indigo-950 dark:hover:bg-indigo-950 hover:text-white dark:hover:text-white",
     striped:
       "odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700",
   },
