@@ -15,6 +15,7 @@ import { HiSearch } from "react-icons/hi";
 import { Eye, File, Trash2, User, UserPlus } from "react-feather";
 import { useEffect, useState } from "react";
 import { SHARE_FUNCTIONS } from "@/constant/function";
+import { useRouter } from "next/navigation";
 
 const staffs = [
   {
@@ -56,6 +57,7 @@ const staffs = [
 ];
 
 export default function HRManagement() {
+  const router = useRouter();
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -98,7 +100,7 @@ export default function HRManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => alert("hihi")}
+                      onClick={() => router.push('/hrmanagement/addstaff')}
                     >
                       <UserPlus style={{ marginRight: 5 }} />
                       Thêm nhân viên
@@ -134,7 +136,7 @@ export default function HRManagement() {
                           key={index}
                         >
                           <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-teal-200 px-3 py-2"
+                            className="bg-white dark:border-gray-700 dark:bg-gray-100 px-3 py-2"
                             onClick={() => alert(index)}
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center px-3 py-2">

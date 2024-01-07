@@ -20,11 +20,11 @@ const customTableTheme: CustomFlowbiteTheme["table"] = {
     },
   },
   row: {
-    base: "group/row text-black dark:text-black",
+    base: "group/row text-black dark:text-black bg-white dark:bg-white",
     hovered:
-      "bg-indigo-950 dark:hover:bg-indigo-950 hover:text-white dark:hover:text-white",
+      "bg-white dark:hover:bg-indigo-950 hover:text-white dark:hover:text-white",
     striped:
-      "odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700",
+      "odd:bg-white even:bg-white odd:dark:bg-white even:dark:bg-white",
   },
 };
 const customLabelTheme: CustomFlowbiteTheme["label"] = {
@@ -280,11 +280,11 @@ const customDatePicker: CustomFlowbiteTheme["datepicker"] ={
   "views": {
     "days": {
       "header": {
-        "base": "items-stretch grid-cols-7 gap-4 mb-1",
+        "base": "items-stretch grid-cols-7 grid gap-4 mb-1",
         "title": "dow h-6 text-center text-sm font-medium leading-6 text-gray-500 dark:text-gray-400"
       },
       "items": {
-        "base": "items-stretch flex flex-row grid-cols-7",
+        "base": "items-stretch grid grid-cols-7",
         "item": {
           "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600 ",
           "selected": "bg-cyan-700 text-white hover:bg-cyan-600",
