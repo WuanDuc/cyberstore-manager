@@ -2,7 +2,7 @@
 'use client';
 
 import { CustomFlowbiteTheme, Sidebar } from 'flowbite-react';
-import { HiHome, HiChartPie, HiShoppingCart, HiSupport, HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
+import { HiHome, HiLogout, HiShoppingCart, HiSupport, HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
 import { FaFileInvoice, FaWrench, FaLaptop  } from "react-icons/fa";
 
 export default function SideBar() {
@@ -31,13 +31,13 @@ export default function SideBar() {
           <Sidebar.Item href="/hrmanagement" icon={HiUser}>
             Quản lý nhân sự
           </Sidebar.Item>
-          <Sidebar.Item href="/statistic" icon={HiChartPie}>
-            Quản lý doanh thu
-          </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           <Sidebar.Item href="/setting" icon={HiSupport}>
             Cài đặt
+          </Sidebar.Item>
+          <Sidebar.Item href="/logout?" icon={HiLogout}>
+            Đăng xuất
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
@@ -50,7 +50,7 @@ const customSideBarTheme: CustomFlowbiteTheme['sidebar'] = {
       "base": "h-full overflow-y-auto overflow-x-hidden static rounded min-h-screen bg-gradient-to-b from-black to-indigo-950",
       "collapsed": {
         "on": "w-16",
-        "off": "w-64"
+        "off": "w-60"
       },
       "inner": "h-full overflow-y-auto overflow-x-hidden static rounded min-h-screen bg-gradient-to-b from-black to-indigo-950",
     },
