@@ -99,6 +99,7 @@ const getAllCustomers = async () => {
     return [];
   }
 };
+
 const addCustomer = async (data) => {
   const endpoint = "/CustomerManagement/add";
   try {
@@ -154,6 +155,75 @@ const getCustomerById = async (id) => {
   }
 };
 
+const getAllDiscounts = async () => {
+  try {
+    const response = await client.get("/DiscountManagement/getDiscounts");
+    if (response.data.success) {
+      return response.data.discounts;
+    } else {
+      console.log("not get discounts");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+
+const addDiscount = async (data) => {
+  const endpoint = "/DiscountManagement/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateDiscount = async (data, id) => {
+  const endpoint = "/DiscountManagement/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteDiscount = async (id) => {
+  try {
+    await client.delete("/DiscountManagement/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+// const getStaffsBySearch = async (searchCriteria) => {
+//   try {
+//     const queryParams = new URLSearchParams(searchCriteria).toString();
+//     const response = await client.get(`/StaffManagement/Bills?${queryParams}`);
+
+//     if (response.data.success) {
+//       return response.data.bills;
+//     } else {
+//       console.log("not get bills");
+//     }
+//   } catch (error) {
+//     console.log("error: ", error.message);
+//     return [];
+//   }
+// };
+
+const getDiscountById = async (id) => {
+  const endpoint = "/DiscountManagement/discountById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    if (response.data.success) {
+      return response.data.discountById;
+    } else {
+      console.log("not get discount by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
+
 export default {
   getAllProductTypes,
   getAllStaffs,
@@ -166,4 +236,9 @@ export default {
   updateCustomer,
   deleteCustomer,
   addCustomer,
+  getAllDiscounts,
+  getDiscountById,
+  updateDiscount,
+  deleteDiscount,
+  addDiscount,
 };
