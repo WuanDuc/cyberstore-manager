@@ -24,6 +24,7 @@ import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/apis/Api";
 
 const sampleBills = [
   {
@@ -99,61 +100,76 @@ const sampleCustomer = [
   },
 ];
 
-export default function SalesManagement() {
+const SalesManagement = () => {
   const [discounts, setDiscounts] = useState([
-    {
-      discountId: "NEWYEAR",
-      name: "Mừng năm mới",
-      discountPercent: 10,
-      description:
-        "Nhân dịp năm mới, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 50 triệu đồng",
-      startDate: "2023-01-01",
-      endDate: "2023-01-31",
-      minimumBillValue: 50000,
-      conditionStr: " ",
-    },
-    {
-      discountId: "NEWYEAR2024",
-      name: "Mừng năm mới 2024",
-      discountPercent: 5,
-      description:
-        "Nhân dịp năm mới, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 500 nghìn đồng",
-      startDate: "2023-01-01",
-      endDate: "2023-01-31",
-      minimumBillValue: 500,
-      conditionStr: " ",
-    },
-    {
-      discountId: "NEWSTORE",
-      name: "Mừng năm mới",
-      discountPercent: 15,
-      description:
-        "Nhân dịp khai trương, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 100 triệu đồng",
-      startDate: "2023-01-01",
-      endDate: "2023-01-31",
-      minimumBillValue: 100000,
-      conditionStr: " ",
-    },
+    // {
+    //   discountId: "NEWYEAR",
+    //   name: "Mừng năm mới",
+    //   discountPercent: 10,
+    //   description:
+    //     "Nhân dịp năm mới, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 50 triệu đồng",
+    //   startDate: "2023-01-01",
+    //   endDate: "2023-01-31",
+    //   minimumBillValue: 50000,
+    //   conditionStr: " ",
+    // },
+    // {
+    //   discountId: "NEWYEAR2024",
+    //   name: "Mừng năm mới 2024",
+    //   discountPercent: 5,
+    //   description:
+    //     "Nhân dịp năm mới, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 500 nghìn đồng",
+    //   startDate: "2023-01-01",
+    //   endDate: "2023-01-31",
+    //   minimumBillValue: 500,
+    //   conditionStr: " ",
+    // },
+    // {
+    //   discountId: "NEWSTORE",
+    //   name: "Mừng năm mới",
+    //   discountPercent: 15,
+    //   description:
+    //     "Nhân dịp khai trương, WYH cyber store cho ra mắt chương trình khuyến mãi cực sốc dành cho hóa đơn trên 100 triệu đồng",
+    //   startDate: "2023-01-01",
+    //   endDate: "2023-01-31",
+    //   minimumBillValue: 100000,
+    //   conditionStr: " ",
+    // },
   ]);
 
-  const handleDeleteCustomer = () => {};
+  const [customers, setCustomer] = useState([]);
+
+  const getCustomers = async () => {
+    const temp = await api.getAllCustomers();
+    setCustomer(temp);
+  };
+  const getDiscounts = async () => {
+    const temp = await api.getAllDiscounts();
+    // let temp3 = temp.map((discount, index) => {
+    //   let temp2 = { ...discount, conditionStr: " " };
+
+    //   return temp2;
+    // });
+    setDiscounts(temp);
+  };
+
+  const handleDeleteCustomer = async (id) => {
+    await api.deleteCustomer(id);
+    const temp = await api.getAllCustomers();
+    alert("Xóa thành công");
+    setCustomer(temp);
+  };
+
+  const handleDeleteDiscount = async (id) => {
+    await api.deleteDiscount(id);
+    const temp = await api.getAllDiscounts();
+    alert("Xóa thành công");
+    setDiscounts(temp);
+  };
 
   useEffect(() => {
-    let temp = discounts.map((discount, index) => {
-      let temp2 = { ...discount, conditionStr: " " };
-      if (
-        discount.minimumBillValue !== null &&
-        discount.minimumBillValue / 1000 > 1
-      ) {
-        temp2.conditionStr =
-          "Hóa đơn trên " + discount.minimumBillValue / 1000 + " triệu";
-      } else {
-        temp2.conditionStr =
-          "Hóa đơn trên " + discount.minimumBillValue / 100 + " trăm nghìn";
-      }
-      return temp2;
-    });
-    setDiscounts(temp);
+    getDiscounts();
+    getCustomers();
   }, []);
 
   const router = useRouter();
@@ -336,7 +352,15 @@ export default function SalesManagement() {
                         <span className="sr-only">Edit</span>
                       </Table.HeadCell>
                     </Table.Head>
-                    {sampleCustomer.map((customer, index) => {
+                    {customers.map((customer, index) => {
+                      const adddr =
+                        customer.address[0]?.soNha +
+                        ", " +
+                        customer.address[0]?.phuong +
+                        ", " +
+                        customer.address[0]?.quan +
+                        ", " +
+                        customer.address[0]?.tinh;
                       return (
                         <Table.Body
                           className="divide-y bg-teal-200"
@@ -355,7 +379,7 @@ export default function SalesManagement() {
                             <Table.Cell className="w-1/6">
                               {customer.phone}
                             </Table.Cell>
-                            <Table.Cell>{customer.address}</Table.Cell>
+                            <Table.Cell>{adddr}</Table.Cell>
                             <Table.Cell className="w-1/10">
                               {customer.badge}
                             </Table.Cell>
@@ -376,7 +400,9 @@ export default function SalesManagement() {
                                   <Eye color="green" />
                                 </button>
                                 <button
-                                  onClick={handleDeleteCustomer}
+                                  onClick={() =>
+                                    handleDeleteCustomer(customer.customerId)
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
                                   <Trash2 color="green" />
@@ -418,7 +444,7 @@ export default function SalesManagement() {
                         paddingRight: 5,
                       }}
                       onClick={() =>
-                        router.push("/salesmanagement/discountEventDetail")
+                        router.push("/salesmanagement/discountEventDetail/add")
                       }
                     >
                       <Gift style={{ marginRight: 3 }} />
@@ -448,15 +474,35 @@ export default function SalesManagement() {
                       </Table.HeadCell>
                     </Table.Head>
                     {discounts.map((discount, index) => {
+                      let conditionStr = "";
+                      if (
+                        discount.minimumBillValue !== null &&
+                        discount.minimumBillValue / 1000000 > 1
+                      ) {
+                        conditionStr =
+                          "Hóa đơn trên " +
+                          discount.minimumBillValue / 1000000 +
+                          " triệu";
+                      } else if (
+                        discount.minimumBillValue !== null &&
+                        discount.minimumBillValue / 1000 > 1
+                      ) {
+                        conditionStr =
+                          "Hóa đơn trên " +
+                          discount.minimumBillValue / 100000 +
+                          " trăm nghìn";
+                      } else {
+                        conditionStr =
+                          "Hóa đơn trên " +
+                          discount.minimumBillValue / 1000 +
+                          " nghìn";
+                      }
                       return (
                         <Table.Body
                           className="divide-y bg-teal-200"
                           key={index}
                         >
-                          <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
-                            onClick={() => alert(index + 1)}
-                          >
+                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-100">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
                               {index + 1}
                             </Table.Cell>
@@ -464,7 +510,7 @@ export default function SalesManagement() {
                               {discount.discountId}
                             </Table.Cell>
                             <Table.Cell className="w-1/6 px-3 py-2">
-                              {discount.name}
+                              {discount.discountName}
                             </Table.Cell>
                             <Table.Cell className="w-1/8 px-3 py-2 text-right">
                               {discount.discountPercent + "%"}
@@ -476,21 +522,25 @@ export default function SalesManagement() {
                               {discount.endDate}
                             </Table.Cell>
                             <Table.Cell className="px-3 py-2">
-                              {discount.conditionStr !== null
-                                ? discount.conditionStr
-                                : " "}
+                              {conditionStr}
                             </Table.Cell>
                             <Table.Cell className="w-28">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() => alert(discount.discountId)}
+                                  onClick={() =>
+                                    router.push(
+                                      `/salesmanagement/discountEventDetail/${discount.discountId}`
+                                    )
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
                                 >
                                   <Eye color="green" />
                                 </button>
                                 <button
-                                  onClick={() => alert(discount.discountId)}
+                                  onClick={() =>
+                                    handleDeleteDiscount(discount.discountId)
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
                                   <Trash2 color="green" />
@@ -510,4 +560,6 @@ export default function SalesManagement() {
       </div>
     </main>
   );
-}
+};
+
+export default SalesManagement;

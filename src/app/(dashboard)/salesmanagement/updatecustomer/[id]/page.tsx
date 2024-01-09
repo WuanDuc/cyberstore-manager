@@ -136,15 +136,11 @@ const UpdateCustomer = ({ params }) => {
       selectedWardname != "";
     const tempSoNha = document.getElementById("soNha")?.value;
     const matchSoNha = tempSoNha != "";
-    return (
-      matchAddress &&
-      matchName &&
-      matchPhone &&
-      matchSoNha &&
-    );
+    const matchBadge = customer.badge != "";
+    return matchAddress && matchName && matchPhone && matchSoNha && matchBadge;
   };
 
-  const handleUpdateStaff = async () => {
+  const handleUpdateCustomer = async () => {
     if (isValidData()) {
       await api.updateCustomer(customer, customer.customerId);
       alert("Cập nhật thành công");
@@ -254,6 +250,7 @@ const UpdateCustomer = ({ params }) => {
                         }}
                         id="name"
                         name="name"
+                        defaultValue={customer.name || ""}
                         onChange={handleChange}
                         placeholder="Họ và tên"
                         required
@@ -284,6 +281,7 @@ const UpdateCustomer = ({ params }) => {
                         id="phone"
                         name="phone"
                         type="phone"
+                        defaultValue={customer.phone || ""}
                         onChange={handleChange}
                         placeholder="Số điện thoại"
                         required
@@ -470,7 +468,38 @@ const UpdateCustomer = ({ params }) => {
                 </form>
               </div>
               <div className=" float-right w-5/12 h-fit justify-between flex flex-row object-center pr-12">
-                <form className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <div className="mb-2 block">
+                      <label
+                        className=" text-black font-semibold"
+                        htmlFor="conver1"
+                      >
+                        {" "}
+                        Điểm thành viên
+                      </label>
+                    </div>
+                    <div className=" mb-2 flow-root">
+                      <TextInput
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: 10,
+                          color: "black",
+                          width: 450,
+                          paddingRight: 30,
+                        }}
+                        disabled
+                        id="point"
+                        name="point"
+                        type="point"
+                        defaultValue={customer.point || ""}
+                        onChange={handleChange}
+                        placeholder="Điểm thành viên"
+                        required
+                        className=" float-left"
+                      />
+                    </div>
+                  </div>
                   <div className="mb-2 block">
                     <label
                       className=" text-black font-semibold"
@@ -492,20 +521,30 @@ const UpdateCustomer = ({ params }) => {
                       id="badge"
                       name="badge"
                       required
+                      disabled
                       className="float-left"
                       onChange={handleChange}
-                    />
-                    {badgeCus.map((badge, index) => (
-                      <option key={index} value={badge.badge} id="phuong">
-                        {badge.badge}
-                      </option>
-                    ))}
+                    >
+                      {badgeCus.map((badge, index) => (
+                        <option
+                          key={badge.badge}
+                          value={badge.badge}
+                          id="phuong"
+                        >
+                          {badge.badge}
+                        </option>
+                      ))}
+                    </Select>
                   </div>
 
-                  <Button className=" mt-20" type="submit">
+                  <Button
+                    className=" mt-20"
+                    type="submit"
+                    onClick={handleUpdateCustomer}
+                  >
                     Cập nhật khách hàng
                   </Button>
-                </form>
+                </div>
               </div>
             </div>
           </div>
