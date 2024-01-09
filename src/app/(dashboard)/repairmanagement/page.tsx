@@ -331,7 +331,7 @@ export default function RepairManagement() {
                           key={index}
                         >
                           <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-teal-200 px-3 py-2"
+                            className="bg-white dark:border-gray-700 dark:bg-gray-100 px-3 py-2"
                             onClick={() => alert(index)}
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center px-3 py-2">
@@ -445,7 +445,7 @@ export default function RepairManagement() {
                           key={index}
                         >
                           <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-teal-200"
+                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
                             onClick={() =>
                               router.push("/repairmanagement/warrantyDetail")
                             }
