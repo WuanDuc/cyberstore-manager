@@ -136,6 +136,8 @@ export default function SalesManagement() {
     },
   ]);
 
+  const handleDeleteCustomer = () => {};
+
   useEffect(() => {
     let temp = discounts.map((discount, index) => {
       let temp2 = { ...discount, conditionStr: " " };
@@ -340,10 +342,7 @@ export default function SalesManagement() {
                           className="divide-y bg-teal-200"
                           key={index}
                         >
-                          <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
-                            onClick={() => alert(index + 1)}
-                          >
+                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-100">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1/16 text-center">
                               {index + 1}
                             </Table.Cell>
@@ -366,14 +365,18 @@ export default function SalesManagement() {
                             <Table.Cell className="w-28">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() => alert(customer.customerId)}
+                                  onClick={() =>
+                                    router.push(
+                                      `/salesmanagement/updatecustomer/${customer.customerId}`
+                                    )
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
                                 >
                                   <Eye color="green" />
                                 </button>
                                 <button
-                                  onClick={() => alert(customer.customerId)}
+                                  onClick={handleDeleteCustomer}
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
                                   <Trash2 color="green" />
