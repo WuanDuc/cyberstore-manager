@@ -4,11 +4,11 @@ const client = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-const getAllProductTypes = async () => {
+const getAllCompany = async () => {
   try {
-    const response = await client.get("/ProductType/getProductTypes");
+    const response = await client.get("/Company/getCompanys");
     if (response.data.success) {
-      return response.data.productTypes;
+      return response.data.companys;
     } else {
       console.log("not get product types");
     }
@@ -58,6 +58,7 @@ const getProductById = async (id) => {
   const endpoint = "/Product/ProductById/" + id;
   try {
     const response = await client.get(endpoint);
+    console.log("api");
     if (response.data.success) {
       return response.data.productById;
     } else {
@@ -266,7 +267,7 @@ export default {
   addSaleProduct,
   updateSaleProduct,
   deleteSaleProduct,
-  getAllProductTypes,
+  getAllCompany,
   getAllStaffs,
   getStaffById,
   updateStaff,
