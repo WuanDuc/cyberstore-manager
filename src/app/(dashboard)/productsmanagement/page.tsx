@@ -8,11 +8,12 @@ import {
   TextInput,
 } from "flowbite-react";
 import { Console } from "console";
+import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
-import { Eye, File } from "react-feather";
+import { Eye, File, FileText } from "react-feather";
 import { useRouter } from "next/navigation";
 
 const goodsReceipts = [
@@ -40,13 +41,6 @@ import ProductGridTab from "@/components/listProductCard";
 import ProductGridTab5Col from "@/components/listProductCard";
 import ProductGridTab4Col from "@/components/listProductCard4Col";
 
-const sampleProduct = {
-  name: "Sample Product",
-  src: "https://asset.msi.com/resize/image/global/product/product_0_20181005103112_5bb6ccf062df0.png62405b38c58fe0f07fcef2367d8a9ba1/1024.png",
-  price: 19.99,
-  brand: "Sample Brand",
-  sale: 10,
-};
 
 const FilterContainer = () => (
   <div className="h-2/3 w-100 bg-gray-300 p-4 ml-4 mr-4 text-center">
@@ -126,132 +120,137 @@ const FilterContainer = () => (
   </div>
 );
 
-const RightContainer = () => (
-  <div className="flex-col item-center justify-center">
-    <div className="h-1/4 w-100 bg-gray-300 p-4 ml-4 mr-4 ">
-      <h1 className="text-xl text-black font-bold mb-6 text-center">Hãng</h1>
-
-      <div className="mb-1">
-        <h2 className="text-black">MSI</h2>
-      </div>
-      <div className="mb-1">
-        <h2 className="text-black">Asus</h2>
-      </div>
-      <div className="mb-1">
-        <h2 className="text-black">Lenovo</h2>
-      </div>
-      <div className="mb-1">
-        <h2 className="text-black">Macbook</h2>
-      </div>
-
-      <div className="mb-1">
-        <h2 className="text-black">HP</h2>
-      </div>
-
-      <button className="text-white bg-blue-500 rounded-full pt-2 pb-2 pl-6 pr-6 mt-4 mr-8 ml-8">
-        Thêm hãng
-      </button>
-    </div>
-
-    <button className="text-white bg-blue-500 rounded-full pt-2 pb-2 pl-6 pr-6 mt-8 mr-8 ml-8 mx-auto">
-      Thêm loại sản phẩm
-    </button>
-  </div>
-);
-
-const ContainerLeft = () => (
-  <div className=" w-2/4  p-4 ml-6 mr-6  overflow-y-auto">
-    <h1 className="text-xl text-black font-bold mb-2">Thông tin về sản phẩm</h1>
-    <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Tên loại sản phẩm
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Hãng</h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Mã loại sản phẩm
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Thời gian bảo hành
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Số lượng</h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Loại sản phẩm
-    </h2>
-    <div className="flex">
-      <h2 className="text-lg text-black mb-1 mt-4">Máy tính</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Laptop</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">PC</h2>
-    </div>
-    <div className="flex">
-      <h2 className="text-lg text-black mb-1 mt-4">Linh kiện</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Màn hình</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Ổ cứng</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Chip</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Tản nhiệt</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Mainboard</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">RAM</h2>
-    </div>
-    <div className="flex">
-      <h2 className="text-lg text-black mb-1 mt-4">Phụ kiện</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Chuột</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Bàn phím</h2>
-      <input type="radio" className="form-radio text-blue-500" />
-      <h2 className="text-lg text-black mb-1 mt-4">Ghế gaming</h2>
-    </div>
-  </div>
-);
-
-const ContainerRight = () => (
-  <div className="h-1/4 w-1/4 bg-gray-300 p-4 mr-6 ">
-    {/* Container chứa thông tin bên phải */}
-    <div className="flex flex-col mt-5  items-center justify-center">
-      <h2 className="text-xl text-black font-bold mb-2 text-center">
-        Hình ảnh
-      </h2>
-      <img
-        src="https://asset.msi.com/resize/image/global/product/product_0_20181005103112_5bb6ccf062df0.png62405b38c58fe0f07fcef2367d8a9ba1/1024.png"
-        alt="Product Image"
-        className="w-40 h-40 rounded mr-4"
-      />
-    </div>
-  </div>
-);
 
 export default function ProductManagement() {
+  const [salesProducts, setSaleProducts] = useState([
+    {
+      name: "Sample Product 1",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 2",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 3",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 4",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 5",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 6",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 7",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 8",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand 9",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 10",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 11",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 12",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 13",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 14",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand",
+      sale: 10,
+    },
+    {
+      name: "Sample Product 15",
+      src: "/sample.jpg",
+      price: 19.99,
+      brand: "Sample Brand 16",
+      sale: 10,
+    },
+  ]);
+
+  const [recentProductList, setRecentProductList] = useState(salesProducts);
+
   const router = useRouter();
+  const handleSearchName = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = salesProducts.filter((saleProduct, index) => {
+      return (
+        normalizeText(saleProduct.name).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setRecentProductList(searchProduct);
+  };
+
+  const handleChange = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchName(e.target.value);
+  };
+
+  const handleEnterCustomerName = (e) => {
+    if (e.key === "Enter") {
+      alert(e.target.value);
+    }
+  };
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
-      <div className="flex-col fixed top-0 w-screen">
+      <div className="flex-col fixed top-0 w-screen h-screen overflow-y-scroll">
         <div className="flex-col">
           <div className=" flex-row pt-8">
             <label className=" font-semibold text-2xl text-black p-7 pt-24">
@@ -263,53 +262,84 @@ export default function ProductManagement() {
               theme={THEME.tabTheme}
             >
               <Tabs.Item active title="Quản lý kho">
-                <div style={{ height: 50 }}>
-                  <div
-                    className="flex fixed right-5 pl-96"
-                    style={{ marginBottom: 30 }}
+              <div className="flex flex-row-reverse w-10/12" style={{ height: 50 }}>
+                  <Button
+                    style={{marginLeft:4, height:45, borderRadius: 20, backgroundColor: "#0156FF" }}
+                    onClick={() => router.push("/productsmanagement/updateProduct")}
                   >
-                    <TextInput
-                      style={{
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        color: "black",
-                        width: 300,
-                      }}
-                      id="storageProductSearch"
-                      type="Search"
-                      rightIcon={HiSearch}
-                      placeholder="Search"
-                      required
-                    />
-                  </div>
+                    <FileText /> Thêm loại sản phẩm 
+                  </Button>
+                  <TextInput
+                    style={{ width: 300, backgroundColor: "white", borderRadius: 20, color: "black" }}
+                    id="email4"
+                    type="Search"
+                    rightIcon={HiSearch}
+                    placeholder="Search"
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
-                  <ProductGridTab5Col></ProductGridTab5Col>
-                </div>
-                <div className="flex justify-around">
-                  <div className="bg-red-500 rounded p-2 mr-2"></div>
-                  <div className="bg-red-500 rounded p-2 mr-2"></div>
-                  <div className="bg-red-500 rounded p-2 mr-2"></div>
-                  <div className="bg-red-500 rounded p-2 mr-2"></div>
-                  <div className="bg-red-500 rounded p-2 mr-2"></div>
+                  <div className="grid grid-cols-5">
+                  {recentProductList.map((saleProduct, index) => {
+                            return (
+                              <div key={index} className="flex flex-row mt-4">
+                                <div className="w-4"></div>
+                                <ProductCard
+                                  product={saleProduct}
+                                  title={"Chỉnh sửa"}
+                                  onClick={console.log("ok")}
+                                  index={index}
+                                ></ProductCard>
+                              </div>
+                            );
+                          
+                        })}
+
+                  </div>
+
                 </div>
               </Tabs.Item>
 
               <Tabs.Item title="Sản phẩm bán">
-                <div className="flex flex-col h-screen overflow-y-auto">
-                  <div className="flex">
-                    <FilterContainer />
-                    <ProductGridTab4Col></ProductGridTab4Col>
-                    <RightContainer />
+              <div className="flex flex-row-reverse w-10/12" style={{ height: 50 }}>
+                  <Button
+                    style={{marginLeft:4, height:45, borderRadius: 20, backgroundColor: "#0156FF" }}
+                    onClick={() => router.push("/productsmanagement/addSaleProduct")}
+                  >
+                    <FileText /> Thêm sản phẩm mới 
+                  </Button>
+                  <TextInput
+                    style={{ width: 300, backgroundColor: "white", borderRadius: 20, color: "black" }}
+                    id="email4"
+                    type="Search"
+                    rightIcon={HiSearch}
+                    placeholder="Search"
+                    required
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="flex overflow-y-scroll">
+                  <FilterContainer />
+                  <div className="grid grid-cols-4">
+                  {recentProductList.map((saleProduct, index) => {
+                            return (
+                              <div key={index} className="flex flex-row mt-4">
+                                <div className="w-4"></div>
+                                <ProductCard
+                                  product={saleProduct}
+                                  title={"Chỉnh sửa"}
+                                  onClick={console.log("ok")}
+                                  index={index}
+                                ></ProductCard>
+                              </div>
+                            );
+                          
+                        })}
+
                   </div>
-                  <div className="flex justify-around">
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                    <div className="bg-red-500 rounded p-2 mr-2"></div>
-                  </div>
+
                 </div>
               </Tabs.Item>
 
@@ -375,7 +405,7 @@ export default function ProductManagement() {
                           key={index}
                         >
                           <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-teal-200"
+                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
                             onClick={() => alert(index)}
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">

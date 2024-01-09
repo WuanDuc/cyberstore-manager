@@ -232,7 +232,7 @@ export default function SalesManagement() {
                           className="divide-y bg-teal-200"
                           key={index}
                         >
-                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-teal-200">
+                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-100">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-2.5 text-center">
                               {index + 1}
                             </Table.Cell>
@@ -341,7 +341,7 @@ export default function SalesManagement() {
                           key={index}
                         >
                           <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-teal-200"
+                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
                             onClick={() => alert(index + 1)}
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1/16 text-center">
@@ -451,7 +451,7 @@ export default function SalesManagement() {
                           key={index}
                         >
                           <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-teal-200"
+                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
                             onClick={() => alert(index + 1)}
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">

@@ -8,7 +8,7 @@ export const ProductCard = ({ product, title, onClick, index }) => {
   return (
     <Card
       theme={customProductCardTheme}
-      className=" h-80 w-52"
+      className=" h-64 w-44"
       imgAlt={
         product !== undefined && product.name !== null ? product.name : " "
       }
@@ -41,7 +41,7 @@ export const ProductCard = ({ product, title, onClick, index }) => {
             console.log(product);
             onClick(product);
           }}
-          className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+          className=" w-40 h-8 rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
         >
           {title}
         </button>

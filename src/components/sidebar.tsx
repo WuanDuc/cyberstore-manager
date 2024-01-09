@@ -15,7 +15,7 @@ export default function SideBar() {
       <Sidebar.Items>
         <Sidebar.ItemGroup>
             <Sidebar.ItemGroup>
-                <Sidebar.Item href="/" icon={HiHome} theme={customSideBarTheme?.item}>
+                <Sidebar.Item href="/home" icon={HiHome} theme={customSideBarTheme?.item}>
                 Trang chủ
                 </Sidebar.Item>
             </Sidebar.ItemGroup>
