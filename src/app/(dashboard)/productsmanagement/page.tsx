@@ -41,7 +41,6 @@ import ProductGridTab from "@/components/listProductCard";
 import ProductGridTab5Col from "@/components/listProductCard";
 import ProductGridTab4Col from "@/components/listProductCard4Col";
 
-
 const FilterContainer = () => (
   <div className="h-2/3 w-100 bg-gray-300 p-4 ml-4 mr-4 text-center">
     <h1 className="text-black font-bold">Filters</h1>
@@ -119,7 +118,6 @@ const FilterContainer = () => (
     </button>
   </div>
 );
-
 
 export default function ProductManagement() {
   const [salesProducts, setSaleProducts] = useState([
@@ -222,7 +220,6 @@ export default function ProductManagement() {
       sale: 10,
     },
   ]);
-
   const [recentProductList, setRecentProductList] = useState(salesProducts);
 
   const router = useRouter();
@@ -262,15 +259,30 @@ export default function ProductManagement() {
               theme={THEME.tabTheme}
             >
               <Tabs.Item active title="Quản lý kho">
-              <div className="flex flex-row-reverse w-10/12" style={{ height: 50 }}>
+                <div
+                  className="flex flex-row-reverse w-10/12"
+                  style={{ height: 50 }}
+                >
                   <Button
-                    style={{marginLeft:4, height:45, borderRadius: 20, backgroundColor: "#0156FF" }}
-                    onClick={() => router.push("/productsmanagement/updateProduct")}
+                    style={{
+                      marginLeft: 4,
+                      height: 45,
+                      borderRadius: 20,
+                      backgroundColor: "#0156FF",
+                    }}
+                    onClick={() =>
+                      router.push("/productsmanagement/updateProduct")
+                    }
                   >
-                    <FileText /> Thêm loại sản phẩm 
+                    <FileText /> Thêm loại sản phẩm
                   </Button>
                   <TextInput
-                    style={{ width: 300, backgroundColor: "white", borderRadius: 20, color: "black" }}
+                    style={{
+                      width: 300,
+                      backgroundColor: "white",
+                      borderRadius: 20,
+                      color: "black",
+                    }}
                     id="email4"
                     type="Search"
                     rightIcon={HiSearch}
@@ -282,36 +294,48 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-5">
-                  {recentProductList.map((saleProduct, index) => {
-                            return (
-                              <div key={index} className="flex flex-row mt-4">
-                                <div className="w-4"></div>
-                                <ProductCard
-                                  product={saleProduct}
-                                  title={"Chỉnh sửa"}
-                                  onClick={console.log("ok")}
-                                  index={index}
-                                ></ProductCard>
-                              </div>
-                            );
-                          
-                        })}
-
+                    {recentProductList.map((saleProduct, index) => {
+                      return (
+                        <div key={index} className="flex flex-row mt-4">
+                          <div className="w-4"></div>
+                          <ProductCard
+                            product={saleProduct}
+                            title={"Chỉnh sửa"}
+                            onClick={console.log("ok")}
+                            index={index}
+                          ></ProductCard>
+                        </div>
+                      );
+                    })}
                   </div>
-
                 </div>
               </Tabs.Item>
 
               <Tabs.Item title="Sản phẩm bán">
-              <div className="flex flex-row-reverse w-10/12" style={{ height: 50 }}>
+                <div
+                  className="flex flex-row-reverse w-10/12"
+                  style={{ height: 50 }}
+                >
                   <Button
-                    style={{marginLeft:4, height:45, borderRadius: 20, backgroundColor: "#0156FF" }}
-                    onClick={() => router.push("/productsmanagement/addSaleProduct")}
+                    style={{
+                      marginLeft: 4,
+                      height: 45,
+                      borderRadius: 20,
+                      backgroundColor: "#0156FF",
+                    }}
+                    onClick={() =>
+                      router.push("/productsmanagement/addSaleProduct")
+                    }
                   >
-                    <FileText /> Thêm sản phẩm mới 
+                    <FileText /> Thêm sản phẩm mới
                   </Button>
                   <TextInput
-                    style={{ width: 300, backgroundColor: "white", borderRadius: 20, color: "black" }}
+                    style={{
+                      width: 300,
+                      backgroundColor: "white",
+                      borderRadius: 20,
+                      color: "black",
+                    }}
                     id="email4"
                     type="Search"
                     rightIcon={HiSearch}
@@ -323,23 +347,20 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-4">
-                  {recentProductList.map((saleProduct, index) => {
-                            return (
-                              <div key={index} className="flex flex-row mt-4">
-                                <div className="w-4"></div>
-                                <ProductCard
-                                  product={saleProduct}
-                                  title={"Chỉnh sửa"}
-                                  onClick={console.log("ok")}
-                                  index={index}
-                                ></ProductCard>
-                              </div>
-                            );
-                          
-                        })}
-
+                    {recentProductList.map((saleProduct, index) => {
+                      return (
+                        <div key={index} className="flex flex-row mt-4">
+                          <div className="w-4"></div>
+                          <ProductCard
+                            product={saleProduct}
+                            title={"Chỉnh sửa"}
+                            onClick={console.log("ok")}
+                            index={index}
+                          ></ProductCard>
+                        </div>
+                      );
+                    })}
                   </div>
-
                 </div>
               </Tabs.Item>
 
