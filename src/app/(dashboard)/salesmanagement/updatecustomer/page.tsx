@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { Button, CustomFlowbiteTheme,Card, TextInput,Label, Tabs, Checkbox, Datepicker, FileInput, Radio, Select } from "flowbite-react";
 import { Console } from "console";
-import { ProductCard } from "@/components/productCard";
+import { SaleProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
 import { MdOutlineAttachMoney } from "react-icons/md";

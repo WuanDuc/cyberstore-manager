@@ -3,7 +3,7 @@
 import { Card, CustomFlowbiteTheme } from "flowbite-react";
 import { useEffect } from "react";
 
-export const ProductCard = ({ product, title, onClick, index }) => {
+export const SaleProductCard = ({ product, title, onClick, index }) => {
   if (product == undefined) console.log(index);
   return (
     <Card
