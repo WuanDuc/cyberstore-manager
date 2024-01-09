@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import { Console } from "console";
-import { ProductCard } from "@/components/productCard";
+import { SaleProductCard } from "@/components/saleProductCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
 import { HiSearch } from "react-icons/hi";
@@ -325,20 +325,20 @@ export default function CreateBills() {
                             return (
                               <div key={index} className="flex flex-row mt-4">
                                 <div className="w-4"></div>
-                                <ProductCard
+                                <SaleProductCard
                                   product={saleProduct}
                                   title={"Thêm sản phẩm"}
                                   onClick={handleAddProductToBill}
                                   index={index}
-                                ></ProductCard>
+                                ></SaleProductCard>
                                 {recentProductList[index + 1] !== undefined ? (
                                   <div className="ml-4">
-                                    <ProductCard
+                                    <SaleProductCard
                                       product={recentProductList[index + 1]}
                                       title={"Thêm sản phẩm"}
                                       onClick={handleAddProductToBill}
                                       index={index}
-                                    ></ProductCard>
+                                    ></SaleProductCard>
                                   </div>
                                 ) : (
                                   <></>

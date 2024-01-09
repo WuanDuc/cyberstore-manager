@@ -14,7 +14,7 @@ import {
   Select,
 } from "flowbite-react";
 import { Console } from "console";
-import { ProductCard } from "@/components/productCard";
+import { SaleProductCard } from "@/components/saleProductCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
 import { MdOutlineAttachMoney } from "react-icons/md";

@@ -9,12 +9,14 @@ import {
 } from "flowbite-react";
 import { Console } from "console";
 import { useEffect, useState } from "react";
-import { ProductCard } from "@/components/productCard";
+import { SaleProductCard } from "@/components/saleProductCard";
 import SearchInput from "@/components/searchinput";
 import { HiSearch } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File, FileText } from "react-feather";
 import { useRouter } from "next/navigation";
+import api from "@/apis/Api";
+import { ProductCard } from "@/components/productCard";
 
 const goodsReceipts = [
   {
@@ -36,11 +38,6 @@ const goodsReceipts = [
     totalPrice: 100000000,
   },
 ];
-
-import ProductGridTab from "@/components/listProductCard";
-import ProductGridTab5Col from "@/components/listProductCard";
-import ProductGridTab4Col from "@/components/listProductCard4Col";
-
 const FilterContainer = () => (
   <div className="h-2/3 w-100 bg-gray-300 p-4 ml-4 mr-4 text-center">
     <h1 className="text-black font-bold">Filters</h1>
@@ -120,107 +117,23 @@ const FilterContainer = () => (
 );
 
 export default function ProductManagement() {
-  const [salesProducts, setSaleProducts] = useState([
-    {
-      name: "Sample Product 1",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 2",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 3",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 4",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 5",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 6",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 7",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 8",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand 9",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 10",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 11",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 12",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 13",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 14",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 15",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand 16",
-      sale: 10,
-    },
-  ]);
-  const [recentProductList, setRecentProductList] = useState(salesProducts);
+  const [salesProducts, setSaleProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const getSalesProduct = async () => {
+    const temp = await api.getAllSaleProduct();
+    console.log(temp);
+    setSaleProducts(temp);
+    setrecentSaleProductList(temp);
+  };
+  const [recentProductList, setrecentProductList] = useState(products);
+  
+  const getProduct = async () => {
+    const temp = await api.getAllProduct();
+    console.log(temp);
+    setProducts(temp);
+    setrecentProductList(temp);
+  };
+  const [recentSaleProductList, setrecentSaleProductList] = useState(salesProducts);
 
   const router = useRouter();
   const handleSearchName = (search) => {
@@ -232,12 +145,23 @@ export default function ProductManagement() {
       );
     });
     console.log(searchProduct);
-    setRecentProductList(searchProduct);
+    setrecentSaleProductList(searchProduct);
   };
-
+  const handleSearchNameProduct = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = products.filter((product, index) => {
+      return (
+        normalizeText(product.productName).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setrecentProductList(searchProduct);
+  };
   const handleChange = (e) => {
     // setSearchName(e.target.value);
     handleSearchName(e.target.value);
+    handleEnterCustomerName(e.target.value);
   };
 
   const handleEnterCustomerName = (e) => {
@@ -245,6 +169,11 @@ export default function ProductManagement() {
       alert(e.target.value);
     }
   };
+
+  useEffect(()=>{
+    getSalesProduct();
+    getProduct();
+  }, []);
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="flex-col fixed top-0 w-screen h-screen overflow-y-scroll">
@@ -271,7 +200,7 @@ export default function ProductManagement() {
                       backgroundColor: "#0156FF",
                     }}
                     onClick={() =>
-                      router.push("/productsmanagement/updateProduct")
+                      router.push("/productsmanagement/updateProduct/add")
                     }
                   >
                     <FileText /> Thêm loại sản phẩm
@@ -294,12 +223,13 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-5">
-                    {recentProductList.map((saleProduct, index) => {
+                    {recentProductList.map((product, index) => {
+                      console.log(product);
                       return (
                         <div key={index} className="flex flex-row mt-4">
                           <div className="w-4"></div>
                           <ProductCard
-                            product={saleProduct}
+                            product={product}
                             title={"Chỉnh sửa"}
                             onClick={console.log("ok")}
                             index={index}
@@ -347,16 +277,18 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-4">
-                    {recentProductList.map((saleProduct, index) => {
+                    {recentSaleProductList.map((saleProduct, index) => {
+                      console.log(saleProduct);
+                      console.log(index);
                       return (
                         <div key={index} className="flex flex-row mt-4">
                           <div className="w-4"></div>
-                          <ProductCard
+                          <SaleProductCard
                             product={saleProduct}
                             title={"Chỉnh sửa"}
                             onClick={console.log("ok")}
                             index={index}
-                          ></ProductCard>
+                          ></SaleProductCard>
                         </div>
                       );
                     })}
