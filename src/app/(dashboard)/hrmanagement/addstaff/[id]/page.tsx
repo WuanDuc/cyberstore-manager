@@ -267,7 +267,7 @@ const AddStaffManagement = ({ params }) => {
 
             <div className=" w-10/12 pr-12 pl-12 overflow-scroll h-screen flow-root ">
               <div className=" float-left w-5/12 h-fit justify-between object-center pl-12">
-                <form className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
                   <div>
                     <div className="mb-2 mt-1 block">
                       <label
@@ -540,10 +540,10 @@ const AddStaffManagement = ({ params }) => {
                       />
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
               <div className=" float-right w-5/12 h-fit justify-between flex flex-row object-center pr-12">
-                <form className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
                   <div>
                     <div className="mb-2 block">
                       <label
@@ -720,7 +720,7 @@ const AddStaffManagement = ({ params }) => {
                       Cập nhật
                     </Button>
                   )}
-                </form>
+                </div>
               </div>
             </div>
           </div>
