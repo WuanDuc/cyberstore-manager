@@ -62,11 +62,16 @@ const HRManagement = () => {
 
   const getStaffs = async () => {
     const temp = await api.getAllStaffs();
-    console.log(temp);
     setStaffs(temp);
   };
 
   const router = useRouter();
+
+  const handleDeleteStaff = async (id) => {
+    await api.deleteStaff(id);
+    getStaffs();
+    alert("Xóa thành công");
+  };
 
   useEffect(() => {
     getStaffs();
@@ -152,9 +157,9 @@ const HRManagement = () => {
                         >
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-gray-100 px-3 py-2"
-                            onClick={() =>
-                              router.push(`/hrmanagement/addstaff/${staff.Id}`)
-                            }
+                            // onClick={() =>
+                            //   router.push(`/hrmanagement/addstaff/${staff.Id}`)
+                            // }
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center px-3 py-2">
                               {index + 1}
@@ -183,14 +188,18 @@ const HRManagement = () => {
                             <Table.Cell className="w-24 px-3 py-2 align-center">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() => alert(staff.staffId)}
+                                  onClick={() =>
+                                    router.push(
+                                      `/hrmanagement/addstaff/${staff.Id}`
+                                    )
+                                  }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
                                 >
                                   <Eye color="green" />
                                 </button>
                                 <button
-                                  onClick={() => alert(staff.staffId)}
+                                  onClick={() => handleDeleteStaff(staff.Id)}
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
                                   <Trash2 color="green" />

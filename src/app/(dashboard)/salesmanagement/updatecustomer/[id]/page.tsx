@@ -14,18 +14,17 @@ import {
   Select,
 } from "flowbite-react";
 import { Console } from "console";
-import { SaleProductCard } from "@/components/saleProductCard";
+import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import AddressSelect from "@/components/addressselect";
-import moment from "moment";
 import { useEffect, useState } from "react";
-import api from "../../../../../apis/Api";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import api from "@/apis/Api";
 
-const AddStaffManagement = ({ params }) => {
+const UpdateCustomer = ({ params }) => {
   const { id } = params;
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -36,18 +35,25 @@ const AddStaffManagement = ({ params }) => {
   const [selectedCityName, setSelectedCityName] = useState("");
   const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedWardname, setSelectedWardName] = useState("");
-  const [staff, setStaff] = useState({
-    staffId: "",
-    email: "",
-    password: "",
-    cccd: "",
+  const [badgeCus, setBadgeCus] = useState([
+    {
+      badge: "Khách hàng thành viên",
+      pointThreshold: 100,
+    },
+    {
+      badge: "Khách hàng thân thiết",
+      pointThreshold: 500,
+    },
+    { badge: "Khách hàng VIP", pointThreshold: 1000 },
+  ]);
+  const [customer, setCustomer] = useState({
+    customerId: "",
     name: "",
     gender: "Nam",
-    phoneNumber: "",
-    position: "",
-    salary: 0,
+    phone: "",
+    badge: "",
+    point: 0,
     address: [],
-    dateOfEmployment: moment().format("YYYY-MM-DD"),
   });
   const router = useRouter();
 
@@ -104,14 +110,12 @@ const AddStaffManagement = ({ params }) => {
   };
 
   const handleChange = (e) => {
-    if (e.target.name == "cccd")
-      setStaff({ ...staff, [e.target.name]: e.target.value.toString() });
-    else setStaff({ ...staff, [e.target.name]: e.target.value });
+    setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
 
   const setAddress = () => {
     const tempSoNha = document.getElementById("soNha")?.value;
-    let temp = staff;
+    let temp = customer;
     const ad = {
       tinh: selectedCityName,
       quan: selectedDistrictName,
@@ -119,58 +123,30 @@ const AddStaffManagement = ({ params }) => {
       soNha: tempSoNha,
     };
     temp.address[0] = ad;
-    setStaff(temp);
+    setCustomer(temp);
   };
 
   const isValidData = () => {
     setAddress();
-    const matchName = staff.name != "";
-    const matchCCCD = staff.cccd.length == 12;
-    const matchPhone = staff.phoneNumber.length == 10;
+    const matchName = customer.name != "";
+    const matchPhone = customer.phone.length == 10;
     const matchAddress =
       selectedCityName != "" &&
       selectedDistrictName != "" &&
       selectedWardname != "";
     const tempSoNha = document.getElementById("soNha")?.value;
     const matchSoNha = tempSoNha != "";
-    const matchEmail = staff.email != "";
-    const matchPassword = staff.password != "";
-    const matchPosition = staff.position != "";
-    const matchSalary = staff.salary > 1000000;
     return (
       matchAddress &&
       matchName &&
-      matchCCCD &&
       matchPhone &&
-      matchPassword &&
       matchSoNha &&
-      matchEmail &&
-      matchPosition &&
-      matchSalary
     );
-  };
-
-  const handleAddStaff = async () => {
-    if (isValidData()) {
-      const newStaff = staff;
-      let Id = "";
-      await api.addStaff(newStaff).then((docId) => {
-        Id = docId;
-        console.log(docId);
-      });
-      newStaff.staffId = Id;
-      await api.updateStaff(newStaff, Id);
-      console.log(newStaff.staffId);
-      alert("Thêm thành công");
-      router.back();
-    } else {
-      alert("Vui lòng điền đầy đủ thông tin và đúng định dạng!");
-    }
   };
 
   const handleUpdateStaff = async () => {
     if (isValidData()) {
-      await api.updateStaff(staff, staff.staffId);
+      await api.updateCustomer(customer, customer.customerId);
       alert("Cập nhật thành công");
       router.back();
     } else {
@@ -178,14 +154,13 @@ const AddStaffManagement = ({ params }) => {
     }
   };
 
-  const getStaff = async () => {
-    const recentStaff = await api.getStaffById(id);
-    // document.getElementById("name").innerHTML = recentStaff.name || "";
+  const getCustomer = async () => {
+    const recentCustomer = await api.getCustomerById(id);
     await axios.get(`${host}p?depth=2`).then((response) => {
       setCities(response.data);
       const ct = response.data;
       let city = ct.findLast(
-        (city) => city.name == recentStaff.address[0].tinh
+        (city) => city.name == recentCustomer.address[0].tinh
       );
       const cityName = city.name;
       const cityCode = city.code;
@@ -200,7 +175,7 @@ const AddStaffManagement = ({ params }) => {
           const dt = response.data.districts;
           setDistricts(response.data.districts);
           let district = dt.findLast(
-            (dt) => dt.name == recentStaff.address[0].quan
+            (dt) => dt.name == recentCustomer.address[0].quan
           );
           const dtCode = district.code;
           const dtName = district.name;
@@ -213,7 +188,7 @@ const AddStaffManagement = ({ params }) => {
               setWards(response.data.wards);
               const w = response.data.wards;
               let ward = w.findLast(
-                (w) => w.name == recentStaff.address[0].phuong
+                (w) => w.name == recentCustomer.address[0].phuong
               );
               const wCode = ward.code;
               const wName = ward.name;
@@ -229,39 +204,29 @@ const AddStaffManagement = ({ params }) => {
         });
       }
     });
-    setStaff(recentStaff);
+    setCustomer(recentCustomer);
   };
 
   useEffect(() => {
-    if (id !== "add") {
-      getStaff();
-      callAPI(`${host}p?depth=2`);
-    }
+    getCustomer();
     callAPI(`${host}p?depth=2`);
   }, []);
-
   return (
     <main className="flex max-h-screen flex-col fill-white">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
         <div className="flex-col fixed top-4 w-screen">
           <div className="flex-col">
             <div className=" flex-row">
-              {id == "add" ? (
-                <label className=" font-semibold text-2xl text-black p-11 pt-11">
-                  Quản lý nhân sự &gt; Thêm nhân viên
-                </label>
-              ) : (
-                <label className=" font-semibold text-2xl text-black p-11 pt-11">
-                  Quản lý nhân sự &gt; Cập nhật nhân viên
-                </label>
-              )}
+              <label className=" font-semibold text-2xl text-black p-11 pt-11">
+                Quản lý bán hàng&gt;Cập nhật khách hàng
+              </label>
             </div>
             <div className="mb-2 block ml-20 mt-4">
               <label
                 className=" text-black font-semibold text-lg"
                 htmlFor="conver1"
               >
-                Thông tin nhân viên
+                Thông tin khách hàng
               </label>
             </div>
 
@@ -287,46 +252,16 @@ const AddStaffManagement = ({ params }) => {
                           width: 450,
                           paddingRight: 30,
                         }}
-                        onChange={handleChange}
-                        value={staff?.name || ""}
                         id="name"
                         name="name"
+                        onChange={handleChange}
                         placeholder="Họ và tên"
                         required
-                        className="float-left"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-2 block">
-                      <label
-                        className=" text-black font-semibold"
-                        htmlFor="conver1"
-                      >
-                        {" "}
-                        CCCD
-                      </label>
-                    </div>
-                    <div className=" mb-2 flow-root">
-                      <TextInput
-                        style={{
-                          backgroundColor: "white",
-                          borderRadius: 10,
-                          color: "black",
-                          width: 450,
-                          paddingRight: 30,
-                        }}
-                        id="cccd"
-                        name="cccd"
-                        value={staff?.cccd || ""}
-                        onChange={handleChange}
-                        placeholder="CCCD"
-                        required
-                        type="number"
                         className=" float-left"
                       />
                     </div>
                   </div>
+                  <div></div>
                   <div>
                     <div className="mb-2 block">
                       <label
@@ -346,13 +281,12 @@ const AddStaffManagement = ({ params }) => {
                           width: 450,
                           paddingRight: 30,
                         }}
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        value={staff?.phoneNumber || ""}
+                        id="phone"
+                        name="phone"
+                        type="phone"
                         onChange={handleChange}
                         placeholder="Số điện thoại"
                         required
-                        type="tel"
                         className=" float-left"
                       />
                     </div>
@@ -368,7 +302,7 @@ const AddStaffManagement = ({ params }) => {
                       </label>
                     </div>
 
-                    {staff?.gender == "Nam" ? (
+                    {customer?.gender == "Nam" ? (
                       <fieldset
                         className="flex max-w-md flex-row gap-4 mb-2"
                         id="gender"
@@ -465,12 +399,7 @@ const AddStaffManagement = ({ params }) => {
                             Chọn tỉnh thành
                           </option>
                           {cities.map((city: any) => (
-                            <option
-                              key={city.code}
-                              value={city.code}
-                              id="tinh"
-                              name="tinh"
-                            >
+                            <option key={city.code} value={city.code} id="tinh">
                               {city.name}
                             </option>
                           ))}
@@ -492,7 +421,6 @@ const AddStaffManagement = ({ params }) => {
                               key={district.code}
                               value={district.code}
                               id="quan"
-                              name="quan"
                             >
                               {district.name}
                             </option>
@@ -515,7 +443,6 @@ const AddStaffManagement = ({ params }) => {
                               key={ward.code}
                               value={ward.code}
                               id="phuong"
-                              name="phuong"
                             >
                               {ward.name}
                             </option>
@@ -532,7 +459,7 @@ const AddStaffManagement = ({ params }) => {
                         }}
                         id="soNha"
                         name="soNha"
-                        defaultValue={staff?.address[0]?.soNha}
+                        defaultValue={customer?.address[0]?.soNha}
                         onChange={handleChange}
                         placeholder="Số nhà"
                         required
@@ -544,182 +471,40 @@ const AddStaffManagement = ({ params }) => {
               </div>
               <div className=" float-right w-5/12 h-fit justify-between flex flex-row object-center pr-12">
                 <form className="flex flex-col gap-4">
-                  <div>
-                    <div className="mb-2 block">
-                      <label
-                        className=" text-black font-semibold"
-                        htmlFor="conver1"
-                      >
-                        {" "}
-                        Email
-                      </label>
-                    </div>
-                    <div className=" mb-2 flow-root">
-                      <TextInput
-                        style={{
-                          backgroundColor: "white",
-                          borderRadius: 10,
-                          color: "black",
-                          width: 450,
-                          paddingRight: 30,
-                        }}
-                        id="email"
-                        name="email"
-                        value={staff?.email}
-                        onChange={handleChange}
-                        placeholder="Email"
-                        required
-                        type="email"
-                        className="float-left"
-                      />
-                    </div>
-                    <div className="mb-2 block">
-                      <label
-                        className="text-black font-semibold"
-                        htmlFor="password"
-                      >
-                        {" "}
-                        Mật khẩu
-                      </label>
-                    </div>
-                    <div className=" mb-2 flow-root">
-                      <TextInput
-                        style={{
-                          backgroundColor: "white",
-                          borderRadius: 10,
-                          color: "black",
-                          width: 450,
-                          paddingRight: 30,
-                        }}
-                        id="password"
-                        name="password"
-                        value={staff?.password}
-                        onChange={handleChange}
-                        type="text"
-                        required
-                        className=" float-left"
-                      />
-                    </div>
-
-                    <div className="mb-2 block">
-                      <label
-                        className=" text-black font-semibold"
-                        htmlFor="conver5"
-                      >
-                        {" "}
-                        Chức vụ
-                      </label>
-                    </div>
-                    <TextInput
+                  <div className="mb-2 block">
+                    <label
+                      className=" text-black font-semibold"
+                      htmlFor="conver1"
+                    >
+                      {" "}
+                      Hạng thành viên
+                    </label>
+                  </div>
+                  <div className=" mb-2 flow-root">
+                    <Select
                       style={{
                         backgroundColor: "white",
                         borderRadius: 10,
                         color: "black",
+                        width: 450,
+                        paddingRight: 30,
                       }}
-                      id="position"
-                      name="position"
-                      onChange={handleChange}
-                      value={staff.position}
+                      id="badge"
+                      name="badge"
                       required
-                      placeholder="Chức vụ"
+                      className="float-left"
+                      onChange={handleChange}
                     />
+                    {badgeCus.map((badge, index) => (
+                      <option key={index} value={badge.badge} id="phuong">
+                        {badge.badge}
+                      </option>
+                    ))}
                   </div>
-                  <div className="mb-2 flex flex-col">
-                    <label className=" text-black font-semibold" htmlFor="date">
-                      {" "}
-                      Ngày bắt đầu làm
-                    </label>
-                    {id == "add" ? (
-                      <input
-                        style={{
-                          backgroundColor: "white",
-                          borderColor: "gray",
-                          borderWidth: 1,
-                          marginTop: 5,
-                          height: 45,
-                          borderRadius: 10,
-                          color: "black",
-                        }}
-                        name="dateOfEmployment"
-                        value={moment(staff?.dateOfEmployment).format(
-                          "YYYY-MM-DD"
-                        )}
-                        onChange={handleChange}
-                        type="date"
-                        min={moment().format("YYYY-MM-DD")}
-                      />
-                    ) : (
-                      <input
-                        style={{
-                          backgroundColor: "white",
-                          borderColor: "gray",
-                          borderWidth: 1,
-                          marginTop: 5,
-                          height: 45,
-                          borderRadius: 10,
-                          color: "black",
-                        }}
-                        disabled
-                        name="dateOfEmployment"
-                        value={moment(staff?.dateOfEmployment).format(
-                          "YYYY-MM-DD"
-                        )}
-                        onChange={handleChange}
-                        type="date"
-                        min={moment().format("YYYY-MM-DD")}
-                      />
-                    )}
-                  </div>
-                  <div className="mb-2 block">
-                    <label
-                      className="text-black font-semibold"
-                      htmlFor="conver7"
-                    >
-                      {" "}
-                      Lương cơ bản
-                    </label>
-                  </div>
-                  <TextInput
-                    style={{
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      color: "black",
-                    }}
-                    id="salary"
-                    name="salary"
-                    type="number"
-                    min={0}
-                    defaultValue={new Intl.NumberFormat("en-DE").format(
-                      staff?.salary
-                    )}
-                    // value={(value) =>
-                    //   new Intl.NumberFormat("en-DE").format(value)
-                    // }
-                    onChange={handleChange}
-                    icon={MdOutlineAttachMoney}
-                    required
-                    placeholder="Số tiền (VND)"
-                  />
 
-                  {id == "add" ? (
-                    <Button
-                      className=" mt-20"
-                      type="submit"
-                      id="addStaff"
-                      onClick={handleAddStaff}
-                    >
-                      Thêm nhân viên
-                    </Button>
-                  ) : (
-                    <Button
-                      className=" mt-20"
-                      type="submit"
-                      id="updateStaff"
-                      onClick={handleUpdateStaff}
-                    >
-                      Cập nhật
-                    </Button>
-                  )}
+                  <Button className=" mt-20" type="submit">
+                    Cập nhật khách hàng
+                  </Button>
                 </form>
               </div>
             </div>
@@ -729,4 +514,4 @@ const AddStaffManagement = ({ params }) => {
     </main>
   );
 };
-export default AddStaffManagement;
+export default UpdateCustomer;
