@@ -16,6 +16,7 @@ import { THEME } from "@/constant/theme";
 import { Eye, File, FileText } from "react-feather";
 import { useRouter } from "next/navigation";
 import api from "@/apis/Api";
+import { ProductCard } from "@/components/productCard";
 
 const goodsReceipts = [
   {
@@ -117,14 +118,23 @@ const FilterContainer = () => (
 
 export default function ProductManagement() {
   const [salesProducts, setSaleProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const getSalesProduct = async () => {
     const temp = await api.getAllSaleProduct();
     console.log(temp);
     setSaleProducts(temp);
-    setRecentProductList(temp);
+    setrecentSaleProductList(temp);
   };
-  const [recentProductList, setRecentProductList] = useState(salesProducts);
+  const [recentProductList, setrecentProductList] = useState(products);
   
+  const getProduct = async () => {
+    const temp = await api.getAllProduct();
+    console.log(temp);
+    setProducts(temp);
+    setrecentProductList(temp);
+  };
+  const [recentSaleProductList, setrecentSaleProductList] = useState(salesProducts);
+
   const router = useRouter();
   const handleSearchName = (search) => {
     const normalizeText = (text) => text.toLowerCase();
@@ -135,12 +145,23 @@ export default function ProductManagement() {
       );
     });
     console.log(searchProduct);
-    setRecentProductList(searchProduct);
+    setrecentSaleProductList(searchProduct);
   };
-
+  const handleSearchNameProduct = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = products.filter((product, index) => {
+      return (
+        normalizeText(product.productName).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setrecentProductList(searchProduct);
+  };
   const handleChange = (e) => {
     // setSearchName(e.target.value);
     handleSearchName(e.target.value);
+    handleEnterCustomerName(e.target.value);
   };
 
   const handleEnterCustomerName = (e) => {
@@ -151,6 +172,7 @@ export default function ProductManagement() {
 
   useEffect(()=>{
     getSalesProduct();
+    getProduct();
   }, []);
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
@@ -178,7 +200,7 @@ export default function ProductManagement() {
                       backgroundColor: "#0156FF",
                     }}
                     onClick={() =>
-                      router.push("/productsmanagement/updateProduct")
+                      router.push("/productsmanagement/updateProduct/add")
                     }
                   >
                     <FileText /> Thêm loại sản phẩm
@@ -201,17 +223,17 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-5">
-                    {recentProductList.map((saleProduct, index) => {
-                      console.log(saleProduct);
+                    {recentProductList.map((product, index) => {
+                      console.log(product);
                       return (
                         <div key={index} className="flex flex-row mt-4">
                           <div className="w-4"></div>
-                          <SaleProductCard
-                            product={saleProduct}
+                          <ProductCard
+                            product={product}
                             title={"Chỉnh sửa"}
                             onClick={console.log("ok")}
                             index={index}
-                          ></SaleProductCard>
+                          ></ProductCard>
                         </div>
                       );
                     })}
@@ -255,7 +277,7 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-4">
-                    {recentProductList.map((saleProduct, index) => {
+                    {recentSaleProductList.map((saleProduct, index) => {
                       console.log(saleProduct);
                       console.log(index);
                       return (

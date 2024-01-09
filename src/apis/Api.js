@@ -17,6 +17,57 @@ const getAllProductTypes = async () => {
     return [];
   }
 };
+const getAllProduct = async () => {
+  try {
+    const response = await client.get("/Product/getProduct");
+    if (response.data.success) {
+      return response.data.Products;
+    } else {
+      console.log("not get product ");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+const addProduct = async (data) => {
+  const endpoint = "/Product/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateProduct = async (data, id) => {
+  const endpoint = "/Product/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteProduct = async (id) => {
+  try {
+    await client.delete("/Product/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const getProductById = async (id) => {
+  const endpoint = "/Product/ProductById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    if (response.data.success) {
+      return response.data.productById;
+    } else {
+      console.log("not get staff by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
 const getAllSaleProduct = async () => {
   try {
     const response = await client.get("/SaleProduct/getSaleProduct");
@@ -137,6 +188,11 @@ const getStaffById = async (id) => {
 };
 
 export default {
+  getAllProduct,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
   getAllSaleProduct,
   getSaleProductById,
   addSaleProduct,

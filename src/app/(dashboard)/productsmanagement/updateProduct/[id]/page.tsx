@@ -2,9 +2,13 @@
 import Image from "next/image";
 import { Button, CustomFlowbiteTheme, Tabs } from "flowbite-react";
 import { Console } from "console";
-import { SaleProductCard } from "@/components/productCard";
+import { ProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/apis/Api"
+import axios from "axios";
 
 const ContainerLeft = () => (
   <div className=" w-2/4  p-4 ml-6 mr-6  overflow-y-auto">
@@ -1998,7 +2002,49 @@ const ContainerBottom = () => (
   </div>
 );
 
-export default function WarrantyDetail() {
+const UpdateProduct = ({params }) => {
+  const {id } = params;
+  const [product, setProduct] = useState({
+    amount: "",
+    companyId: "",
+    companyName: "",
+    detailedSpecification: [],
+    goodsReceiptDetail: "",
+    isAvailable: "",
+    productId: "",
+    productName: "",
+    productType: "",
+    productTypeId: "",
+    warrantyPeriod: "",
+  });
+  const router = useRouter();
+  const handleChange = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
+  const handleAddProduct = async () => {
+    const newProduct = product;
+    await api.addProduct(newProduct);
+    alert("Thêm thành công");
+    router.push("/productsmanagement");
+  };
+
+  const handleUpdateProduct = async () => {
+      await api.updateProduct(product, product.productId);
+      alert("Cập nhật thành công");
+      router.back();
+  };
+  const getProduct = async () => {
+    const recentProduct = await api.getProductById(id);
+    // document.getElementById("name").innerHTML = recentProduct.name || "";
+    setProduct(recentProduct);
+  };
+
+  useEffect(() => {
+    if (id !== "add") {
+      getProduct();
+    }
+  }, []);
+
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="flex-col fixed top-0 w-screen">
@@ -2006,12 +2052,46 @@ export default function WarrantyDetail() {
           <h1 className="text-3xl text-black font-bold mb-10 ml-10 mt-10">
             Quản lý kho{" "}
             <span className="text-3xl text-black font-bold">
-              {">"} Cập nhật sản phẩm
+              {">"} {id == "add"} sản phẩm
             </span>
           </h1>
 
           <div className="flex">
-            <ContainerLeft />
+            <div className=" w-2/4  p-4 ml-6 mr-6  overflow-y-auto">
+      <h1 className="text-xl text-black font-bold mb-2">Thông tin về sản phẩm</h1>
+      <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
+      <h2 className="text-base text-black font-semibold mb-1 mt-4">
+        Tên loại sản phẩm
+      </h2>
+      <input
+        type="text"
+        className=" text-black w-full h-10 border border-gray-300 rounded px-3"
+      />
+      <h2 className="text-base text-black font-semibold mb-1 mt-4">Hãng</h2>
+      <input
+        type="text"
+        className="w-full h-10 border border-gray-300 rounded px-3"
+      />
+      <h2 className="text-base text-black font-semibold mb-1 mt-4">
+        Mã loại sản phẩm
+      </h2>
+      <input
+        type="text"
+        className="w-full h-10 border border-gray-300 rounded px-3"
+      />
+      <h2 className="text-base text-black font-semibold mb-1 mt-4">
+        Thời gian bảo hành
+      </h2>
+      <input
+        type="text"
+        className="w-full h-10 border border-gray-300 rounded px-3"
+      />
+      <h2 className="text-base text-black font-semibold mb-1 mt-4">Số lượng</h2>
+      <input
+        type="text"
+        className="w-full h-10 border border-gray-300 rounded px-3"
+      />
+    </div>
             <ContainerRight />
           </div>
 
@@ -2020,4 +2100,6 @@ export default function WarrantyDetail() {
       </div>
     </main>
   );
-}
+};
+
+export default UpdateProduct;
