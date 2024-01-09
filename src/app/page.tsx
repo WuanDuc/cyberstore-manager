@@ -15,7 +15,7 @@ const sampleProduct = {
 
 export default function Home() {
   return (
-    <main className="flex max-h-screen flex-col fill-white">
+    <main className="flex flex-col fill-white">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
 
         <label > Xin chao day la man hinh home</label>

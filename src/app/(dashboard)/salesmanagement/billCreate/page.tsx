@@ -250,7 +250,7 @@ export default function CreateBills() {
 
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
-      <div className="flex-col fixed top-0 w-screen">
+      <div className="flex-col fixed top-0 h-screen w-screen">
         <div className="flex-col">
           <div className=" flex-row pt-5">
             <div
