@@ -19,6 +19,9 @@ import { useEffect, useState } from "react";
 import { SHARE_FUNCTIONS } from "@/constant/function";
 import { BillCard } from "@/components/billProduct";
 import AddressSelect from "@/components/address";
+import { BillProductCard } from "@/components/billProductCard";
+import api from "@/apis/Api";
+import { useRouter } from "next/navigation";
 
 export default function CreateBills() {
   const [salesProducts, setSaleProducts] = useState([
@@ -27,98 +30,112 @@ export default function CreateBills() {
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 2",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 3",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 4",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 5",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 6",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 7",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 8",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand 9",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 10",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 11",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 12",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 13",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 14",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
     {
       name: "Sample Product 15",
       src: "/sample.jpg",
       price: 19.99,
       brand: "Sample Brand 16",
-      sale: 10,
+      discount: 10,
+      amount: 1,
     },
   ]);
   const [customerType, setCustomerType] = useState("old");
@@ -128,6 +145,7 @@ export default function CreateBills() {
   const [productsInBill, setProductsInBill] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [activeBill, setActiveBill] = useState(0);
+  const [recentCustomer, setRecentCustomer] = useState({});
   const [listCurrentBill, setListCurrentBill] = useState([
     {
       product: [
@@ -136,23 +154,38 @@ export default function CreateBills() {
           src: "/sample.jpg",
           price: 19.99,
           brand: "Sample Brand",
-          sale: 10,
+          discount: 10,
+          amount: 1,
         },
         {
           name: "Sample Product 14",
           src: "/sample.jpg",
           price: 19.99,
           brand: "Sample Brand",
-          sale: 10,
+          discount: 10,
+          amount: 1,
         },
         {
           name: "Sample Product 15",
           src: "/sample.jpg",
           price: 19.99,
           brand: "Sample Brand 16",
-          sale: 10,
+          discount: 10,
+          amount: 1,
         },
       ],
+      customerInfo: {
+        customerType: "",
+        phone: "",
+        name: "",
+        gender: false,
+      },
+      discount: {
+        id: "",
+        percent: 0,
+      },
+      totalPrice: 54,
+      finalPrice: 54,
     },
     {
       product: [
@@ -161,25 +194,42 @@ export default function CreateBills() {
           src: "/sample.jpg",
           price: 19.99,
           brand: "Sample Brand",
-          sale: 10,
+          discount: 10,
+          amount: 1,
         },
         {
           name: "Sample Product 12",
           src: "/sample.jpg",
           price: 19.99,
           brand: "Sample Brand",
-          sale: 10,
+          discount: 10,
+          amount: 1,
         },
         {
           name: "Sample Product 11",
           src: "/sample.jpg",
           price: 19.99,
           brand: "Sample Brand 16",
-          sale: 10,
+          discount: 10,
+          amount: 1,
         },
       ],
+      customerInfo: {
+        customerType: "",
+        phone: "",
+        name: "",
+        gender: false,
+      },
+      discount: {
+        id: "",
+        percent: 0,
+      },
+      totalPrice: 54,
+      finalPrice: 54,
     },
   ]);
+  const [discounts, setDiscounts] = useState([]);
+  const [customerInfos, setCustomers] = useState({});
 
   const handleSearchName = (search) => {
     const normalizeText = (text) => text.toLowerCase();
@@ -208,11 +258,15 @@ export default function CreateBills() {
     });
     if (flag) {
       let temp = listCurrentBill[activeBill].product;
-      // console.log(product);
       temp.push(product);
+      product.amount = 1;
       let temp2 = listCurrentBill;
+      temp2[activeBill].totalPrice +=
+        Math.ceil((product.price * (100 - product.discount)) / 100) *
+        product.amount;
       temp2[activeBill].product = temp;
       setListCurrentBill(temp2);
+      router.refresh();
     } else {
       alert("Sản phẩm này đã có trong hóa đơn");
     }
@@ -220,8 +274,16 @@ export default function CreateBills() {
 
   const createNewBill = () => {
     let temp = listCurrentBill;
-    temp.push({ product: [] });
+    temp.push({
+      product: [],
+      customerInfo: {},
+      totalPrice: 0,
+      finalPrice: 0,
+      discount: { id: "", percent: 0 },
+    });
+    alert("Tạo hóa đơn mới thành công");
     setListCurrentBill(temp);
+    router.refresh();
   };
 
   const deleteProductFromBill = (value) => {
@@ -236,7 +298,7 @@ export default function CreateBills() {
   const handleEnterTel = (e) => {
     if (e.key === "Enter") {
       // alert(e.target.value);
-      document.getElementById("nameOld").value = "Cúc iu";
+      // document.getElementById("nameOld").value = "Cúc iu";
     }
   };
 
@@ -246,7 +308,20 @@ export default function CreateBills() {
     }
   };
 
-  useEffect(() => {}, [listCurrentBill]);
+  const getDiscounts = async () => {
+    const temp = await api.getAllDiscounts();
+    setDiscounts(temp);
+  };
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, [listCurrentBill]);
+
+  useEffect(() => {
+    getDiscounts();
+  }, []);
 
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
@@ -301,7 +376,7 @@ export default function CreateBills() {
                         </label> */}
                         <div className="h-12 w-full">
                           <TextInput
-                            className="w-full pr-4"
+                            className="w-11/12 pl-4"
                             style={{
                               backgroundColor: "white",
                               borderRadius: 20,
@@ -325,20 +400,20 @@ export default function CreateBills() {
                             return (
                               <div key={index} className="flex flex-row mt-4">
                                 <div className="w-4"></div>
-                                <SaleProductCard
+                                <BillProductCard
                                   product={saleProduct}
                                   title={"Thêm sản phẩm"}
                                   onClick={handleAddProductToBill}
                                   index={index}
-                                ></SaleProductCard>
+                                ></BillProductCard>
                                 {recentProductList[index + 1] !== undefined ? (
                                   <div className="ml-4">
-                                    <SaleProductCard
+                                    <BillProductCard
                                       product={recentProductList[index + 1]}
                                       title={"Thêm sản phẩm"}
                                       onClick={handleAddProductToBill}
                                       index={index}
-                                    ></SaleProductCard>
+                                    ></BillProductCard>
                                   </div>
                                 ) : (
                                   <></>
@@ -366,10 +441,10 @@ export default function CreateBills() {
                             // borderRadius: 10,
                           }}
                         >
-                          {bill.product.map((product, index) => {
+                          {bill.product.map((product, indexb) => {
                             return (
                               <div
-                                key={index}
+                                key={indexb}
                                 className="flex flex-row w-full mb-2 bg-gray-800"
                                 style={{
                                   borderColor: "black",
@@ -390,7 +465,12 @@ export default function CreateBills() {
                                     {product.name}
                                   </label>
                                   <text className="ml-1 text-s">
-                                    {"Đơn giá: " + product.price}
+                                    {"Đơn giá: " +
+                                      Math.ceil(
+                                        (product.price *
+                                          (100 - product.discount)) /
+                                          100
+                                      )}
                                   </text>
                                   <div className="flex flex-row w-full">
                                     <text className="ml-1 text-s">
@@ -398,6 +478,33 @@ export default function CreateBills() {
                                     </text>
                                     <input
                                       type="number"
+                                      id="numberOfProduct"
+                                      onChange={(e) => {
+                                        let tempproduct =
+                                          listCurrentBill[activeBill].product;
+                                        const i =
+                                          tempproduct[indexb].amount -
+                                          parseInt(e.target.value);
+                                        tempproduct[indexb].amount = parseInt(
+                                          e.target.value
+                                        );
+                                        let tempListBill = listCurrentBill;
+                                        tempListBill[activeBill].product =
+                                          tempproduct;
+                                        tempListBill[activeBill].totalPrice +=
+                                          Math.ceil(
+                                            (product.price *
+                                              (100 - product.discount)) /
+                                              100
+                                          ) * -i;
+                                        setListCurrentBill(tempListBill);
+                                        router.refresh();
+                                      }}
+                                      value={
+                                        listCurrentBill[activeBill].product[
+                                          indexb
+                                        ]?.amount || 1
+                                      }
                                       min={1}
                                       defaultValue={1}
                                       className="w-8 text-center ml-2 bg-gray-800"
@@ -410,9 +517,22 @@ export default function CreateBills() {
                                     <Trash2
                                       className="ml-16"
                                       color="#F5F7FF"
-                                      onClick={() =>
-                                        deleteProductFromBill(product.name)
-                                      }
+                                      onClick={() => {
+                                        let temp =
+                                          listCurrentBill[activeBill].product;
+                                        // console.log(product);
+                                        temp.push(product);
+                                        let temp2 = listCurrentBill;
+                                        temp2[activeBill].totalPrice -=
+                                          Math.ceil(
+                                            (product.price *
+                                              (100 - product.discount)) /
+                                              100
+                                          ) * product.amount;
+                                        temp2[activeBill].product = temp;
+                                        setListCurrentBill(temp2);
+                                        deleteProductFromBill(product.name);
+                                      }}
                                     />
                                   </div>
                                 </div>
@@ -421,7 +541,8 @@ export default function CreateBills() {
                           })}
                         </div>
                         <text className="mt-5 font-semibold text-xl text-black">
-                          {"Thành tiền: " + 200}
+                          {"Thành tiền: " +
+                            listCurrentBill[activeBill].totalPrice}
                         </text>
                         <div
                           style={{
@@ -435,6 +556,16 @@ export default function CreateBills() {
                               paddingLeft: 4,
                               paddingRight: 4,
                               backgroundColor: "#0156FF",
+                            }}
+                            onClick={() => {
+                              if (listCurrentBill.length > 1) {
+                                listCurrentBill.splice(activeBill, 1);
+                                setActiveBill(0);
+                              } else {
+                                alert(
+                                  "Không thể xóa hóa đơn duy nhất này! Vui lòng làm mới dữ liệu"
+                                );
+                              }
                             }}
                           >
                             Hủy thanh toán
@@ -516,12 +647,17 @@ export default function CreateBills() {
                               id="discount"
                               className="w-9/12 text-black border border-black rounded-xl mt-1"
                             >
-                              <option
-                                value="volvo"
-                                className="w-9/12 text-black border border-black font-bold"
-                              >
-                                Volvo
-                              </option>
+                              {discounts?.map((discount, index) => {
+                                return (
+                                  <option
+                                    key={index}
+                                    value={discount.id}
+                                    className="w-9/12 text-black border border-black font-bold"
+                                  >
+                                    {discount.percent + " %"}
+                                  </option>
+                                );
+                              })}
                             </select>
                             <fieldset className="flex max-w-md flex-col gap-1">
                               <legend className="font-bold text-lg text-black">
@@ -651,12 +787,17 @@ export default function CreateBills() {
                               id="discount"
                               className="w-9/12 text-black border border-black rounded-xl mt-1"
                             >
-                              <option
-                                value="volvo"
-                                className="w-9/12 text-black border border-black font-bold"
-                              >
-                                Volvo
-                              </option>
+                              {discounts?.map((discount, index) => {
+                                return (
+                                  <option
+                                    key={index}
+                                    value={discount.id}
+                                    className="w-9/12 text-black border border-black font-bold"
+                                  >
+                                    {discount.percent + " %"}
+                                  </option>
+                                );
+                              })}
                             </select>
                             <hr />
                             <fieldset className="flex max-w-md flex-col gap-1">
@@ -719,6 +860,7 @@ export default function CreateBills() {
                             <tr>200</tr>
                           </th>
                         </table>
+                        <Button className="w-11/12 mt-3">Hoàn tất</Button>
                       </div>
                     </div>
                   </Tabs.Item>

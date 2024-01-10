@@ -6,7 +6,7 @@ import {
   Table,
   Tabs,
   TextInput,
-Modal
+  Modal,
 } from "flowbite-react";
 import { Console } from "console";
 import { useEffect, useState } from "react";
@@ -19,26 +19,10 @@ import { useRouter } from "next/navigation";
 import api from "@/apis/Api";
 import { ProductCard } from "@/components/productCard";
 
-const goodsReceipts = [
-  {
-    goodsReceiptsId: "PN001",
-    staffId: "NV002",
-    entryDate: "2023-10-23",
-    totalPrice: 100000000,
-  },
-  {
-    goodsReceiptsId: "PN002",
-    staffId: "NV002",
-    entryDate: "2023-10-23",
-    totalPrice: 100000000,
-  },
-  {
-    goodsReceiptsId: "PN003",
-    staffId: "NV002",
-    entryDate: "2023-10-23",
-    totalPrice: 100000000,
-  },
-];
+import ProductGridTab from "@/components/listProductCard";
+import ProductGridTab5Col from "@/components/listProductCard";
+import ProductGridTab4Col from "@/components/listProductCard4Col";
+
 const FilterContainer = () => (
   <div className="h-2/3 w-100 bg-gray-300 p-4 ml-4 mr-4 text-center">
     <h1 className="text-black font-bold">Filters</h1>
@@ -117,7 +101,7 @@ const FilterContainer = () => (
   </div>
 );
 
-export default function ProductManagement() {
+const ProductManagement = () => {
   const [openModal, setOpenModal] = useState(false);
   const [idDelete, setIdDelete] = useState(0);
   const [salesProducts, setSaleProducts] = useState([]);
@@ -129,11 +113,11 @@ export default function ProductManagement() {
     setrecentSaleProductList(temp);
   };
   const [recentProductList, setrecentProductList] = useState(products);
-  
+
   const handleDeleteProduct = async (id) => {
     await api.deleteProduct(id);
     await getProduct();
-  }
+  };
 
   const getProduct = async () => {
     const temp = await api.getAllProduct();
@@ -141,9 +125,144 @@ export default function ProductManagement() {
     setProducts(temp);
     setrecentProductList(temp);
   };
-  const [recentSaleProductList, setrecentSaleProductList] = useState(salesProducts);
+
+  const getGoodsReceipts = async () => {
+    const temp = await api.getAllGoodsReceipt();
+    setGoodReceipts(temp);
+  };
+
+  const [recentSaleProductList, setrecentSaleProductList] =
+    useState(salesProducts);
+  // const [salesProducts, setSaleProducts] = useState([
+  //   {
+  //     name: "Sample Product 1",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 2",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 3",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 4",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 5",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 6",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 7",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 8",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand 9",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 10",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 11",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 12",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 13",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 14",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 15",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand 16",
+  //     sale: 10,
+  //   },
+  // ]);
+  // const [recentProductList, setRecentProductList] = useState(salesProducts);
+
+  const [goodsReceipts, setGoodReceipts] = useState([]);
+  const [recentGoodsReceipts, setRecentGoodReceipts] = useState([]);
+
+  const handleSearchNameGR = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = goodsReceipts.filter((staff, index) => {
+      return (
+        normalizeText(staff.goodsReceiptId).includes(normalizeText(search)) ||
+        normalizeText(staff.entryDate).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setRecentGoodReceipts(searchProduct);
+  };
+
+  const handleChangeK = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchNameProduct(e.target.value);
+  };
+
+  const handleChangeGR = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchNameGR(e.target.value);
+  };
 
   const router = useRouter();
+
   const handleSearchName = (search) => {
     const normalizeText = (text) => text.toLowerCase();
     const searchProduct = salesProducts.filter((saleProduct, index) => {
@@ -155,6 +274,7 @@ export default function ProductManagement() {
     console.log(searchProduct);
     setrecentSaleProductList(searchProduct);
   };
+
   const handleSearchNameProduct = (search) => {
     const normalizeText = (text) => text.toLowerCase();
     const searchProduct = products.filter((product, index) => {
@@ -169,7 +289,7 @@ export default function ProductManagement() {
   const handleChange = (e) => {
     // setSearchName(e.target.value);
     handleSearchName(e.target.value);
-    handleEnterCustomerName(e.target.value);
+    // handleEnterCustomerName(e.target.value);
   };
 
   const handleEnterCustomerName = (e) => {
@@ -178,9 +298,10 @@ export default function ProductManagement() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getSalesProduct();
     getProduct();
+    getGoodsReceipts();
   }, []);
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
@@ -190,28 +311,41 @@ export default function ProductManagement() {
             <label className=" font-semibold text-2xl text-black p-7 pt-24">
               Quản lý sản phẩm
             </label>
-            <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
-                              <Modal.Header />
-                              <Modal.Body>
-                                <div className="text-center">
-                                  <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                                  <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                    Bạn có muốn xóa sản phẩm này?
-                                  </h3>
-                                  <div className="flex justify-center gap-4">
-                                    <Button style={{height: 34, width: 64}} color="failure" onClick={async () =>{
-                                        setOpenModal(false);
-                                        await handleDeleteProduct(idDelete);
-                                    }}>
-                                      {"Có"}
-                                    </Button>
-                                    <Button style={{height: 34, width: 64}} color="gray" onClick={() => setOpenModal(false)}>
-                                      Không
-                                    </Button>
-                                  </div>
-                                </div>
-                              </Modal.Body>
-                            </Modal>
+            <Modal
+              show={openModal}
+              size="md"
+              onClose={() => setOpenModal(false)}
+              popup
+            >
+              <Modal.Header />
+              <Modal.Body>
+                <div className="text-center">
+                  <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                  <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                    Bạn có muốn xóa sản phẩm này?
+                  </h3>
+                  <div className="flex justify-center gap-4">
+                    <Button
+                      style={{ height: 34, width: 64 }}
+                      color="failure"
+                      onClick={async () => {
+                        setOpenModal(false);
+                        await handleDeleteProduct(idDelete);
+                      }}
+                    >
+                      {"Có"}
+                    </Button>
+                    <Button
+                      style={{ height: 34, width: 64 }}
+                      color="gray"
+                      onClick={() => setOpenModal(false)}
+                    >
+                      Không
+                    </Button>
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
 
             <Tabs
               aria-label="Tabs with underline"
@@ -248,7 +382,7 @@ export default function ProductManagement() {
                     rightIcon={HiSearch}
                     placeholder="Search"
                     required
-                    onChange={handleChange}
+                    onChange={handleChangeK}
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
@@ -262,7 +396,10 @@ export default function ProductManagement() {
                           <ProductCard
                             product={product}
                             title={"Chỉnh sửa"}
-                            onClick={() =>{ setOpenModal(true); setIdDelete(product.productId);}}
+                            onClick={() => {
+                              setOpenModal(true);
+                              setIdDelete(product.productId);
+                            }}
                             index={index}
                           ></ProductCard>
                         </div>
@@ -302,7 +439,7 @@ export default function ProductManagement() {
                     rightIcon={HiSearch}
                     placeholder="Search"
                     required
-                    onChange={handleChange}
+                    // onChange={(e) => handleSearchName(e.target.value)}
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
@@ -341,6 +478,7 @@ export default function ProductManagement() {
                       }}
                       id="email4"
                       type="Search"
+                      onChange={handleChangeGR}
                       rightIcon={HiSearch}
                       placeholder="Search"
                       required
@@ -355,7 +493,7 @@ export default function ProductManagement() {
                         paddingRight: 5,
                       }}
                       onClick={() =>
-                        router.push("/productsmanagement/goodsReceipt")
+                        router.push("/productsmanagement/goodsReceipt/add")
                       }
                     >
                       <File style={{ marginRight: 3 }} />
@@ -375,7 +513,7 @@ export default function ProductManagement() {
                     <Table.Head>
                       <Table.HeadCell>STT</Table.HeadCell>
                       <Table.HeadCell>Mã phiếu nhập</Table.HeadCell>
-                      <Table.HeadCell>Mã nhân viên</Table.HeadCell>
+                      {/* <Table.HeadCell>Mã nhân viên</Table.HeadCell> */}
                       <Table.HeadCell>Ngày nhập</Table.HeadCell>
                       <Table.HeadCell>Thành tiền</Table.HeadCell>
                       <Table.HeadCell>
@@ -388,24 +526,29 @@ export default function ProductManagement() {
                           className="divide-y bg-teal-200"
                           key={index}
                         >
-                          <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
-                            onClick={() => alert(index)}
-                          >
+                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-100">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
                               {index + 1}
                             </Table.Cell>
                             <Table.Cell>
-                              {goodsReceipt.goodsReceiptsId}
+                              {goodsReceipt.goodsReceiptId}
                             </Table.Cell>
-                            <Table.Cell>{goodsReceipt.staffId}</Table.Cell>
-                            <Table.Cell>{goodsReceipt.entryDate}</Table.Cell>
-                            <Table.Cell>{goodsReceipt.totalPrice}</Table.Cell>
+                            {/* <Table.Cell>{goodsReceipt.staffId}</Table.Cell> */}
+                            <Table.Cell className="text-right">
+                              {goodsReceipt.entryDate}
+                            </Table.Cell>
+                            <Table.Cell className="text-right">
+                              {new Intl.NumberFormat("en-DE").format(
+                                goodsReceipt.totalPrice
+                              )}
+                            </Table.Cell>
                             <Table.Cell className="w-16">
                               <div style={{ flexDirection: "column" }}>
                                 <button
                                   onClick={() =>
-                                    alert(goodsReceipt.goodsReceiptsId)
+                                    router.push(
+                                      `/productsmanagement/goodsReceipt/${goodsReceipt.goodsReceiptId}`
+                                    )
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
@@ -426,4 +569,5 @@ export default function ProductManagement() {
       </div>
     </main>
   );
-}
+};
+export default ProductManagement;
