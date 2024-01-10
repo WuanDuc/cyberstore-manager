@@ -31,7 +31,7 @@ export const BillProductCard = ({ product, title, onClick, index }) => {
           <div>
             <span className="text-sm font-bold text-gray-900 dark:text-white">
               {product != null
-                ? Math.ceil((product.price * (100 - product.sale)) / 100)
+                ? Math.ceil((product.price * (100 - product.discount)) / 100)
                 : 0}
             </span>
           </div>

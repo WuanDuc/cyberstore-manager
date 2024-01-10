@@ -59,9 +59,11 @@ import api from "@/apis/Api";
 
 const HRManagement = () => {
   const [staffs, setStaffs] = useState([]);
+  const [recentStaff, setRecentStaff] = useState([]);
 
   const getStaffs = async () => {
     const temp = await api.getAllStaffs();
+    setRecentStaff(temp);
     setStaffs(temp);
   };
 
@@ -71,6 +73,27 @@ const HRManagement = () => {
     await api.deleteStaff(id);
     getStaffs();
     alert("Xóa thành công");
+  };
+
+  const handleSearchName = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = staffs.filter((staff, index) => {
+      return (
+        normalizeText(staff.name).includes(normalizeText(search)) ||
+        normalizeText(staff.email).includes(normalizeText(search)) ||
+        normalizeText(staff.phoneNumber).includes(normalizeText(search)) ||
+        normalizeText(staff.staffId).includes(normalizeText(search)) ||
+        normalizeText(staff.position).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setRecentStaff(searchProduct);
+  };
+
+  const handleChange = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchName(e.target.value);
   };
 
   useEffect(() => {
@@ -104,6 +127,7 @@ const HRManagement = () => {
                     }}
                     id="email4"
                     type="Search"
+                    onChange={handleChange}
                     rightIcon={HiSearch}
                     placeholder="Search"
                     required
@@ -149,7 +173,7 @@ const HRManagement = () => {
                   {staffs.length == 0 ? (
                     <></>
                   ) : (
-                    staffs.map((staff, index) => {
+                    recentStaff?.map((staff, index) => {
                       return (
                         <Table.Body
                           className="divide-y bg-teal-200"

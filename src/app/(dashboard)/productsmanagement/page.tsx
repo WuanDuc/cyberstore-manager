@@ -19,27 +19,6 @@ import { useRouter } from "next/navigation";
 import api from "@/apis/Api";
 import { ProductCard } from "@/components/productCard";
 
-const goodsReceipts = [
-  {
-    goodsReceiptsId: "PN001",
-    staffId: "NV002",
-    entryDate: "2023-10-23",
-    totalPrice: 100000000,
-  },
-  {
-    goodsReceiptsId: "PN002",
-    staffId: "NV002",
-    entryDate: "2023-10-23",
-    totalPrice: 100000000,
-  },
-  {
-    goodsReceiptsId: "PN003",
-    staffId: "NV002",
-    entryDate: "2023-10-23",
-    totalPrice: 100000000,
-  },
-];
-
 import ProductGridTab from "@/components/listProductCard";
 import ProductGridTab5Col from "@/components/listProductCard";
 import ProductGridTab4Col from "@/components/listProductCard4Col";
@@ -122,7 +101,7 @@ const FilterContainer = () => (
   </div>
 );
 
-export default function ProductManagement() {
+const ProductManagement = () => {
   const [openModal, setOpenModal] = useState(false);
   const [idDelete, setIdDelete] = useState(0);
   const [salesProducts, setSaleProducts] = useState([]);
@@ -146,113 +125,144 @@ export default function ProductManagement() {
     setProducts(temp);
     setrecentProductList(temp);
   };
+
+  const getGoodsReceipts = async () => {
+    const temp = await api.getAllGoodsReceipt();
+    setGoodReceipts(temp);
+  };
+
   const [recentSaleProductList, setrecentSaleProductList] =
     useState(salesProducts);
-  const [salesProducts, setSaleProducts] = useState([
-    {
-      name: "Sample Product 1",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 2",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 3",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 4",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 5",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 6",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 7",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 8",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand 9",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 10",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 11",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 12",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 13",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 14",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand",
-      sale: 10,
-    },
-    {
-      name: "Sample Product 15",
-      src: "/sample.jpg",
-      price: 19.99,
-      brand: "Sample Brand 16",
-      sale: 10,
-    },
-  ]);
-  const [recentProductList, setRecentProductList] = useState(salesProducts);
+  // const [salesProducts, setSaleProducts] = useState([
+  //   {
+  //     name: "Sample Product 1",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 2",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 3",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 4",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 5",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 6",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 7",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 8",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand 9",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 10",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 11",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 12",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 13",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 14",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand",
+  //     sale: 10,
+  //   },
+  //   {
+  //     name: "Sample Product 15",
+  //     src: "/sample.jpg",
+  //     price: 19.99,
+  //     brand: "Sample Brand 16",
+  //     sale: 10,
+  //   },
+  // ]);
+  // const [recentProductList, setRecentProductList] = useState(salesProducts);
 
   const [goodsReceipts, setGoodReceipts] = useState([]);
+  const [recentGoodsReceipts, setRecentGoodReceipts] = useState([]);
+
+  const handleSearchNameGR = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = goodsReceipts.filter((staff, index) => {
+      return (
+        normalizeText(staff.goodsReceiptId).includes(normalizeText(search)) ||
+        normalizeText(staff.entryDate).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setRecentGoodReceipts(searchProduct);
+  };
+
+  const handleChangeK = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchNameProduct(e.target.value);
+  };
+
+  const handleChangeGR = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchNameGR(e.target.value);
+  };
 
   const router = useRouter();
+
   const handleSearchName = (search) => {
     const normalizeText = (text) => text.toLowerCase();
     const searchProduct = salesProducts.filter((saleProduct, index) => {
@@ -264,6 +274,7 @@ export default function ProductManagement() {
     console.log(searchProduct);
     setrecentSaleProductList(searchProduct);
   };
+
   const handleSearchNameProduct = (search) => {
     const normalizeText = (text) => text.toLowerCase();
     const searchProduct = products.filter((product, index) => {
@@ -278,17 +289,7 @@ export default function ProductManagement() {
   const handleChange = (e) => {
     // setSearchName(e.target.value);
     handleSearchName(e.target.value);
-    handleEnterCustomerName(e.target.value);
-  };
-
-  const getGoodsReceipts = async () => {
-    const temp = await api.getAllGoodsReceipt();
-    setGoodReceipts(temp);
-  };
-
-  const getGoodsReceipts = async () => {
-    const temp = await api.getAllGoodsReceipt();
-    setGoodReceipts(temp);
+    // handleEnterCustomerName(e.target.value);
   };
 
   const handleEnterCustomerName = (e) => {
@@ -381,7 +382,7 @@ export default function ProductManagement() {
                     rightIcon={HiSearch}
                     placeholder="Search"
                     required
-                    onChange={handleChange}
+                    onChange={handleChangeK}
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
@@ -438,7 +439,7 @@ export default function ProductManagement() {
                     rightIcon={HiSearch}
                     placeholder="Search"
                     required
-                    onChange={handleChange}
+                    // onChange={(e) => handleSearchName(e.target.value)}
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
@@ -477,6 +478,7 @@ export default function ProductManagement() {
                       }}
                       id="email4"
                       type="Search"
+                      onChange={handleChangeGR}
                       rightIcon={HiSearch}
                       placeholder="Search"
                       required
@@ -511,7 +513,7 @@ export default function ProductManagement() {
                     <Table.Head>
                       <Table.HeadCell>STT</Table.HeadCell>
                       <Table.HeadCell>Mã phiếu nhập</Table.HeadCell>
-                      <Table.HeadCell>Mã nhân viên</Table.HeadCell>
+                      {/* <Table.HeadCell>Mã nhân viên</Table.HeadCell> */}
                       <Table.HeadCell>Ngày nhập</Table.HeadCell>
                       <Table.HeadCell>Thành tiền</Table.HeadCell>
                       <Table.HeadCell>
@@ -531,7 +533,7 @@ export default function ProductManagement() {
                             <Table.Cell>
                               {goodsReceipt.goodsReceiptId}
                             </Table.Cell>
-                            <Table.Cell>{goodsReceipt.staffId}</Table.Cell>
+                            {/* <Table.Cell>{goodsReceipt.staffId}</Table.Cell> */}
                             <Table.Cell className="text-right">
                               {goodsReceipt.entryDate}
                             </Table.Cell>
@@ -567,4 +569,5 @@ export default function ProductManagement() {
       </div>
     </main>
   );
-}
+};
+export default ProductManagement;
