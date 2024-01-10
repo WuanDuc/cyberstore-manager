@@ -17,6 +17,110 @@ const getAllCompany = async () => {
     return [];
   }
 };
+const getAllRepairOrder = async () => {
+  try {
+    const response = await client.get("/RepairOrder/getRepairOrder");
+    if (response.data.success) {
+      return response.data.RepairOrders;
+    } else {
+      console.log("not get Repair ");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+const addRepairOrder = async (data) => {
+  const endpoint = "/RepairOrder/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateRepairOrder = async (data, id) => {
+  const endpoint = "/RepairOrder/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteRepairOrder = async (id) => {
+  try {
+    await client.delete("/RepairOrder/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const getRepairOrderById = async (id) => {
+  const endpoint = "/RepairOrder/RepairOrderById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    console.log("api");
+    if (response.data.success) {
+      return response.data.repairOrderById;
+    } else {
+      console.log("not get staff by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
+const getAllWarrantyCertificates = async () => {
+  try {
+    const response = await client.get("/WarrantyCertificate/getWarrantyCertificates");
+    if (response.data.success) {
+      return response.data.WarrantyCertificates;
+    } else {
+      console.log("not get WarrantyCertificate ");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+const addWarrantyCertificate = async (data) => {
+  const endpoint = "/WarrantyCertificate/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateWarrantyCertificate = async (data, id) => {
+  const endpoint = "/WarrantyCertificate/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteWarrantyCertificate = async (id) => {
+  try {
+    await client.delete("/WarrantyCertificate/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const getWarrantyCertificateById = async (id) => {
+  const endpoint = "/WarrantyCertificate/WarrantyCertificateById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    console.log("api");
+    if (response.data.success) {
+      return response.data.warrantyCertificateById;
+    } else {
+      console.log("not get WarrantyCertificate by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
 const getAllProduct = async () => {
   try {
     const response = await client.get("/Product/getProduct");
