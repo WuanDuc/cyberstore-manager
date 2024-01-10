@@ -60,6 +60,7 @@ const getRepairOrderById = async (id) => {
     const response = await client.get(endpoint);
     console.log("api");
     if (response.data.success) {
+      console.log(response.data.repairOrderById);
       return response.data.repairOrderById;
     } else {
       console.log("not get staff by id");
@@ -431,6 +432,16 @@ const getDiscountById = async (id) => {
 };
 
 export default {
+  getAllRepairOrder,
+  getRepairOrderById,
+  addRepairOrder,
+  updateRepairOrder,
+  deleteRepairOrder,
+  getAllWarrantyCertificates,
+  getWarrantyCertificateById,
+  addWarrantyCertificate,
+  updateWarrantyCertificate,
+  deleteWarrantyCertificate,
   getAllProduct,
   getProductById,
   addProduct,
