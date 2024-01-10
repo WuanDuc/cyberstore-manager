@@ -6,12 +6,13 @@ import {
   Table,
   Tabs,
   TextInput,
+Modal
 } from "flowbite-react";
 import { Console } from "console";
 import { useEffect, useState } from "react";
 import { SaleProductCard } from "@/components/saleProductCard";
 import SearchInput from "@/components/searchinput";
-import { HiSearch } from "react-icons/hi";
+import { HiSearch, HiOutlineExclamationCircle } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File, FileText } from "react-feather";
 import { useRouter } from "next/navigation";
@@ -117,6 +118,8 @@ const FilterContainer = () => (
 );
 
 export default function ProductManagement() {
+  const [openModal, setOpenModal] = useState(false);
+  const [idDelete, setIdDelete] = useState(0);
   const [salesProducts, setSaleProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const getSalesProduct = async () => {
@@ -127,6 +130,11 @@ export default function ProductManagement() {
   };
   const [recentProductList, setrecentProductList] = useState(products);
   
+  const handleDeleteProduct = async (id) => {
+    await api.deleteProduct(id);
+    await getProduct();
+  }
+
   const getProduct = async () => {
     const temp = await api.getAllProduct();
     console.log(temp);
@@ -182,6 +190,29 @@ export default function ProductManagement() {
             <label className=" font-semibold text-2xl text-black p-7 pt-24">
               Quản lý sản phẩm
             </label>
+            <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+                              <Modal.Header />
+                              <Modal.Body>
+                                <div className="text-center">
+                                  <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                                  <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                    Bạn có muốn xóa sản phẩm này?
+                                  </h3>
+                                  <div className="flex justify-center gap-4">
+                                    <Button style={{height: 34, width: 64}} color="failure" onClick={async () =>{
+                                        setOpenModal(false);
+                                        await handleDeleteProduct(idDelete);
+                                    }}>
+                                      {"Có"}
+                                    </Button>
+                                    <Button style={{height: 34, width: 64}} color="gray" onClick={() => setOpenModal(false)}>
+                                      Không
+                                    </Button>
+                                  </div>
+                                </div>
+                              </Modal.Body>
+                            </Modal>
+
             <Tabs
               aria-label="Tabs with underline"
               style="underline"
@@ -231,7 +262,7 @@ export default function ProductManagement() {
                           <ProductCard
                             product={product}
                             title={"Chỉnh sửa"}
-                            onClick={console.log("ok")}
+                            onClick={() =>{ setOpenModal(true); setIdDelete(product.productId);}}
                             index={index}
                           ></ProductCard>
                         </div>

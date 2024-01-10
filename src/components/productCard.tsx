@@ -23,12 +23,12 @@ export const ProductCard = ({ product, title, onClick, index }) => {
           {product !== undefined && product.productName !== null ? product.productName : " "}
         </h5>
       </a>
-      <div className=" flex-col">
-            <span className=" line-through text-xs text-gray-600 dark:text-gray-400">
-            {product.companyName}
+      <div className=" grid grid-cols-1">
+            <span className="  text-xs text-white dark:text-white">
+            Hãng: {product.companyName}
           </span>
-            <span className=" text-sm line-through text-gray-600 dark:text-gray-400">
-            {product.amount}
+            <span className=" text-xs  text-white dark:text-white">
+            Số lượng: {product.amount}
           </span>
       </div>
       <div className="flex items-center justify-between flow-root">
@@ -42,10 +42,7 @@ export const ProductCard = ({ product, title, onClick, index }) => {
           Sửa
         </button>
         <button
-          onClick={async () => {
-            console.log(product);
-            await api.deleteProduct(product.productId);
-          }}
+          onClick={()=>onClick(product.productId)}
           className=" float-right w-12 h-8 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
         >
           Xóa
