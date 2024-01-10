@@ -1,9 +1,11 @@
 "use client";
 
 import { Card, CustomFlowbiteTheme } from "flowbite-react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const SaleProductCard = ({ product, title, onClick, index }) => {
+  const router = useRouter();
   if (product == undefined) console.log(index);
   return (
     <Card
@@ -39,8 +41,7 @@ export const SaleProductCard = ({ product, title, onClick, index }) => {
       <div className="flex items-center justify-between flow-root">
         <button
           onClick={() => {
-            console.log(product);
-            onClick(product);
+            router.push(`/productsmanagement/addSaleProduct/${product.saleProductId}`)
           }}
           className=" float-left w-12 h-8 rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
         >
