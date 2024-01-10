@@ -6,6 +6,7 @@ import {
   Tabs,
   Table,
   TextInput,
+  Select,
 } from "flowbite-react";
 import { Console } from "console";
 import { ProductCard } from "@/components/productCard";
@@ -61,13 +62,29 @@ const GoodReceipt = ({ params }) => {
   ]);
   const [goodsReceipt, setGoodsReceipt] = useState({
     goodsReceiptId: "",
-    entryDate: moment().format("YYYY-MM-DD"),
+    entryDate: moment().format("YYYY-MM-DD").toString(),
     staffId: "",
     totalPrice: 0,
     importedProducts: [],
   });
+  const [products, setProducts] = useState([]);
+  const [recentImported, setRecentImported] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const getProducts = async () => {
+    const temp = await api.getAllProduct();
+    setProducts(temp);
+  };
 
   const { id } = params;
+
+  const handleChange = (e) => {
+    setRecentImported({
+      ...recentImported,
+      [e.target.name]: e.target.value,
+    });
+    console.log("name: ", e.target.name, " value: ", e.target.value);
+  };
 
   const router = useRouter();
   const getGoodsReceipt = async () => {
@@ -76,9 +93,51 @@ const GoodReceipt = ({ params }) => {
     setGoodsReceipt(temp);
   };
 
+  const handleImportProduct = async () => {
+    const matchName = recentImported.productId != "";
+    const matchPrice = recentImported.importedPrice > 0;
+    const matchAmount = recentImported.amount > 0;
+    const matchSup = recentImported.supplierName != "";
+    let matchId = true;
+    importedProducts.map((imported, index) => {
+      if (imported.productId == recentImported.productId) {
+        matchId = false;
+      }
+    });
+    if (matchName && matchAmount && matchPrice && matchSup && matchId) {
+      let temp = importedProducts;
+      setTotalPrice(
+        totalPrice + recentImported.amount * recentImported.importedPrice
+      );
+      temp.push(recentImported);
+    } else {
+      alert(
+        "Vui lòng điền đầy đủ thông tin hoặc chọn loại sản phẩm chưa có trong phiếu nhập này"
+      );
+    }
+  };
+
+  const handleUpdateReceipt = async () => {
+    if (importedProducts.length > 0) {
+      let temp = goodsReceipt;
+      temp.importedProducts = importedProducts;
+      temp.totalPrice = totalPrice;
+      let id = "";
+      await api.addGoodsReceipt(temp).then((docId) => {
+        id = docId;
+      });
+      temp.goodsReceiptId = id;
+      await api.updateGoodsReceipt(temp, id);
+      alert("Thêm phiếu nhập thành công");
+      router.back();
+    }
+  };
+
   useEffect(() => {
     if (id !== "add") {
       getGoodsReceipt();
+    } else {
+      getProducts();
     }
   }, []);
 
@@ -115,11 +174,25 @@ const GoodReceipt = ({ params }) => {
                         Tên sản phẩm <span className="text-red-700">*</span>
                       </h2>
                       <div className="flex flex-row">
-                        <input
-                          type="text"
+                        <select
+                          style={{ backgroundColor: "white", color: "black" }}
                           disabled={id !== "add"}
                           className="w-full h-10 border border-gray-300 rounded px-3"
-                        />
+                          id="productId"
+                          name="productId"
+                          value={recentImported.productId || ""}
+                          onChange={handleChange}
+                        >
+                          {products?.map((product: any) => (
+                            <option
+                              key={product.productId}
+                              value={product.productId}
+                              id="tinh"
+                            >
+                              {product.productName}
+                            </option>
+                          ))}
+                        </select>
                         <Button
                           style={{
                             width: 45,
@@ -140,8 +213,12 @@ const GoodReceipt = ({ params }) => {
                         Số lượng <span className="text-red-700">*</span>
                       </h2>
                       <input
-                        type="text"
+                        type="number"
                         disabled={id !== "add"}
+                        name="amount"
+                        min={1}
+                        defaultValue={1}
+                        onChange={handleChange}
                         className="w-full h-10 border border-gray-300 rounded px-3"
                       />
                     </div>
@@ -152,6 +229,9 @@ const GoodReceipt = ({ params }) => {
                       </h2>
                       <input
                         type="text"
+                        name="supplierName"
+                        value={recentImported?.supplierName}
+                        onChange={handleChange}
                         disabled={id !== "add"}
                         className="w-full h-10 border border-gray-300 rounded px-3"
                       />
@@ -159,14 +239,23 @@ const GoodReceipt = ({ params }) => {
                         Đơn giá <span className="text-red-700">*</span>
                       </h2>
                       <input
-                        type="text"
+                        type="number"
+                        min={0}
+                        defaultValue={0}
+                        name="importedPrice"
+                        value={recentImported.importedPrice}
+                        onChange={handleChange}
                         disabled={id !== "add"}
                         className="w-full h-10 border border-gray-300 rounded px-3"
                       />
                     </div>
                   </div>
                   <h1 className="text-xl text-black font-bold mb-1 mt-4">
-                    Thành tiền:
+                    {"Thành tiền: " +
+                      new Intl.NumberFormat("en-DE").format(
+                        (recentImported?.amount || 0) *
+                          (recentImported?.importedPrice || 0)
+                      )}
                   </h1>
                 </div>
               ) : (
@@ -176,9 +265,7 @@ const GoodReceipt = ({ params }) => {
               <div className="flex flex-row justify-between">
                 <h1 className="text-xl text-black font-bold mb-1 mt-1">
                   {"Tổng thành tiền: " +
-                    new Intl.NumberFormat("en-DE").format(
-                      goodsReceipt.totalPrice
-                    )}
+                    new Intl.NumberFormat("en-DE").format(totalPrice)}
                 </h1>
                 {id == "add" ? (
                   <h1 className="text-xl text-black font-bold mb-1 mt-1">
@@ -200,6 +287,7 @@ const GoodReceipt = ({ params }) => {
                       paddingRight: 8,
                       height: 40,
                     }}
+                    onClick={handleImportProduct}
                   >
                     Thêm sản phẩm
                   </Button>
@@ -213,6 +301,7 @@ const GoodReceipt = ({ params }) => {
                       height: 40,
                       marginLeft: 10,
                     }}
+                    onClick={handleUpdateReceipt}
                   >
                     Lưu
                   </Button>
@@ -237,17 +326,14 @@ const GoodReceipt = ({ params }) => {
                   <Table.HeadCell>Số lượng</Table.HeadCell>
                   <Table.HeadCell>Đơn giá</Table.HeadCell>
                   <Table.HeadCell>Thành tiền</Table.HeadCell>
-                  {/* <Table.HeadCell>
+                  <Table.HeadCell hidden={id !== "add"}>
                     <span className="sr-only">Edit</span>
-                  </Table.HeadCell> */}
+                  </Table.HeadCell>
                 </Table.Head>
                 {importedProducts?.map((importedProduct, index) => {
                   return (
                     <Table.Body className="divide-y bg-teal-200" key={index}>
-                      <Table.Row
-                        className="bg-white dark:border-gray-700 dark:bg-teal-200"
-                        onClick={() => alert(index)}
-                      >
+                      <Table.Row className="bg-white dark:border-gray-700 dark:bg-teal-200">
                         <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1/12 text-center">
                           {index + 1}
                         </Table.Cell>
@@ -271,17 +357,27 @@ const GoodReceipt = ({ params }) => {
                               importedProduct.amount
                           )}
                         </Table.Cell>
-                        {/* <Table.Cell className="w-1/12 text-center">
+                        <Table.Cell
+                          className="w-1/12 text-center"
+                          hidden={id !== "add"}
+                        >
                           <div style={{ flexDirection: "column" }}>
                             <button
-                              onClick={() => alert(importedProduct.productId)}
+                              onClick={() => {
+                                const choice = window.confirm(
+                                  "Bạn có chắc chắn muốn xóa?"
+                                );
+                                if (choice) {
+                                  importedProducts.splice(index, 1);
+                                }
+                              }}
                               className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                               disabled={id !== "add"}
                             >
                               <Trash2 color="green" />
                             </button>
                           </div>
-                        </Table.Cell> */}
+                        </Table.Cell>
                       </Table.Row>
                     </Table.Body>
                   );

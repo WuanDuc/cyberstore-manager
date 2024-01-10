@@ -214,7 +214,7 @@ const HRManagement = () => {
                 </Table>
               </div>
             </Tabs.Item>
-            <Tabs.Item title="Quản lý lương"></Tabs.Item>
+            {/* <Tabs.Item title="Quản lý lương"></Tabs.Item> */}
           </Tabs>
         </div>
       </div>

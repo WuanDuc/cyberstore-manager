@@ -122,6 +122,16 @@ const AddStaffManagement = ({ params }) => {
     setStaff(temp);
   };
 
+  const checkEmail = (email) => {
+    var filter =
+      /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (!filter.test(email)) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const isValidData = () => {
     setAddress();
     const matchName = staff.name != "";
@@ -133,7 +143,7 @@ const AddStaffManagement = ({ params }) => {
       selectedWardname != "";
     const tempSoNha = document.getElementById("soNha")?.value;
     const matchSoNha = tempSoNha != "";
-    const matchEmail = staff.email != "";
+    const matchEmail = checkEmail(staff.email);
     const matchPassword = staff.password != "";
     const matchPosition = staff.position != "";
     const matchSalary = staff.salary > 1000000;
@@ -550,8 +560,7 @@ const AddStaffManagement = ({ params }) => {
                         className=" text-black font-semibold"
                         htmlFor="conver1"
                       >
-                        {" "}
-                        Email
+                        {"Email (ex: abc@gmail.com)"}
                       </label>
                     </div>
                     <div className=" mb-2 flow-root">
@@ -688,10 +697,8 @@ const AddStaffManagement = ({ params }) => {
                     id="salary"
                     name="salary"
                     type="number"
-                    min={0}
-                    defaultValue={new Intl.NumberFormat("en-DE").format(
-                      staff?.salary
-                    )}
+                    // min={0}
+                    value={staff?.salary || 0}
                     // value={(value) =>
                     //   new Intl.NumberFormat("en-DE").format(value)
                     // }
