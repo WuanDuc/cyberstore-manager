@@ -4,11 +4,11 @@ const client = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-const getAllProductTypes = async () => {
+const getAllCompany = async () => {
   try {
-    const response = await client.get("/ProductType/getProductTypes");
+    const response = await client.get("/Company/getCompanys");
     if (response.data.success) {
-      return response.data.productTypes;
+      return response.data.companys;
     } else {
       console.log("not get product types");
     }
@@ -17,7 +17,109 @@ const getAllProductTypes = async () => {
     return [];
   }
 };
-
+const getAllProduct = async () => {
+  try {
+    const response = await client.get("/Product/getProduct");
+    if (response.data.success) {
+      return response.data.Products;
+    } else {
+      console.log("not get product ");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+const addProduct = async (data) => {
+  const endpoint = "/Product/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateProduct = async (data, id) => {
+  const endpoint = "/Product/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteProduct = async (id) => {
+  try {
+    await client.delete("/Product/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const getProductById = async (id) => {
+  const endpoint = "/Product/ProductById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    console.log("api");
+    if (response.data.success) {
+      return response.data.productById;
+    } else {
+      console.log("not get staff by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
+const getAllSaleProduct = async () => {
+  try {
+    const response = await client.get("/SaleProduct/getSaleProduct");
+    if (response.data.success) {
+      return response.data.saleProducts;
+    } else {
+      console.log("not get product types");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+const addSaleProduct = async (data) => {
+  const endpoint = "/SaleProduct/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateSaleProduct = async (data, id) => {
+  const endpoint = "/SaleProduct/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteSaleProduct = async (id) => {
+  try {
+    await client.delete("/SaleProduct/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const getSaleProductById = async (id) => {
+  const endpoint = "/SaleProduct/saleProductById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    if (response.data.success) {
+      return response.data.staffById;
+    } else {
+      console.log("not get staff by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
 const getAllStaffs = async () => {
   try {
     const response = await client.get("/StaffManagement/getStaffs");
@@ -398,7 +500,17 @@ const getSaleProductById = async (id) => {
 };
 
 export default {
-  getAllProductTypes,
+  getAllProduct,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+  getAllSaleProduct,
+  getSaleProductById,
+  addSaleProduct,
+  updateSaleProduct,
+  deleteSaleProduct,
+  getAllCompany,
   getAllStaffs,
   getStaffById,
   updateStaff,

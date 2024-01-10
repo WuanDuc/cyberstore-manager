@@ -6,15 +6,18 @@ import {
   Table,
   Tabs,
   TextInput,
+  Modal,
 } from "flowbite-react";
 import { Console } from "console";
 import { useEffect, useState } from "react";
-import { ProductCard } from "@/components/productCard";
+import { SaleProductCard } from "@/components/saleProductCard";
 import SearchInput from "@/components/searchinput";
-import { HiSearch } from "react-icons/hi";
+import { HiSearch, HiOutlineExclamationCircle } from "react-icons/hi";
 import { THEME } from "@/constant/theme";
 import { Eye, File, FileText } from "react-feather";
 import { useRouter } from "next/navigation";
+import api from "@/apis/Api";
+import { ProductCard } from "@/components/productCard";
 
 const goodsReceipts = [
   {
@@ -40,7 +43,6 @@ const goodsReceipts = [
 import ProductGridTab from "@/components/listProductCard";
 import ProductGridTab5Col from "@/components/listProductCard";
 import ProductGridTab4Col from "@/components/listProductCard4Col";
-import api from "@/apis/Api";
 
 const FilterContainer = () => (
   <div className="h-2/3 w-100 bg-gray-300 p-4 ml-4 mr-4 text-center">
@@ -121,6 +123,31 @@ const FilterContainer = () => (
 );
 
 export default function ProductManagement() {
+  const [openModal, setOpenModal] = useState(false);
+  const [idDelete, setIdDelete] = useState(0);
+  const [salesProducts, setSaleProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const getSalesProduct = async () => {
+    const temp = await api.getAllSaleProduct();
+    console.log(temp);
+    setSaleProducts(temp);
+    setrecentSaleProductList(temp);
+  };
+  const [recentProductList, setrecentProductList] = useState(products);
+
+  const handleDeleteProduct = async (id) => {
+    await api.deleteProduct(id);
+    await getProduct();
+  };
+
+  const getProduct = async () => {
+    const temp = await api.getAllProduct();
+    console.log(temp);
+    setProducts(temp);
+    setrecentProductList(temp);
+  };
+  const [recentSaleProductList, setrecentSaleProductList] =
+    useState(salesProducts);
   const [salesProducts, setSaleProducts] = useState([
     {
       name: "Sample Product 1",
@@ -235,12 +262,28 @@ export default function ProductManagement() {
       );
     });
     console.log(searchProduct);
-    setRecentProductList(searchProduct);
+    setrecentSaleProductList(searchProduct);
   };
-
+  const handleSearchNameProduct = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = products.filter((product, index) => {
+      return (
+        normalizeText(product.productName).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setrecentProductList(searchProduct);
+  };
   const handleChange = (e) => {
     // setSearchName(e.target.value);
     handleSearchName(e.target.value);
+    handleEnterCustomerName(e.target.value);
+  };
+
+  const getGoodsReceipts = async () => {
+    const temp = await api.getAllGoodsReceipt();
+    setGoodReceipts(temp);
   };
 
   const getGoodsReceipts = async () => {
@@ -253,7 +296,10 @@ export default function ProductManagement() {
       alert(e.target.value);
     }
   };
+
   useEffect(() => {
+    getSalesProduct();
+    getProduct();
     getGoodsReceipts();
   }, []);
   return (
@@ -264,6 +310,42 @@ export default function ProductManagement() {
             <label className=" font-semibold text-2xl text-black p-7 pt-24">
               Quản lý sản phẩm
             </label>
+            <Modal
+              show={openModal}
+              size="md"
+              onClose={() => setOpenModal(false)}
+              popup
+            >
+              <Modal.Header />
+              <Modal.Body>
+                <div className="text-center">
+                  <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                  <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                    Bạn có muốn xóa sản phẩm này?
+                  </h3>
+                  <div className="flex justify-center gap-4">
+                    <Button
+                      style={{ height: 34, width: 64 }}
+                      color="failure"
+                      onClick={async () => {
+                        setOpenModal(false);
+                        await handleDeleteProduct(idDelete);
+                      }}
+                    >
+                      {"Có"}
+                    </Button>
+                    <Button
+                      style={{ height: 34, width: 64 }}
+                      color="gray"
+                      onClick={() => setOpenModal(false)}
+                    >
+                      Không
+                    </Button>
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
+
             <Tabs
               aria-label="Tabs with underline"
               style="underline"
@@ -282,7 +364,7 @@ export default function ProductManagement() {
                       backgroundColor: "#0156FF",
                     }}
                     onClick={() =>
-                      router.push("/productsmanagement/updateProduct")
+                      router.push("/productsmanagement/updateProduct/add")
                     }
                   >
                     <FileText /> Thêm loại sản phẩm
@@ -305,14 +387,18 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-5">
-                    {recentProductList.map((saleProduct, index) => {
+                    {recentProductList.map((product, index) => {
+                      console.log(product);
                       return (
                         <div key={index} className="flex flex-row mt-4">
                           <div className="w-4"></div>
                           <ProductCard
-                            product={saleProduct}
+                            product={product}
                             title={"Chỉnh sửa"}
-                            onClick={console.log("ok")}
+                            onClick={() => {
+                              setOpenModal(true);
+                              setIdDelete(product.productId);
+                            }}
                             index={index}
                           ></ProductCard>
                         </div>
@@ -358,16 +444,18 @@ export default function ProductManagement() {
                 <div className="flex overflow-y-scroll">
                   <FilterContainer />
                   <div className="grid grid-cols-4">
-                    {recentProductList.map((saleProduct, index) => {
+                    {recentSaleProductList.map((saleProduct, index) => {
+                      console.log(saleProduct);
+                      console.log(index);
                       return (
                         <div key={index} className="flex flex-row mt-4">
                           <div className="w-4"></div>
-                          <ProductCard
+                          <SaleProductCard
                             product={saleProduct}
                             title={"Chỉnh sửa"}
                             onClick={console.log("ok")}
                             index={index}
-                          ></ProductCard>
+                          ></SaleProductCard>
                         </div>
                       );
                     })}
