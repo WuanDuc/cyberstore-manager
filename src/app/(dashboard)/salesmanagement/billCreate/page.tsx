@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { SHARE_FUNCTIONS } from "@/constant/function";
 import { BillCard } from "@/components/billProduct";
 import AddressSelect from "@/components/address";
+import { BillProductCard } from "@/components/billProductCard";
 
 export default function CreateBills() {
   const [salesProducts, setSaleProducts] = useState([
@@ -221,6 +222,7 @@ export default function CreateBills() {
   const createNewBill = () => {
     let temp = listCurrentBill;
     temp.push({ product: [] });
+    alert("Tạo hóa đơn mới thành công");
     setListCurrentBill(temp);
   };
 
@@ -246,7 +248,9 @@ export default function CreateBills() {
     }
   };
 
-  useEffect(() => {}, [listCurrentBill]);
+  // useEffect(() => {
+
+  // }, [listCurrentBill]);
 
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
@@ -301,7 +305,7 @@ export default function CreateBills() {
                         </label> */}
                         <div className="h-12 w-full">
                           <TextInput
-                            className="w-full pr-4"
+                            className="w-11/12 pl-4"
                             style={{
                               backgroundColor: "white",
                               borderRadius: 20,
@@ -325,20 +329,20 @@ export default function CreateBills() {
                             return (
                               <div key={index} className="flex flex-row mt-4">
                                 <div className="w-4"></div>
-                                <ProductCard
+                                <BillProductCard
                                   product={saleProduct}
                                   title={"Thêm sản phẩm"}
                                   onClick={handleAddProductToBill}
                                   index={index}
-                                ></ProductCard>
+                                ></BillProductCard>
                                 {recentProductList[index + 1] !== undefined ? (
                                   <div className="ml-4">
-                                    <ProductCard
+                                    <BillProductCard
                                       product={recentProductList[index + 1]}
                                       title={"Thêm sản phẩm"}
                                       onClick={handleAddProductToBill}
                                       index={index}
-                                    ></ProductCard>
+                                    ></BillProductCard>
                                   </div>
                                 ) : (
                                   <></>
@@ -435,6 +439,16 @@ export default function CreateBills() {
                               paddingLeft: 4,
                               paddingRight: 4,
                               backgroundColor: "#0156FF",
+                            }}
+                            onClick={() => {
+                              if (activeBill > 0) {
+                                listCurrentBill.splice(activeBill, 1);
+                                setActiveBill(0);
+                              } else {
+                                alert(
+                                  "Không thể xóa hóa đơn duy nhất này! Vui lòng làm mới dữ liệu"
+                                );
+                              }
                             }}
                           >
                             Hủy thanh toán

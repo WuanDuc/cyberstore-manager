@@ -40,6 +40,7 @@ const goodsReceipts = [
 import ProductGridTab from "@/components/listProductCard";
 import ProductGridTab5Col from "@/components/listProductCard";
 import ProductGridTab4Col from "@/components/listProductCard4Col";
+import api from "@/apis/Api";
 
 const FilterContainer = () => (
   <div className="h-2/3 w-100 bg-gray-300 p-4 ml-4 mr-4 text-center">
@@ -222,6 +223,8 @@ export default function ProductManagement() {
   ]);
   const [recentProductList, setRecentProductList] = useState(salesProducts);
 
+  const [goodsReceipts, setGoodReceipts] = useState([]);
+
   const router = useRouter();
   const handleSearchName = (search) => {
     const normalizeText = (text) => text.toLowerCase();
@@ -240,11 +243,19 @@ export default function ProductManagement() {
     handleSearchName(e.target.value);
   };
 
+  const getGoodsReceipts = async () => {
+    const temp = await api.getAllGoodsReceipt();
+    setGoodReceipts(temp);
+  };
+
   const handleEnterCustomerName = (e) => {
     if (e.key === "Enter") {
       alert(e.target.value);
     }
   };
+  useEffect(() => {
+    getGoodsReceipts();
+  }, []);
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="flex-col fixed top-0 w-screen h-screen overflow-y-scroll">
@@ -392,7 +403,7 @@ export default function ProductManagement() {
                         paddingRight: 5,
                       }}
                       onClick={() =>
-                        router.push("/productsmanagement/goodsReceipt")
+                        router.push("/productsmanagement/goodsReceipt/add")
                       }
                     >
                       <File style={{ marginRight: 3 }} />
@@ -425,24 +436,29 @@ export default function ProductManagement() {
                           className="divide-y bg-teal-200"
                           key={index}
                         >
-                          <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-gray-100"
-                            onClick={() => alert(index)}
-                          >
+                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-100">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
                               {index + 1}
                             </Table.Cell>
                             <Table.Cell>
-                              {goodsReceipt.goodsReceiptsId}
+                              {goodsReceipt.goodsReceiptId}
                             </Table.Cell>
                             <Table.Cell>{goodsReceipt.staffId}</Table.Cell>
-                            <Table.Cell>{goodsReceipt.entryDate}</Table.Cell>
-                            <Table.Cell>{goodsReceipt.totalPrice}</Table.Cell>
+                            <Table.Cell className="text-right">
+                              {goodsReceipt.entryDate}
+                            </Table.Cell>
+                            <Table.Cell className="text-right">
+                              {new Intl.NumberFormat("en-DE").format(
+                                goodsReceipt.totalPrice
+                              )}
+                            </Table.Cell>
                             <Table.Cell className="w-16">
                               <div style={{ flexDirection: "column" }}>
                                 <button
                                   onClick={() =>
-                                    alert(goodsReceipt.goodsReceiptsId)
+                                    router.push(
+                                      `/productsmanagement/goodsReceipt/${goodsReceipt.goodsReceiptId}`
+                                    )
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
