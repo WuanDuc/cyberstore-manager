@@ -199,13 +199,13 @@ export default function ProductManagement() {
                                     Bạn có muốn xóa sản phẩm này?
                                   </h3>
                                   <div className="flex justify-center gap-4">
-                                    <Button style={{height: 34, width: 34}} color="failure" onClick={async () =>{
+                                    <Button style={{height: 34, width: 64}} color="failure" onClick={async () =>{
                                         setOpenModal(false);
                                         await handleDeleteProduct(idDelete);
                                     }}>
                                       {"Có"}
                                     </Button>
-                                    <Button style={{height: 34, width: 34}} color="gray" onClick={() => setOpenModal(false)}>
+                                    <Button style={{height: 34, width: 64}} color="gray" onClick={() => setOpenModal(false)}>
                                       Không
                                     </Button>
                                   </div>
