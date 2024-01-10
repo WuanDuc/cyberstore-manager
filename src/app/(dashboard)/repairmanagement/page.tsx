@@ -8,137 +8,11 @@ import {
   TextInput,
 } from "flowbite-react";
 import { Console } from "console";
-import { SaleProductCard } from "@/components/productCard";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
 import { useRouter } from "next/navigation";
+import api from "@/apis/Api"
 
-const sampleProduct = {
-  name: "Sample Product",
-  src: "/sample.jpg",
-  price: 19.99,
-  brand: "Sample Brand",
-  sale: 10,
-};
-
-const RepairContainerLeft = () => (
-  <div className="h-300 w-2/4  p-4 ml-6 mr-6  ">
-    <h1 className="text-xl text-black font-bold mb-2">
-      Thông tin phiếu bảo hành
-    </h1>
-    <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Mã phiếu</h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Tên khách hàng
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Số điện thoại
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Mã hóa đơn</h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Ngày lập phiếu - Ngày hết hạn
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3 mt-2"
-    />
-  </div>
-);
-
-const RepairContainerRight = () => (
-  <div className="h-1/4 w-1/4 bg-gray-300 p-4 mr-6 ">
-    <h1 className="text-xl text-black font-bold mb-2">
-      Thông tin máy bảo hành
-    </h1>
-    <div className="w-full h-100 bg-gray-600 mb-2"></div>
-    <div className="flex">
-      {/* Hình ảnh bên trái */}
-      <img
-        src="https://asset.msi.com/resize/image/global/product/product_0_20181005103112_5bb6ccf062df0.png62405b38c58fe0f07fcef2367d8a9ba1/1024.png"
-        alt="Product Image"
-        className="w-40 h-40 rounded mr-4"
-      />
-
-      {/* Container chứa thông tin bên phải */}
-      <div className="flex flex-col mt-5  ">
-        <div className="mb-1">
-          <h2 className="text-black font-semibold">Tên máy:</h2>
-          <span className="text-black">MSI MEG Trident X 102D</span>
-        </div>
-        <div>
-          <span className="font-semibold text-black">Giá: $3,799</span>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const DiscountContainerLeft = () => (
-  <div className="h-300 w-2/4  p-4 ml-6 mr-6  ">
-    <h1 className="text-xl text-black font-bold mb-2">
-      Thông tin chương trình
-    </h1>
-    <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Mã chương trình
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Tên chương trình
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Thời gian bắt đầu
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">
-      Thời gian kết thúc
-    </h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Điều kiện</h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-    <h2 className="text-lg text-black font-semibold mb-1 mt-4">Chiết khấu</h2>
-    <input
-      type="text"
-      className="w-full h-10 border border-gray-300 rounded px-3"
-    />
-  </div>
-);
 
 const DiscountContainerRight = () => (
   <div className="h-1/4 w-1/4 bg-gray-300 p-4 mr-6 ">
@@ -204,33 +78,30 @@ const repairOrders = [
 ];
 
 export default function RepairManagement() {
-  const [warrantyCertificates, setWarranty] = useState([
-    {
-      warrantyId: "BH001",
-      warrantyPeriod: 12,
-      billId: "HD001",
-      startDate: "2023-01-12",
-      status: "",
-    },
-    {
-      warrantyId: "BH002",
-      warrantyPeriod: 12,
-      billId: "HD001",
-      startDate: "2023-01-12",
-      status: "",
-    },
-    {
-      warrantyId: "BH003",
-      warrantyPeriod: 12,
-      billId: "HD001",
-      startDate: "2023-01-12",
-      status: "",
-    },
-  ]);
+  const [repairOder, setRepairOrder] = useState([]);
+  const [warrantyCertificates, setWarranty] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [idDelete, setIdDelete] = useState(0);
 
   const router = useRouter();
-
+  const getRepairOrder =async () => {
+    const temp = await api.getAllRepairOrder();
+    console.log(temp);
+    setRepairOrder(temp);
+  }
+  const getWarrantyCertificates =async () => {
+    const temp = await api.getAllWarrantyCertificates();
+    console.log(temp);
+    setWarranty(temp);
+  }
+  const handleDeleteRepair = async (id) => {
+    await api.deleteRepairOrder(id);
+    getRepairOrder();
+    alert("Xóa thành công");
+  };
   useEffect(() => {
+    getRepairOrder();
+    getWarrantyCertificates();
     const temp = warrantyCertificates.map((warrantyCertificate, index) => {
       const flag = SHARE_FUNCTIONS.compareWithToday(
         warrantyCertificate.startDate
@@ -251,7 +122,21 @@ export default function RepairManagement() {
     });
     setWarranty(temp);
   }, []);
-
+  const isWarrantyExpired = (creationDate, warrantyMonths) => {
+    // Tạo đối tượng ngày từ ngày lập phiếu
+    const creationDateTime = new Date(creationDate);
+  
+    // Thêm số tháng bảo hành vào ngày lập phiếu
+    const expirationDateTime = new Date(creationDateTime);
+    expirationDateTime.setMonth(expirationDateTime.getMonth() + warrantyMonths);
+  
+    // Lấy ngày hiện tại
+    const currentDate = new Date();
+  
+    // So sánh ngày hiện tại với ngày hết hạn
+    return currentDate > expirationDateTime;
+  }
+  
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -294,7 +179,7 @@ export default function RepairManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => alert("hihi")}
+                      onClick={() => router.push(`repairmanagement/addrepair/add`)}
                     >
                       <File style={{ marginRight: 3 }} />
                       Thêm phiếu sửa chữa
@@ -324,7 +209,7 @@ export default function RepairManagement() {
                         <span className="sr-only">Edit</span>
                       </Table.HeadCell>
                     </Table.Head>
-                    {repairOrders.map((repairOder, index) => {
+                    {repairOder.map((repairOder, index) => {
                       return (
                         <Table.Body
                           className="divide-y bg-teal-200"
@@ -332,7 +217,7 @@ export default function RepairManagement() {
                         >
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-gray-100 px-3 py-2"
-                            onClick={() => alert(index)}
+                            
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center px-3 py-2">
                               {index + 1}
@@ -350,10 +235,10 @@ export default function RepairManagement() {
                               {repairOder.productName}
                             </Table.Cell>
                             <Table.Cell className="w-28 text-right px-3 py-2">
-                              {repairOder.receivedDate}
+                              {repairOder.receiptDate}
                             </Table.Cell>
                             <Table.Cell className="w-28 text-right px-3 py-2">
-                              {repairOder.scheduledDate}
+                              {repairOder.appointmentDate}
                             </Table.Cell>
                             <Table.Cell className="w-24 px-3 py-2">
                               {repairOder.warrantyId !== null
@@ -372,8 +257,8 @@ export default function RepairManagement() {
                             <Table.Cell className="w-24 px-3 py-2 align-center">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={() =>
-                                    alert(repairOder.repairOrderId)
+                                  onClick={  () =>
+                                    router.push(`/repairmanagement/addrepair/${repairOder.repairOrderId}`)
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
@@ -382,7 +267,7 @@ export default function RepairManagement() {
                                 </button>
                                 <button
                                   onClick={() =>
-                                    alert(repairOder.repairOrderId)
+                                    handleDeleteRepair(repairOder.repairOrderId)
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                 >
@@ -447,7 +332,7 @@ export default function RepairManagement() {
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-gray-100"
                             onClick={() =>
-                              router.push("/repairmanagement/warrantyDetail")
+                              router.push(`/repairmanagement/warrantyDetail/${warrantyCertificate.warrantyId}`)
                             }
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
@@ -466,15 +351,15 @@ export default function RepairManagement() {
                               {warrantyCertificate.warrantyPeriod + " tháng"}
                             </Table.Cell>
                             <Table.Cell className="px-3 py-2">
-                              {warrantyCertificate.status
-                                ? warrantyCertificate.status
-                                : ""}
+                              {isWarrantyExpired(warrantyCertificate.startDate, warrantyCertificate.warrantyPeriod)
+                                ? "Hết hạn"
+                                : "Còn hạn"}
                             </Table.Cell>
                             <Table.Cell className="w-16">
                               <div style={{ flexDirection: "column" }}>
                                 <button
                                   onClick={() =>
-                                    alert(warrantyCertificate.warrantyId)
+                                    router.push(`/repairmanagement/warrantyDetail/${warrantyCertificate.warrantyId}`)
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}

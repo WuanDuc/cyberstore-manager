@@ -159,7 +159,7 @@ const UpdateProduct = ({params }) => {
     console.log(newProduct);
     setProduct(newProduct);
     alert("Thêm thành công");
-    router.push("/productsmanagement");
+    router.back();
   };
 
   const handleUpdateProduct = async () => {
