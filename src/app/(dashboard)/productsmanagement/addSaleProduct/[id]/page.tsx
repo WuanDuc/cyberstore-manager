@@ -17,8 +17,27 @@ const sampleProduct = {
   sale: 10,
 };
 
-export default function AddSaleProduct() {
+ const AddSaleProduct = ({params}) => {
+  const {id} = params;
   const [numberOfAddOnProduct, setNumberOfAddOnProduct] = useState(0);
+  const [productAttachments, setProductAttachments] = useState({});
+  const [saleProduct, setSaleProduct] = useState({
+    discount:"",
+    importedPrice:"",
+    price:"",
+    numberOfAttachment:"",
+    productAttachments:[],
+    productId:"",
+    saleProductId:"",
+    saleProductName:"",
+  });
+  const handleChange = (e) =>{
+    setSaleProduct({...saleProduct, [e.target.name]: e.target.value })
+  }
+  const handleProductChange = (e) =>{
+    setProductAttachments({...productAttachments, [e.target.name]: e.target.value })
+  }
+
   return (
     <main className="flex max-h-screen flex-col fill-white">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -26,7 +45,7 @@ export default function AddSaleProduct() {
           <div className="flex-col">
             <div className=" flex-row pt-8">
               <label className=" font-semibold text-2xl text-black p-11 ">
-                Quản lý sản phẩm&gt;Thêm sản phẩm bán
+                Quản lý sản phẩm&gt;Sản phẩm bán
               </label>
             </div>
             <div className=" w-10/12  overflow-scroll h-screen flow-root p-6">
@@ -125,3 +144,4 @@ export default function AddSaleProduct() {
     </main>
   );
 }
+export default AddSaleProduct;

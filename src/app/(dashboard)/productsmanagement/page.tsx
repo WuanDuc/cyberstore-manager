@@ -252,8 +252,7 @@ export default function ProductManagement() {
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
-                  <FilterContainer />
-                  <div className="grid grid-cols-5">
+                  <div className="grid grid-cols-6">
                     {recentProductList.map((product, index) => {
                       console.log(product);
                       return (
@@ -306,8 +305,7 @@ export default function ProductManagement() {
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
-                  <FilterContainer />
-                  <div className="grid grid-cols-4">
+                  <div className="grid grid-cols-6">
                     {recentSaleProductList.map((saleProduct, index) => {
                       console.log(saleProduct);
                       console.log(index);
