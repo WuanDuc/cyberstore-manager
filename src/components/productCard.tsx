@@ -13,41 +13,46 @@ export const ProductCard = ({ product, title, onClick, index }) => {
       theme={customProductCardTheme}
       className=" h-64 w-44"
       imgAlt={
-        product !== undefined && product.productName !== null ? product.productName : " "
+        product !== undefined && product.productName !== null
+          ? product.productName
+          : " "
       }
       // imgSrc={product !== undefined ? product.saleProductImg : ""}
-      imgSrc="/images/sample.jpg"
+      imgSrc="/images/product.png"
     >
       <a>
         <h5 className=" te truncate text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-          {product !== undefined && product.productName !== null ? product.productName : " "}
+          {product !== undefined && product.productName !== null
+            ? product.productName
+            : " "}
         </h5>
       </a>
       <div className=" grid grid-cols-1">
-            <span className="  text-xs text-white dark:text-white">
-            Hãng: {product.companyName}
-          </span>
-            <span className=" text-xs  text-white dark:text-white">
-            Số lượng: {product.amount}
-          </span>
+        <span className="  text-xs text-white dark:text-white">
+          Hãng: {product.companyName}
+        </span>
+        <span className=" text-xs  text-white dark:text-white">
+          Số lượng: {product.amount}
+        </span>
       </div>
       <div className="flex items-center justify-between flow-root">
         <button
           onClick={() => {
             console.log(product);
-            router.push(`/productsmanagement/updateProduct/${product.productId}`);
+            router.push(
+              `/productsmanagement/updateProduct/${product.productId}`
+            );
           }}
           className=" float-left w-12 h-8 rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
         >
           Sửa
         </button>
         <button
-          onClick={()=>onClick(product.productId)}
+          onClick={() => onClick(product.productId)}
           className=" float-right w-12 h-8 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
         >
           Xóa
         </button>
-
       </div>
     </Card>
   );

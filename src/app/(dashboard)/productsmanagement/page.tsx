@@ -386,7 +386,7 @@ const ProductManagement = () => {
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
-                  <FilterContainer />
+                  {/* <FilterContainer /> */}
                   <div className="grid grid-cols-5">
                     {recentProductList.map((product, index) => {
                       console.log(product);
@@ -443,7 +443,7 @@ const ProductManagement = () => {
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
-                  <FilterContainer />
+                  {/* <FilterContainer /> */}
                   <div className="grid grid-cols-4">
                     {recentSaleProductList.map((saleProduct, index) => {
                       console.log(saleProduct);

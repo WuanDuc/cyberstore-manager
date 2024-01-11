@@ -30,36 +30,7 @@ import moment from "moment";
 import api from "@/apis/Api";
 
 const GoodReceipt = ({ params }) => {
-  const [importedProducts, setImportedProducts] = useState([
-    // {
-    //   importedBillId: "PN001",
-    //   productId: "SP001",
-    //   supplierName: "Asus",
-    //   importedPrice: 200000,
-    //   amount: 20,
-    // },
-    // {
-    //   importedBillId: "PN001",
-    //   productId: "SP001",
-    //   supplierName: "Asus",
-    //   importedPrice: 200000,
-    //   amount: 20,
-    // },
-    // {
-    //   importedBillId: "PN001",
-    //   productId: "SP001",
-    //   supplierName: "Asus",
-    //   importedPrice: 200000,
-    //   amount: 20,
-    // },
-    // {
-    //   importedBillId: "PN001",
-    //   productId: "SP001",
-    //   supplierName: "Asus",
-    //   importedPrice: 200000,
-    //   amount: 20,
-    // },
-  ]);
+  const [importedProducts, setImportedProducts] = useState([]);
   const [goodsReceipt, setGoodsReceipt] = useState({
     goodsReceiptId: "",
     entryDate: moment().format("YYYY-MM-DD").toString(),
@@ -76,6 +47,18 @@ const GoodReceipt = ({ params }) => {
     setProducts(temp);
   };
 
+  const handleUpdateProduct = async (imported) => {
+    const product = await api.getProductById(imported.productId);
+    let list = products;
+    list.map((listP) => {
+      if (listP.productId == product.productId) {
+        product.goodsReceiptDetail = imported;
+        product.amount += imported.amount;
+      }
+    });
+    await api.updateProduct(product, product.productId);
+  };
+
   const { id } = params;
 
   const handleChange = (e) => {
@@ -87,13 +70,16 @@ const GoodReceipt = ({ params }) => {
   };
 
   const router = useRouter();
+
   const getGoodsReceipt = async () => {
+    console.log("abc");
     const temp = await api.getGoodsReceiptById(id);
+    setTotalPrice(temp.totalPrice);
     setImportedProducts(temp.importedProducts);
     setGoodsReceipt(temp);
   };
 
-  const handleImportProduct = async () => {
+  const handleImportProduct = () => {
     const matchName = recentImported.productId != "";
     const matchPrice = recentImported.importedPrice > 0;
     const matchAmount = recentImported.amount > 0;
@@ -110,6 +96,8 @@ const GoodReceipt = ({ params }) => {
         totalPrice + recentImported.amount * recentImported.importedPrice
       );
       temp.push(recentImported);
+      console.log(recentImported);
+      setImportedProducts(temp);
     } else {
       alert(
         "Vui lòng điền đầy đủ thông tin hoặc chọn loại sản phẩm chưa có trong phiếu nhập này"
@@ -117,16 +105,21 @@ const GoodReceipt = ({ params }) => {
     }
   };
 
-  const handleUpdateReceipt = async () => {
+  const handleAddReceipt = async () => {
     if (importedProducts.length > 0) {
       let temp = goodsReceipt;
       temp.importedProducts = importedProducts;
       temp.totalPrice = totalPrice;
+      importedProducts.map((imported, index) => {
+        console.table(imported);
+        handleUpdateProduct(imported);
+      });
       let id = "";
       await api.addGoodsReceipt(temp).then((docId) => {
         id = docId;
       });
       temp.goodsReceiptId = id;
+
       await api.updateGoodsReceipt(temp, id);
       alert("Thêm phiếu nhập thành công");
       router.back();
@@ -134,6 +127,7 @@ const GoodReceipt = ({ params }) => {
   };
 
   useEffect(() => {
+    console.log(id);
     if (id !== "add") {
       getGoodsReceipt();
     } else {
@@ -301,7 +295,7 @@ const GoodReceipt = ({ params }) => {
                       height: 40,
                       marginLeft: 10,
                     }}
-                    onClick={handleUpdateReceipt}
+                    onClick={handleAddReceipt}
                   >
                     Lưu
                   </Button>
@@ -368,7 +362,10 @@ const GoodReceipt = ({ params }) => {
                                   "Bạn có chắc chắn muốn xóa?"
                                 );
                                 if (choice) {
-                                  importedProducts.splice(index, 1);
+                                  let temp = importedProducts;
+                                  temp.splice(index, 1);
+                                  setImportedProducts(temp);
+                                  router.refresh();
                                 }
                               }}
                               className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"

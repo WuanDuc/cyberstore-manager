@@ -276,10 +276,10 @@ export default function RepairManagement() {
                             <Table.Cell className="w-1/4 px-3 py-2">
                               {repairOder.productName}
                             </Table.Cell>
-                            <Table.Cell className="w-28 text-right px-3 py-2">
+                            <Table.Cell className="w-1/6 text-right px-3 py-2">
                               {repairOder.receiptDate}
                             </Table.Cell>
-                            <Table.Cell className="w-28 text-right px-3 py-2">
+                            <Table.Cell className="w-1/6 text-right px-3 py-2">
                               {repairOder.appointmentDate}
                             </Table.Cell>
                             <Table.Cell className="w-24 px-3 py-2">
