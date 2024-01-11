@@ -35,7 +35,7 @@ const UpdateProduct = ({ params }) => {
   const [companys, setCompanys] = useState([]);
   const { id } = params;
   const [product, setProduct] = useState({
-    amount: "",
+    amount: 0,
     companyId: "",
     companyName: "",
     detailedSpecification: [],
@@ -181,6 +181,11 @@ const UpdateProduct = ({ params }) => {
     router.back();
   };
 
+  const getAllCompany = async () => {
+    const cpn = await api.getAllCompany();
+    setCompanys(cpn);
+  };
+
   const getProduct = async () => {
     console.log(id);
     const recentProduct = await api.getProductById(id);
@@ -209,6 +214,7 @@ const UpdateProduct = ({ params }) => {
     if (id !== "add") {
       getProduct();
     }
+    getAllCompany();
   }, []);
   useEffect(() => {}, [laptopDetail, pcDetail, RAMDetail, mouseDetail]);
   return (
@@ -272,7 +278,8 @@ const UpdateProduct = ({ params }) => {
                 id="amount"
                 name="amount"
                 onChange={handleChange}
-                defaultValue={product.amount}
+                defaultValue={id == "add" ? 0 : product.amount}
+                disabled
                 className=" text-black w-full h-10 border border-gray-300 rounded px-3"
               />
             </div>
