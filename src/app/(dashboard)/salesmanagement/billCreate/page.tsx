@@ -542,7 +542,7 @@ export default function CreateBills() {
                         </div>
                         <text className="mt-5 font-semibold text-xl text-black">
                           {"Thành tiền: " +
-                            listCurrentBill[activeBill].totalPrice}
+                            listCurrentBill[activeBill].totalPrice || 0}
                         </text>
                         <div
                           style={{
@@ -558,12 +558,17 @@ export default function CreateBills() {
                               backgroundColor: "#0156FF",
                             }}
                             onClick={() => {
-                              if (listCurrentBill.length > 1) {
-                                listCurrentBill.splice(activeBill, 1);
+                              if (
+                                listCurrentBill.length > 1 &&
+                                activeBill != 0
+                              ) {
+                                let list = listCurrentBill;
+                                list.splice(activeBill, 1);
+                                setListCurrentBill(list);
                                 setActiveBill(0);
                               } else {
                                 alert(
-                                  "Không thể xóa hóa đơn duy nhất này! Vui lòng làm mới dữ liệu"
+                                  "Không thể xóa hóa đơn đầu tiên này! Vui lòng làm mới dữ liệu"
                                 );
                               }
                             }}
@@ -651,10 +656,13 @@ export default function CreateBills() {
                                 return (
                                   <option
                                     key={index}
-                                    value={discount.id}
+                                    value={discount.Id}
                                     className="w-9/12 text-black border border-black font-bold"
                                   >
-                                    {discount.percent + " %"}
+                                    {discount.discountName +
+                                      ": " +
+                                      discount.discountPercent +
+                                      " %"}
                                   </option>
                                 );
                               })}
@@ -725,7 +733,7 @@ export default function CreateBills() {
                                 ) : (
                                   <div>
                                     <AddressSelect />
-                                    <AddressSelect />
+                                    {/* <AddressSelect /> */}
                                   </div>
                                 )}
                               </div>
@@ -791,10 +799,13 @@ export default function CreateBills() {
                                 return (
                                   <option
                                     key={index}
-                                    value={discount.id}
+                                    value={discount.Id}
                                     className="w-9/12 text-black border border-black font-bold"
                                   >
-                                    {discount.percent + " %"}
+                                    {discount.discountName +
+                                      ": " +
+                                      discount.discountPercent +
+                                      " %"}
                                   </option>
                                 );
                               })}

@@ -196,9 +196,12 @@ const GoodReceipt = ({ params }) => {
                             backgroundColor: "#0156FF",
                           }}
                           disabled={id !== "add"}
-                          onClick={() =>
-                            router.push("/productsmanagement/updateProduct/add")
-                          }
+                          onClick={() => {
+                            router.push(
+                              "/productsmanagement/updateProduct/add"
+                            );
+                            router.refresh();
+                          }}
                         >
                           <PlusCircle />
                         </Button>
