@@ -72,7 +72,9 @@ const getRepairOrderById = async (id) => {
 };
 const getAllWarrantyCertificates = async () => {
   try {
-    const response = await client.get("/WarrantyCertificate/getWarrantyCertificates");
+    const response = await client.get(
+      "/WarrantyCertificate/getWarrantyCertificates"
+    );
     if (response.data.success) {
       return response.data.WarrantyCertificates;
     } else {
