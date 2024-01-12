@@ -72,7 +72,9 @@ const getRepairOrderById = async (id) => {
 };
 const getAllWarrantyCertificates = async () => {
   try {
-    const response = await client.get("/WarrantyCertificate/getWarrantyCertificates");
+    const response = await client.get(
+      "/WarrantyCertificate/getWarrantyCertificates"
+    );
     if (response.data.success) {
       return response.data.WarrantyCertificates;
     } else {
@@ -431,6 +433,75 @@ const getDiscountById = async (id) => {
   }
 };
 
+const getAllGoodsReceipt = async () => {
+  try {
+    const response = await client.get("/GoodsReceipt/getGoodsReceipts");
+    if (response.data.success) {
+      return response.data.goodsReceipt;
+    } else {
+      console.log("not get GoodsReceipt");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return [];
+  }
+};
+
+const addGoodsReceipt = async (data) => {
+  const endpoint = "/GoodsReceipt/add";
+  try {
+    const response = await client.post(endpoint, data);
+    return response.data.docId;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+const updateGoodsReceipt = async (data, id) => {
+  const endpoint = "/GoodsReceipt/update/" + id;
+  try {
+    await client.put(endpoint, data);
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+const deleteGoodsReceipt = async (id) => {
+  try {
+    await client.delete("/GoodsReceipt/delete/" + id);
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
+// const getStaffsBySearch = async (searchCriteria) => {
+//   try {
+//     const queryParams = new URLSearchParams(searchCriteria).toString();
+//     const response = await client.get(`/StaffManagement/Bills?${queryParams}`);
+
+//     if (response.data.success) {
+//       return response.data.bills;
+//     } else {
+//       console.log("not get bills");
+//     }
+//   } catch (error) {
+//     console.log("error: ", error.message);
+//     return [];
+//   }
+// };
+
+const getGoodsReceiptById = async (id) => {
+  const endpoint = "/GoodsReceipt/goodsReceiptById/" + id;
+  try {
+    const response = await client.get(endpoint);
+    if (response.data.success) {
+      return response.data.goodsReceiptById;
+    } else {
+      console.log("not get GoodsReceipt by id");
+    }
+  } catch (error) {
+    console.log("error: ", error.message);
+    return {};
+  }
+};
+
 export default {
   getAllRepairOrder,
   getRepairOrderById,
@@ -468,4 +539,19 @@ export default {
   updateDiscount,
   deleteDiscount,
   addDiscount,
+  getAllGoodsReceipt,
+  getGoodsReceiptById,
+  addGoodsReceipt,
+  updateGoodsReceipt,
+  deleteGoodsReceipt,
+  getAllProduct,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+  getAllSaleProduct,
+  getSaleProductById,
+  addSaleProduct,
+  updateSaleProduct,
+  deleteSaleProduct,
 };

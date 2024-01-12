@@ -11,8 +11,7 @@ import { Console } from "console";
 import SearchInput from "@/components/searchinput";
 import { THEME } from "@/constant/theme";
 import { useRouter } from "next/navigation";
-import api from "@/apis/Api"
-
+import api from "@/apis/Api";
 
 const DiscountContainerRight = () => (
   <div className="h-1/4 w-1/4 bg-gray-300 p-4 mr-6 ">
@@ -82,23 +81,66 @@ export default function RepairManagement() {
   const [warrantyCertificates, setWarranty] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [idDelete, setIdDelete] = useState(0);
+  const [recentWarranty, setRecentWarranty] = useState([]);
+  const [recentRepair, setRecentRepair] = useState([]);
 
   const router = useRouter();
-  const getRepairOrder =async () => {
+  const getRepairOrder = async () => {
     const temp = await api.getAllRepairOrder();
+    setRecentRepair(temp);
     console.log(temp);
     setRepairOrder(temp);
-  }
-  const getWarrantyCertificates =async () => {
+  };
+  const getWarrantyCertificates = async () => {
     const temp = await api.getAllWarrantyCertificates();
+    setRecentWarranty(temp);
     console.log(temp);
     setWarranty(temp);
-  }
+  };
   const handleDeleteRepair = async (id) => {
     await api.deleteRepairOrder(id);
     getRepairOrder();
     alert("Xóa thành công");
   };
+
+  const handleSearchW = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = recentWarranty.filter((staff, index) => {
+      return (
+        normalizeText(staff.warrantyId).includes(normalizeText(search)) ||
+        normalizeText(staff.warrantyPeriod).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setRecentWarranty(searchProduct);
+  };
+
+  const handleChangeW = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchW(e.target.value);
+  };
+
+  const handleSearchR = (search) => {
+    const normalizeText = (text) => text.toLowerCase();
+    const searchProduct = recentRepair.filter((staff, index) => {
+      return (
+        normalizeText(staff.customerName).includes(normalizeText(search)) ||
+        normalizeText(staff.warrantyPeriod).includes(normalizeText(search)) ||
+        normalizeText(staff.bugDetail).includes(normalizeText(search)) ||
+        normalizeText(staff.warrantyId).includes(normalizeText(search)) ||
+        search == ""
+      );
+    });
+    console.log(searchProduct);
+    setRecentWarranty(searchProduct);
+  };
+
+  const handleChangeR = (e) => {
+    // setSearchName(e.target.value);
+    handleSearchR(e.target.value);
+  };
+
   useEffect(() => {
     getRepairOrder();
     getWarrantyCertificates();
@@ -125,18 +167,18 @@ export default function RepairManagement() {
   const isWarrantyExpired = (creationDate, warrantyMonths) => {
     // Tạo đối tượng ngày từ ngày lập phiếu
     const creationDateTime = new Date(creationDate);
-  
+
     // Thêm số tháng bảo hành vào ngày lập phiếu
     const expirationDateTime = new Date(creationDateTime);
     expirationDateTime.setMonth(expirationDateTime.getMonth() + warrantyMonths);
-  
+
     // Lấy ngày hiện tại
     const currentDate = new Date();
-  
+
     // So sánh ngày hiện tại với ngày hết hạn
     return currentDate > expirationDateTime;
-  }
-  
+  };
+
   return (
     <main className="flex max-h-screen flex-col fill-white overflow-y-scroll">
       <div className="z-10 fill-white max-w-5xl w-full font-mono text-sm ">
@@ -166,6 +208,7 @@ export default function RepairManagement() {
                       }}
                       id="email4"
                       type="Search"
+                      onChange={handleChangeR}
                       rightIcon={HiSearch}
                       placeholder="Search"
                       required
@@ -179,7 +222,9 @@ export default function RepairManagement() {
                         paddingLeft: 5,
                         paddingRight: 5,
                       }}
-                      onClick={() => router.push(`repairmanagement/addrepair/add`)}
+                      onClick={() =>
+                        router.push(`repairmanagement/addrepair/add`)
+                      }
                     >
                       <File style={{ marginRight: 3 }} />
                       Thêm phiếu sửa chữa
@@ -214,10 +259,7 @@ export default function RepairManagement() {
                           className="divide-y bg-teal-200"
                           key={index}
                         >
-                          <Table.Row
-                            className="bg-white dark:border-gray-700 dark:bg-gray-100 px-3 py-2"
-                            
-                          >
+                          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-100 px-3 py-2">
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center px-3 py-2">
                               {index + 1}
                             </Table.Cell>
@@ -230,10 +272,10 @@ export default function RepairManagement() {
                             <Table.Cell className="w-1/4 px-3 py-2">
                               {repairOder.productName}
                             </Table.Cell>
-                            <Table.Cell className="w-28 text-right px-3 py-2">
+                            <Table.Cell className="w-1/6 text-right px-3 py-2">
                               {repairOder.receiptDate}
                             </Table.Cell>
-                            <Table.Cell className="w-28 text-right px-3 py-2">
+                            <Table.Cell className="w-1/6 text-right px-3 py-2">
                               {repairOder.appointmentDate}
                             </Table.Cell>
                             <Table.Cell className="w-24 px-3 py-2">
@@ -253,8 +295,10 @@ export default function RepairManagement() {
                             <Table.Cell className="w-24 px-3 py-2 align-center">
                               <div style={{ flexDirection: "column" }}>
                                 <button
-                                  onClick={  () =>
-                                    router.push(`/repairmanagement/addrepair/${repairOder.repairOrderId}`)
+                                  onClick={() =>
+                                    router.push(
+                                      `/repairmanagement/addrepair/${repairOder.repairOrderId}`
+                                    )
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
@@ -293,6 +337,7 @@ export default function RepairManagement() {
                       }}
                       id="saleProductSearch"
                       type="Search"
+                      onChange={handleChangeW}
                       rightIcon={HiSearch}
                       placeholder="Search"
                       required
@@ -328,7 +373,9 @@ export default function RepairManagement() {
                           <Table.Row
                             className="bg-white dark:border-gray-700 dark:bg-gray-100"
                             onClick={() =>
-                              router.push(`/repairmanagement/warrantyDetail/${warrantyCertificate.warrantyId}`)
+                              router.push(
+                                `/repairmanagement/warrantyDetail/${warrantyCertificate.warrantyId}`
+                              )
                             }
                           >
                             <Table.Cell className="whitespace-nowrap font-medium text-black dark:text-black w-1 text-center">
@@ -347,7 +394,10 @@ export default function RepairManagement() {
                               {warrantyCertificate.warrantyPeriod + " tháng"}
                             </Table.Cell>
                             <Table.Cell className="px-3 py-2">
-                              {isWarrantyExpired(warrantyCertificate.startDate, warrantyCertificate.warrantyPeriod)
+                              {isWarrantyExpired(
+                                warrantyCertificate.startDate,
+                                warrantyCertificate.warrantyPeriod
+                              )
                                 ? "Hết hạn"
                                 : "Còn hạn"}
                             </Table.Cell>
@@ -355,7 +405,9 @@ export default function RepairManagement() {
                               <div style={{ flexDirection: "column" }}>
                                 <button
                                   onClick={() =>
-                                    router.push(`/repairmanagement/warrantyDetail/${warrantyCertificate.warrantyId}`)
+                                    router.push(
+                                      `/repairmanagement/warrantyDetail/${warrantyCertificate.warrantyId}`
+                                    )
                                   }
                                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                   style={{ width: 40 }}
