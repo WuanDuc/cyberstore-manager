@@ -175,7 +175,7 @@ export default function AddRepairManagement( {params}) {
                             borderRadius: 10,
                             color: "black",
                             width: 450,
-                          }} value={repairOrder.customerNumber} id="conver6" name="customerNumber" onChange={handleChange} required placeholder="Số điện thoại"/>
+                          }} value={repairOrder.customerNumber} type="number" id="conver6" name="customerNumber" onChange={handleChange} required placeholder="Số điện thoại"/>
 
                         <div className="mb-2 block">
                             <label className=" text-black font-semibold" htmlFor="date" > Ngày hẹn</label>
@@ -206,7 +206,7 @@ export default function AddRepairManagement( {params}) {
                             backgroundColor: "white",
                             borderRadius: 10,
                             color: "black",
-                          }} value={sale === 0 ? repairOrder.price : 0} id="conver7" name="price" onChange={handleChange} icon={MdOutlineAttachMoney} disabled={sale === 100? true:false} required placeholder="0" defaultValue={0}/>
+                          }} value={sale === 0 ? repairOrder.price : 0} type="number" id="conver7" name="price" onChange={handleChange} icon={MdOutlineAttachMoney} disabled={sale === 100? true:false} required placeholder="0" defaultValue={0}/>
 
 {id == "add" ? (
                     <Button

@@ -23,8 +23,8 @@ const data = [
 export default function Example() {
   return (
     <Card className="mt-8">
-      <Title>Performance</Title>
-      <Text>Comparison between Sales and Profit</Text>
+      <Title>Doanh thu</Title>
+      <Text>So sánh doanh thu và chi</Text>
       <AreaChart
         className="mt-4 h-80"
         data={data}

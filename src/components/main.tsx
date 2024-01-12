@@ -3,42 +3,17 @@
 import { Card, Metric, Text, Title, BarList, Flex, Grid } from '@tremor/react';
 import Chart from './chart';
 
-const website = [
-  { name: '/home', value: 1230 },
-  { name: '/contact', value: 751 },
-  { name: '/gallery', value: 471 },
-  { name: '/august-discount-offer', value: 280 },
-  { name: '/case-studies', value: 78 }
-];
-
-const shop = [
-  { name: '/home', value: 453 },
-  { name: '/imprint', value: 351 },
-  { name: '/shop', value: 271 },
-  { name: '/pricing', value: 191 }
-];
 
 const app = [
-  { name: '/shop', value: 789 },
-  { name: '/product-features', value: 676 },
-  { name: '/about', value: 564 },
-  { name: '/login', value: 234 },
-  { name: '/downloads', value: 191 }
+  { name: 'Laptop', value: 789 },
+  { name: 'PC', value: 676 },
+  { name: 'Linh kiện', value: 564 },
+  { name: 'Phụ kiện', value: 234 },
 ];
 
 const data = [
   {
-    category: 'Website',
-    stat: '10,234',
-    data: website
-  },
-  {
-    category: 'Online Shop',
-    stat: '12,543',
-    data: shop
-  },
-  {
-    category: 'Mobile App',
+    category: 'Thống kê',
     stat: '2,543',
     data: app
   }
@@ -57,12 +32,13 @@ export default function PlaygroundPage() {
               className="space-x-2"
             >
               <Metric>{item.stat}</Metric>
-              <Text>Total views</Text>
+              <Text>Tổng lượt mua</Text>
             </Flex>
             <Flex className="mt-6">
-              <Text>Pages</Text>
-              <Text className="text-right">Views</Text>
+              <Text>Loại sản phẩm</Text>
+              <Text className="text-right">Lượt mua</Text>
             </Flex>
+
             <BarList
               data={item.data}
               valueFormatter={(number: number) =>
