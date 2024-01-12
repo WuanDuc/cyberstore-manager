@@ -386,6 +386,7 @@ const ProductManagement = () => {
                   />
                 </div>
                 <div className="flex overflow-y-scroll">
+                  <div className="grid grid-cols-6">
                   {/* <FilterContainer /> */}
                   <div className="grid grid-cols-5">
                     {recentProductList.map((product, index) => {

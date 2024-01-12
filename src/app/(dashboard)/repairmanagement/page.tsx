@@ -243,7 +243,6 @@ export default function RepairManagement() {
                     <Table.Head>
                       <Table.HeadCell>STT</Table.HeadCell>
                       <Table.HeadCell>Mã phiếu sửa chữa</Table.HeadCell>
-                      <Table.HeadCell>Mã nhân viên</Table.HeadCell>
                       <Table.HeadCell>Mã khách hàng</Table.HeadCell>
                       <Table.HeadCell>Tên sản phẩm</Table.HeadCell>
                       <Table.HeadCell>Ngày nhận</Table.HeadCell>
@@ -266,9 +265,6 @@ export default function RepairManagement() {
                             </Table.Cell>
                             <Table.Cell className="w-24 px-3 py-2">
                               {repairOder.repairOrderId}
-                            </Table.Cell>
-                            <Table.Cell className="w-24 px-3 py-2">
-                              {repairOder.staffId}
                             </Table.Cell>
                             <Table.Cell className="w-24 px-3 py-2">
                               {repairOder.customerId}
